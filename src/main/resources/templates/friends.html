@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{:: title})">
+    <meta charset="UTF-8">
+    <!--首先完成移动端的预览设置问题,设备的宽度初始缩放倍数为1.0倍，这里还可以设置用户禁止缩放等等-->
+    <meta name="viewport" content="device-width,initial-scale=1.0">
+    <title>友链</title>
+    <!--接下来进行semanticUI的css CDN的引用-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <!--引入我们自己写的css-->
+    <link rel="stylesheet" href="../static/css/me.css">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+<body>
+<!--粒子特效-->
+<canvas id="theCanvas"></canvas>
+<!--导航栏-->
+<nav th:replace="_fragments :: menu(6)" class="ui   attached segment m-padded-tb-mini m-shadow-small">
+
+    <!--container的好处很多，其中之一使得设备正常显示-->
+    <div class="ui container">
+        <!--使用一个菜单来放我们所有的导航链接-->
+        <div class="ui  secondary stackable menu">
+            <a class="item">
+                <img class="ui circular image mestyle image"  th:src="${user.avatar}" src="http://b-ssl.duitang.com/uploads/item/201706/25/20170625143749_mtSZE.jpeg">
+                &nbsp;&nbsp;&nbsp;<span th:text="${user.nickname}">Mr_name</span>
+            </a>&nbsp;
+            <a class="item m-item m-mobile-hide"><i class="fas fa-carrot"></i>首页</a>
+            <a class="item m-item m-mobile-hide"><i class="fas fa-ice-cream"></i>分类</a>
+            <a class="item m-item m-mobile-hide"><i class="fas fa-candy-cane"></i>标签</a>
+            <a class="item m-item m-mobile-hide"><i class="fas fa-pizza-slice"></i>归档</a>
+            <a class="item m-item m-mobile-hide"><i class="fas fa-cookie"></i>本站</a>
+            <a class="active item m-item m-mobile-hide"><i class="fas fa-fish"></i>友链</a>
+            <div class="right m-item item m-mobile-hide">
+                <div class="ui icon inverted  input">
+                    <input type="text" placeholder="Search...">
+                    <i class="search link icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--这里来弄一个导航隐藏按钮-->
+    <a href="#" class="ui black icon button m-right-top m-mobile-show menu toggle">
+        <i class="sidebar icon"></i>
+    </a>
+
+</nav>
+
+<!--中部主体-->
+<div class="m-padded-tb-large ">
+    <div class="ui stackable container m-container-nine">
+        <h3 class="ui header m-text"><i class="fab fa-wolf-pack-battalion"></i>推荐网站:</h3>
+        <br>
+        <div class="ui cards ">
+            <a th:href="@{'http://'+${friend.website}}" th:if="${friend.flag}==1" th:each="friend : ${friends}"
+               class="orange card m-card-center">
+                <div class="content">
+                    <div th:text="${friend.nickname}" class="header" href="#">Cute Dog</div>
+                    <p th:text="${friend.description}"></p>
+                </div>
+            </a>
+
+
+        </div>
+
+        <div class="ui  section divider m-padded-tb"></div>
+        <div class="ui stackable  grid">
+
+            <div class="ui eleven wide column">
+
+                <h3 class="ui header m-text"><i class="fas fa-users"></i>友情链接:</h3>
+
+                <br>
+                <div class="ui link cards">
+
+
+                    <a th:href="@{'http://'+${friend.website}}" th:if="${friend.flag}==2" th:each="friend : ${friends}"
+                       class="teal card m-card-center">
+
+                        <!--<div  class="image">-->
+                        <!--<img th:src="${friend.avatar}" src="../static/images/molly.png">-->
+                        <!--</div>-->
+
+                        <div class="content">
+                            <div th:text="${friend.nickname}" class="header">Molly</div>
+                            <!--<div class="meta">-->
+                            <!--<span class="date" th:text="${friend.occupation}">Coworker</span>-->
+                            <!--</div>-->
+                            <div class="description" th:text="${friend.description}">
+                                Molly is a personal assistant living in Paris.
+                            </div>
+                        </div>
+
+                    </a>
+
+                </div>
+            </div>
+
+            <!--<div class="ui five wide column">-->
+            <!--<h3 class="ui header m-text"><i class="fas fa-cloud"></i>喜欢的网站:</h3>-->
+            <!--<br>-->
+            <!--<div class="ui cards">-->
+
+            <!--<a th:href="@{'http://'+${friend.website}}"   th:each="friend : ${friends}" class="black card m-card-center">-->
+            <!--<div class="content">-->
+            <!--<div   class="header" th:text="${friend.nickname}">Cute Dog</div>-->
+
+            <!--<p th:text="${friend.description}"></p>-->
+            <!--</div>-->
+            <!--</a>-->
+
+            <!--</div>-->
+            <!--</div>-->
+
+        </div>
+
+
+    </div>
+</div>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br>
+
+
+<!--底部footer栏-->
+<footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+    <!--这里的结构其实跟nav尽量保持一致-->
+    <div class="ui center aligned container m-padded-tb-mini">
+
+        <div class="ui stackable inverted divided grid">
+
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img src="../static/images/qrcode.jpg" class="ui rounded image" style="width: 110px">
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+
+                <h4 class="ui inverted header m-text-spaced m-opacity-small">最新博客</h4>
+
+                <div class="ui inverted link list ">
+                    <a href="#" class="item">用户故事(User Story)</a>
+                    <a href="#" class="item">用户故事(User Story)</a>
+                    <a href="#" class="item">用户故事(User Story)</a>
+                </div>
+            </div>
+
+            <div class="three wide column">
+                <h4 class="ui inverted header  m-text-spaced m-opacity-small">联系我</h4>
+                <div class="ui inverted link list m-text-lined">
+                    <a href="#" class="item">QQ:1474159935</a>
+                    <a href="#" class="item">Wechat:zeng1474159935</a>
+                    <a href="#" class="item">Email:1474159935@qq.com</a>
+                </div>
+            </div>
+
+            <div class="seven wide column">
+                <h4 class="ui inverted header  m-text-spaced m-opacity-small">关于我</h4>
+                <p class="m-text-thin m-text-spaced m-opacity-mini">不知你是否跟我一样，喜欢了解他人如何快乐的生活，积极向他们寻求生活的乐趣。
+                    一起勇敢前行吧。</p>
+            </div>
+        </div>
+        <!--这里是一根线-->
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-mini">Copyright©2019-2020zzj Designed by zzj</p>
+    </div>
+
+</footer>
+
+<!--粒子特效-->
+<script src="../static/js/particle_effects.js"></script>
+<!--也许用到的jQuery的引用-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<!--这里进行semanticUI的js 的CDN的引用 -->
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+
+    $('#payButton').popup({
+        popup: $('.payQR.popup'),
+        on: 'click',
+        position: 'bottom center'
+    });
+
+</script>
+</body>
+</html>

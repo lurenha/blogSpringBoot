@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+
+
+    <meta charset="UTF-8">
+    <!--首先完成移动端的预览设置问题,设备的宽度初始缩放倍数为1.0倍，这里还可以设置用户禁止缩放等等-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <title th:replace="${title}">博客详情</title>
+    <!--接下来进行semanticUI的css CDN的引用-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <!--引入我们自己写的css-->
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <!--排版插件-->
+    <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/css/typo.css}">
+    <!--动画效果的插件-->
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+    <!--代码高亮-->
+    <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
+    <!--目录的插件-->
+    <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
+
+
+
+</head>
+<body>
+
+
+<!--导航栏-->
+<nav th:fragment="menu(n)" class="ui   attached segment m-padded-tb-mini m-shadow-small animated fadeInDown">
+    <!--container的好处很多，其中之一使得设备正常显示-->
+    <div class="ui container">
+        <!--使用一个菜单来放我们所有的导航链接-->
+        <div class="ui  secondary stackable menu">
+            <a class="item">
+                <img class="ui circular image mestyle image"  th:src="${user.avatar}" src="http://b-ssl.duitang.com/uploads/item/201706/25/20170625143749_mtSZE.jpeg">
+                &nbsp;&nbsp;&nbsp;<span th:text="${user.nickname}">Mr_name</span>
+            </a>&nbsp;
+            <a class="item m-item m-mobile-hide" th:href="@{/}" th:classappend="${n==1} ? 'active'"><i class="fas fa-carrot"></i>首页</a>
+            <a class="item m-item m-mobile-hide" th:href="@{/types/-1}" th:classappend="${n==2} ? 'active'"><i class="fas fa-ice-cream"></i>分类</a>
+            <a class="item m-item m-mobile-hide" th:href="@{/tags/-1}" th:classappend="${n==3} ? 'active'"><i class="fas fa-candy-cane"></i>标签</a>
+            <a class="item m-item m-mobile-hide" th:href="@{/archives}" th:classappend="${n==4} ? 'active'"><i class="fas fa-pizza-slice"></i>归档</a>
+            <!--<a class="item m-item m-mobile-hide" th:href="@{/blog/22}" th:classappend="${n==5} ? 'active'"><i class="fas fa-cookie"></i>本站</a>-->
+            <a class="item m-item m-mobile-hide" th:href="@{/friends}" th:classappend="${n==6} ? 'active'"><i class="fas fa-fish"></i>友链</a>
+            <div class="right m-item item m-mobile-hide">
+                <div class="ui icon inverted  input">
+                    <input type="text" placeholder="Search...">
+                    <i class="search link icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--这里来弄一个导航隐藏按钮-->
+    <a href="#" class="ui black icon button m-right-top m-mobile-show menu toggle">
+        <i class="sidebar icon"></i>
+    </a>
+
+</nav>
+
+
+<!--底部footer栏-->
+<footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
+
+    <!--这里的结构其实跟nav尽量保持一致-->
+    <div class="ui center aligned container m-padded-tb-mini">
+
+        <div class="ui stackable inverted divided grid">
+
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img src="../static/images/qrcode.jpg" th:src="@{/images/gongzhonghao.png}" class="ui rounded image" style="width: 110px">
+                    </div>
+                </div>
+            </div>
+            <!--<div class="three wide column">-->
+
+                <!--&lt;!&ndash;<h4 class="ui inverted header m-text-spaced m-opacity-small">推荐博客</h4>&ndash;&gt;-->
+
+                <!--&lt;!&ndash;<div class="ui inverted link list ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a th:if="${blog.published} == true" th:each="blog : ${recommends}" href="#" th:text="${blog.title}" th:href="@{/blog/{id}(id=${blog.id})}" class="item">用户故事(User Story)</a>&ndash;&gt;-->
+
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</div>-->
+
+            <div class="three wide column">
+                <h4 class="ui inverted header  m-text-spaced m-opacity-small">联系我</h4>
+                <div class="ui inverted link list m-text-lined">
+                    <div href="#" th:text="'QQ:'+${user.qq}" class="item">QQ:1474159935</div>
+                    <div href="#" th:text="'Wechat:'+${user.vx}" class="item">Wechat:zeng1474159935</div>
+                    <div href="#" th:text="'Email:'+${user.email}" class="item">Email:1474159935@qq.com</div>
+                </div>
+            </div>
+
+            <div class="seven wide column">
+                <h4 class="ui inverted header  m-text-spaced m-opacity-small">关于我</h4>
+                <p class="m-text-thin m-text-spaced m-opacity-mini" th:text="${user.about}">不知你是否跟我一样，喜欢了解他人如何快乐地生活，积极向他们寻求生活的乐趣。
+                    一起勇敢前行吧。</p>
+            </div>
+        </div>
+        <!--&lt;!&ndash;这里是一根线&ndash;&gt;-->
+        <!--<div class="ui inverted section divider"> </div>-->
+        <!--<p class="m-text-thin m-text-spaced m-opacity-mini">Copyright©2019-2020 zzj Designed by zzj</p>-->
+        <!--<p class="m-text-thin m-text-spaced m-opacity-mini">蜀ICP备19012122号</p>-->
+    </div>
+</footer>
+
+<th:block th:fragment="script">
+<!--也许用到的jQuery的引用-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<!--这里进行semanticUI的js 的CDN的引用 -->
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+
+</th:block>
+
+</body>
+</html>

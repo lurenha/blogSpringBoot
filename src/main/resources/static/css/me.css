@@ -1,0 +1,268 @@
+/*--------padded--------*/
+.mestyle.image {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 50px;
+    background-color: transparent;
+}
+
+.m-padded-lr-responsive {
+    padding-left: 4em !important;
+    padding-right: 4em !important;
+}
+.m-padded-lr-mini{
+    padding-left: 1% !important;
+    padding-right: 1% !important;
+}
+.m-padded-text{
+    padding-left: 1em !important;
+    padding-right: 1em !important;
+
+}
+.m-padded-big{
+    padding-top: 1em !important;
+    padding-right: 2em !important;
+    padding-bottom: 1em !important;
+    padding-left: 2em !important;
+}
+.m-padded-left{
+    padding-top: 2em !important;
+    padding-right: 2em !important;
+    padding-bottom: 0em !important;
+    padding-left: 0em !important;
+}
+
+.m-padded-lr-small{
+    padding-left: 3% !important;
+    padding-right: 3% !important;
+}
+.m-padded-tb-mini{
+    padding-top: 0.2em !important;
+    padding-bottom: 0.2em !important;
+}
+.m-padded-tb-width{
+    height: 38px !important;
+}
+.m-padded-tb-massive{
+    padding-top: 5em !important;
+    padding-bottom: 5em!important;
+}
+.m-padding-mini{
+    padding: 0.2em !important;
+}
+.m-padding-tiny{
+    padding: 0.3em !important;
+}
+.m-padded-tb-mini{
+    padding-top: 0.2em !important;
+    padding-bottom: 0.2em !important;
+}
+.m-padded-tb-mini-two{
+    padding-top: 0.4em !important;
+    padding-bottom: 0.1em !important;
+}
+.m-padded-tb-this{
+    padding-top: 0.3em !important;
+    padding-bottom: 0.3em !important;
+}
+.m-padded-tb-tiny{
+    padding-top: 0.3em !important;
+    padding-bottom: 0.3em !important;
+}
+.m-padded-tb-small{
+    padding-top: 0.5em !important;
+    padding-bottom:0.5em !important;
+}
+.m-padded-mini {
+    padding: 0.6em !important;
+}
+.m-padded {
+    padding: 1em !important;
+}
+.m-padded-tb-up{
+    padding-top: 1em !important;
+}
+.m-padded-tb-bottom{
+    padding-bottom: 0.6em !important;
+}
+.m-padded-tb{
+    padding-top: 0.7em !important;
+    padding-bottom: 0.7em !important;
+}
+.m-padded-tb-large{
+    padding-top: 2em !important;
+    padding-bottom: 2em !important;
+}
+.m-padded-tb-big{
+    padding-top: 3em !important;
+    padding-bottom: 3em !important;
+}
+.m-padded-tb-huge{
+    padding-top: 4em !important;
+    padding-bottom: 4em !important;
+}
+
+.m-padded-tb-massive{
+    padding-top: 5em !important;
+    padding-bottom: 5em !important;
+}
+/*------text-------*/
+.m-text-thin{
+    font-weight:300 !important;
+}
+.m-text-spaced{
+    letter-spacing: 2px !important;
+}
+.m-text-lined{
+    line-height: 1px !important;
+}
+.m-text {
+    font-weight: 300 !important;
+    letter-spacing: 2px !important;
+    line-height: 2.5;
+    font-family: 仿宋;
+}
+
+
+/*-------opacity透明度-----*/
+
+.m-opacity-small{
+    opacity:  0.9 !important;
+}
+
+.m-opacity-mini{
+    opacity:  0.8 !important;
+}
+
+/*------display--------*/
+.m-inline-block{ /*--让单元水平放置的样式---*/
+    display: inline-block !important;
+}
+
+/*-------container------*/
+.m-container{
+
+    max-width: 100em !important;
+    margin:auto !important;
+}
+.m-container-small {
+    max-width: 65em !important;
+    margin: auto !important;
+}
+/*------shadow-----*/
+.m-shadow-small {
+    -webkit-box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+}
+.m-container-nine{
+
+    width: 90% !important;
+    display: block!important;
+}
+
+.m-container-eight{
+
+    width: 80% !important;
+    display: block!important;
+}
+/*------margin-------*/
+.m-margin-small{
+    margin-top: 20px !important;
+    margin-bottom: 30px !important; ;
+}
+.m-margin-mini{
+    margin-top: 10px !important;
+    margin-bottom: 10px !important; ;
+}
+.m-margin{
+    margin-top: 50px !important;
+    margin-bottom: 50px !important; ;
+}
+.m-margin-message{
+    margin-top: 8px !important;
+}
+.m-margin-tiny{
+    margin-top: 0.8em !important;
+    margin-bottom: 0.3em !important; ;
+    margin-right: 0.9em!important;
+    margin-left: 0.5em!important;
+}
+.m-margin-smalls{
+    margin-top: 0.6em !important;
+    margin-bottom: 0.1em !important; ;
+    margin-right: 0.7em!important;
+    margin-left: 0.3em!important;
+}
+.m-margin-bottom-small{
+    margin-bottom:0.5em !important
+}
+
+/*-------color------*/
+.m-teal{
+    color:#00B5AD !important;
+}
+
+/*------------position-----------*/
+
+.m-right-top{
+    position: absolute;
+    top:0;
+    right:0;
+}
+
+.m-mobile-show {
+    display: none !important;
+}
+
+.m-trans-show{
+    visibility: hidden !important;
+ }
+
+@media screen and (max-width: 768px){
+    .m-mobile-hide {
+        display: none !important;
+    }
+    .m-mobile-show {
+        display: block !important;
+    }
+    .m-padded-lr-responsive{
+        padding-left: 0 !important;
+        padding-right: 0!important;
+    }
+    .m-mobile-wide{
+        width: 100% !important;
+    }
+    .m-column{
+        position: relative;
+    }
+    .m-card-center{
+        left: 50%;
+        transform: translateX(-50%) !important;
+
+    }
+
+
+
+}
+/*-----position---*/
+.m-fixed{
+    position: fixed !important;
+    z-index: 10 !important;
+}
+.m-right-bottom{
+    bottom: 0!important;
+    right:0!important;
+}
+.m-left-top{
+    top:13%!important;
+    left: 8%!important;
+}
+body{
+    background: url("/images/leaves.png");
+}
+
+
+.m-font-size{
+    font-size: 3px !important;
+}
