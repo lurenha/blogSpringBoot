@@ -18,8 +18,6 @@ import java.util.Map;
 @RequestMapping("/admin/user")
 public class AdminController {
     @Autowired
-    private IBlogService blogService;
-    @Autowired
     private IUserService userService;
 
 
