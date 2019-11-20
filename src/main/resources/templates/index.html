@@ -113,40 +113,9 @@
     </nav>
     <!--中部主体-->
     <div class=" m-padded-tb-large">
-
         <div class="ui stackable this   container m-container-nine">
-
-            <!--广播和留言板-->
-            <!--<div class="ui stackable middle aligned grid animated lightSpeedIn ">-->
-
-            <!--<div class=" left aligned thirteen wide column   m-mobile-hide">-->
-            <!--<div class="ui basic raised segment m-padded-tb-small centerMessage " >-->
-            <!--<div class="ui teal header ">-->
-            <!--<div class="ui text shape m-inline-block">-->
-            <!--<div class="sides ">-->
-            <!--<div class="ui  side active m-text-spaced ">-->
-            <!--<span>They always need to have things to explained.</span>——————by&nbsp;&nbsp;<span> The Little Prince</span>-->
-            <!--</div>-->
-            <!--<div th:each="message : ${messages}"   class="ui  side  ">-->
-            <!--<div class="m-text-spaced">-->
-            <!--<span th:text="${#strings.abbreviate(message.content,30)}">They always need to have things to explained.</span>-->
-            <!--——————by&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${message.nickname}">The Little Prince</span>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-
-            <!--<div class="two wide center aligned column m-padded-tb-this">-->
-            <!--<button id="sidebar-btn" class="ui mini  teal button" >留言板</button>-->
-            <!--<button id="music-btn" class="ui mini orange button">音乐盒</button>-->
-            <!--</div>-->
         </div>
-
         <div class="ui stackable  grid m-padded-tb-small">
-
             <!--左边的明信片和小便签-->
             <div class="ui  three wide   column m-column">
                 <!--个人明信片-->
@@ -161,10 +130,11 @@
                             <a style="" th:text="${user.about}">Java程序员、生活梦想家</a>
                         </div>
                         <div class=" description m-padded" style="font-family: 楷体;font-weight: 800 ;!important;">
-                            唯有你也想见我，<br>
-                            我们的见面才有意义。
+                            古往今来多少事，<br>
+                            皆随风雨醉心头。
                         </div>
                     </div>
+
                     <div class=" extra content">
                         <a href="https://github.com/lurenha" target="_blank" class="ui circular icon button"><i
                                 class="github icon"></i></a>
@@ -177,118 +147,21 @@
                         <a href="#" class="ui qq circular icon button" th:data-content="${user.qq}"
                            data-position="bottom center"><i class="qq icon"></i></a>
                     </div>
-
                 </div>
-
-
-                <!--这里是一根分割线-->
-                <div class="m-text-a ui horizontal divider m-margin  ">小世界</div>
+                <!--&lt;!&ndash;这里是一根分割线&ndash;&gt;-->
+                <!--<div class="m-text-a ui horizontal divider m-margin  ">小世界</div>-->
                 <!--板娘-->
                 <div class="waifu">
                     <div class="waifu-tips"></div>
                     <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
                 </div>
-                <!--下面是一些链接-->
-                <!--<div class="ui cards ">-->
-                <!--<a class="orange  card m-card-center" href="#">-->
-                <!--<div class="content" style="background:url(/images/just-waves.png)">-->
-                <!--<div class="header">我的人生</div>-->
-                <!--<div class="description">-->
-                <!--<p>记录我的人生轨迹ing...</p>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="extra content">-->
-                <!--<div class="right floated author">-->
-                <!--<img class="ui avatar image" src="../static/images/elyse.png"-->
-                <!--th:src="@{/images/elyse.png}"> Jude-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</a>-->
-                <!--<a class="teal  card m-card-center" href="#">-->
-                <!--<div class="content" style="background:url(/images/rip_jobs.png)">-->
-
-                <!--<div class="header">看过的书</div>-->
-                <!--<div class="description">-->
-                <!--<p>书，于我，挚友。</p>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="extra content">-->
-                <!--<div class="right floated author">-->
-                <!--<img class="ui avatar image" src="../static/images/elyse.png"-->
-                <!--th:src="@{/images/elyse.png}"> Jude-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</a>-->
-                <!--<a class="black card m-card-center" href="#">-->
-                <!--<div class="content" style="background:url(/images/upfeathers.png)">-->
-                <!--<div class="header">正能量</div>-->
-
-                <!--<div class="description">-->
-                <!--<p>人生的快乐，自我的解放.</p>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="extra content">-->
-                <!--<div class="right floated author">-->
-                <!--<img class="ui avatar image" src="../static/images/elyse.png"-->
-                <!--th:src="@{/images/elyse.png}"> Jude-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</a>-->
-                <!--<a class="red card m-card-center" href="#">-->
-                <!--<div class="content" style="background:url(/images/wavy-dots.png)">-->
-                <!--<div class="header">负能量</div>-->
-                <!--<div class="description">-->
-                <!--<p>人活着怎么这么多失望...</p>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="extra content">-->
-                <!--<div class="right floated author">-->
-                <!--<img class="ui avatar image" src="../static/images/elyse.png"-->
-                <!--th:src="@{/images/elyse.png}"> Jude-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</a>-->
-                <!--</div>-->
                 <br><br>
-                <div class="ui  section divider"></div>
-
-                <!--&lt;!&ndash;最新评论&ndash;&gt;-->
-                <!--<div id="comment-container" class="ui stackable raised segments ">-->
-                <!--<div th:fragment="commentList">-->
-                <!--<div class="ui segment">-->
-                <!--<div class="ui two column grid">-->
-                <!--<div class="column">-->
-                <!--<i class="fas fa-cat"></i> 最新评论-->
-                <!--</div>-->
-                <!--<div class="right aligned column">-->
-                <!--<a href="#">->想唠两句？</a>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div th:each="comment : ${comments}" class="ui vertical stackable segment ">-->
-                <!--<div class="ui stackable grid m-padded-big">-->
-                <!--<div class="ui row m-padded-tb-mini">-->
-                <!--&lt;!&ndash;<a href="#" th:text="${comment.blog.title}" th:href="@{/blog/{id}(id=${comment.blog.bl_id})}" >&ndash;&gt;-->
-                <!--&lt;!&ndash;2019春招-字节跳动面试</a>&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div class="ui row m-padded-tb-mini-two " style="color: gray!important;">-->
-                <!--<div class="ui grey color"><span th:text="${comment.nickname}">大人</span>：<span th:text="${#strings.abbreviate(comment.content,12)}">为什么要对一只帽子感到</span></div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="ui attached segment" th:if="${commentsPage.pages}>1">-->
-                <!--<div class="ui two column grid">-->
-                <!--<div class=" column">-->
-                <!--<button id="comment-last"  th:unless="${commentsPage.first}" onclick="commentsPageUp()"   class="ui grey basic button">上一页</button>-->
-                <!--</div>-->
-                <!--<div class="ui right aligned column">-->
-                <!--<button id="comment-next" th:unless="${commentsPage.last}" onclick="commentsPageDown()"  class="ui grey basic button">下一页</button>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <div class="ui  section divider"></div>
+                <h4 class="ui horizontal divider">微信号</h4>
+                <div class="ui centered card" style="width: 110px">
+                    <img src="../static/images/gongzhonghao.png" alt="" class="ui rounded image"
+                         th:src="@{/images/gongzhonghao.png}">
+                </div>
+                <!--<div class="ui  section divider"></div>-->
                 <!--<div class="ui left aligned header">-->
                 <!--待添加...-->
                 <!--</div>-->
@@ -300,7 +173,6 @@
                 <div class="ui horizontal divider m-margin "
                      style="font-family:楷体;font-size: 20px; font-weight: 600;!important;">最新博客
                 </div>
-
 
                 <!--文章列表-->
                 <div class="ui raised segment m-margin-small" th:each="blog : ${page.list}"
@@ -382,26 +254,8 @@
 
             <!--右边的分类标签-->
             <div class="ui three wide column">
-
-                <!--致访客的公告-->
                 <!--这里是一根分割线-->
                 <div class="m-text-a ui horizontal divider ">my Voice</div>
-
-                <!--<div style="font-size:18px;font-weight:500;font-family: 楷体!important;">-->
-                <!--<p class="ui left aligned ">长到这么大，</p>-->
-                <!--<p class="content ">我说不出來我最爱的一部电影，</p>-->
-                <!--<p class="">说不出來我最爱的一首歌，</p>-->
-                <!--<p class="">说不出来我最爱的一个人。</p>-->
-                <!--<p class="">时常觉得人生其实没那么有趣，偶尔也会质疑活着的意义，</p>-->
-                <!--<p class="">所有来自于书上和别人口中的意义都不曾说服过我。</p>-->
-                <!--<p class="">但今天突然觉得，大概人生最大的意义就是用余生去找到那些最爱吧。</p>-->
-                <!--<P class="right aligned">by 德卡先生的信箱</P>-->
-                <!--<i class="fas fa-camera-retro"></i>-->
-                <!--<i class="fas fa-bacon"></i><i class="fas fa-bacon"></i><i class="fas fa-bacon"></i><i class="fas fa-bacon"></i><i class="fas fa-bacon"></i><i class="fas fa-bacon"></i><i class="fas fa-bacon"></i>-->
-                <!--</div>-->
-
-                <!--这里是一根分割线-->
-                <!--<div class="m-text-a ui horizontal divider m-margin  ">小工具</div>-->
                 <!--分类-->
                 <div class="ui raised segments m-margin">
                     <div class="ui segment">
@@ -478,12 +332,6 @@
                     </div>
                 </div>
 
-                <!--扫码关注我-->
-                <h4 class="ui horizontal divider">公众号</h4>
-                <div class="ui centered card" style="width: 110px">
-                    <img src="../static/images/gongzhonghao.png" alt="" class="ui rounded image"
-                         th:src="@{/images/gongzhonghao.png}">
-                </div>
             </div>
 
         </div>
