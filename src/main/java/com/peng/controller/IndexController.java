@@ -66,6 +66,7 @@ public class IndexController {
     @GetMapping("/blog/{bl_id}")
     public String blog(@PathVariable Integer bl_id, Model model) {
         Blog byidPro = blogService.findByidPro(bl_id);
+        blogService.addViews(bl_id);
         if (!byidPro.getPublished()) {
             throw new RuntimeException("无效资源！");
         }

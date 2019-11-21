@@ -59,7 +59,6 @@ public class BlogService implements IBlogService {
 
     @Override
     public Blog findByid(Integer bl_id) {
-        blogDao.addViews(bl_id);
         Blog blog = blogDao.findByid(bl_id);
         blog.setTag_ids(blog.getTags().stream().map(tag -> tag.getTa_id()).collect(Collectors.toList()));
         blog.setTags(null);
@@ -151,17 +150,20 @@ public class BlogService implements IBlogService {
     @Override
     public Map findTimeLine() {
         Map<String, List<TimeLineBlog>> map = new TreeMap<>((o1,o2)->{return -1*(o1.compareTo(o2));});
-
         for (TimeLineBlog tlBlog : blogDao.findtimeLine()) {
-            map.put(tlBlog.getMonth(), new ArrayList<>());
-        }
-
-        for (TimeLineBlog tlBlog : blogDao.findtimeLine()) {
+            if(!map.containsKey(tlBlog.getMonth())){
+                map.put(tlBlog.getMonth(), new ArrayList<>());
+            }
             String temmouth = tlBlog.getMonth();
             tlBlog.setMonth(null);
             map.get(temmouth).add(tlBlog);
         }
         return map;
+    }
+
+    @Override
+    public int addViews(Integer bl_id) {
+        return blogDao.addViews(bl_id);
     }
 
 }
