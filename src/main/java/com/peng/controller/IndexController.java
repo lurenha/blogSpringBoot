@@ -38,7 +38,7 @@ public class IndexController {
     @GetMapping("/")
     public String index(@RequestParam(defaultValue = "0", value = "page") Integer pageNum, Model model, HttpServletRequest request) {
         User user = userService.findByid(1);
-        model.addAttribute("page", blogService.findpage(pageNum, 5, null, null));
+        model.addAttribute("page", blogService.findPubpage(pageNum, 5));
         model.addAttribute("commentsPage", commentService.findpage(0, 5));
         model.addAttribute("types", typeService.findallPro());
         model.addAttribute("tags", tagService.findallPro());
@@ -48,12 +48,6 @@ public class IndexController {
         model.addAttribute("tagsCount", tagService.findall().size());
         model.addAttribute("commentsCount", commentService.findpage(0, Integer.MAX_VALUE).getSize());
         model.addAttribute("user", user);
-//        model.addAttribute("bulletins",bulletinService.listBulletin());
-        //model.addAttribute("messages",messageService.listMessages());
-        // model.addAttribute("recommends",blogService.listRecommendBlogTop(3));
-//        model.addAttribute("visitorsCount",ipAddresses.size());
-//        model.addAttribute("numOfYou",ipAddresses.indexOf(ipAddress)+1);
-//        model.addAttribute("views",views);
         return "index";
     }
 

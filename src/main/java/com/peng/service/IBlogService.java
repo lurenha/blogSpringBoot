@@ -11,6 +11,7 @@ public interface IBlogService {
     Blog findByid(Integer bl_id);
     Blog findByidPro(Integer bl_id);
     PageInfo<Blog> findpage(Integer pageNum,Integer pagesize,String title,Integer ty_id);
+    PageInfo<Blog> findPubpage(Integer pageNum,Integer pagesize);
     boolean addORedit(Blog blog);
     boolean deleteByid(Integer bl_id);
     boolean setPublishedByid(Integer bl_id,Boolean stats);

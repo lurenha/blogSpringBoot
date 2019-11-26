@@ -80,6 +80,14 @@ public class BlogService implements IBlogService {
     }
 
     @Override
+    public PageInfo<Blog> findPubpage(Integer pageNum, Integer pagesize) {
+        PageHelper.startPage(pageNum, pagesize);
+        List<Blog> bloglist =blogDao.findallPubBlog();
+        PageInfo<Blog> blogs = new PageInfo<>(bloglist);
+        return blogs;
+    }
+
+    @Override
     public boolean addORedit(Blog blog) {
         TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -136,9 +136,10 @@ public class Blog implements Serializable {
         this.creatdate=DateUtile.setTime(creatdate);
     }
 
-    public String getFinaldate()
+    public Date getFinaldate()
     {
-        return DateUtile.getTime(finaldate);
+        return  finaldate;
+        //return DateUtile.getTime(finaldate);
     }
 
     public void setFinaldate(String  finaldate) throws ParseException {
