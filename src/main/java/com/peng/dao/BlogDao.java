@@ -82,9 +82,16 @@ public interface BlogDao {
     List<Blog> findallBlog(@Param("title") String title, @Param("ty_id") Integer ty_id);
 
     //查找所有发布的blog
-    @Select("select bl_id,title,outline,flag,recommend,commentabled,published,creatdate,finaldate,ty_id,views from t_blog where published=true")
+    @Select("<script>" +
+            "select bl_id,title,outline,flag,recommend,commentabled,published,creatdate,finaldate,ty_id,views from t_blog where published=true"+
+            "<when test='title!=null'>" +
+            "AND title like #{title}" +
+            "</when>" +
+            "order by finaldate desc"+
+            "</script>"
+    )
     @ResultMap(value = "blogSimplicity")
-    List<Blog> findallPubBlog();
+    List<Blog> findallPubBlog(@Param("title") String title);
 
 
     //根据type查找Blog(发布的)

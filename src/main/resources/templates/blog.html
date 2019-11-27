@@ -70,7 +70,7 @@
                                 <div class="content" th:text="${user.nickname}">曾中杰</div>
                             </div>
                             <div class="middle aligned  item">
-                                <i class="calendar icon"></i><span th:text="${blog.finaldate}">2017-10-01</span>
+                                <i class="calendar icon"></i><span th:text="${#dates.format(blog.finaldate,'yyyy-MM-dd HH:mm:ss')}">2017-10-01</span>
                             </div>
                             <div class="middle aligned  item">
                                 <i class="eye icon"></i><span th:text="${blog.views}">2342</span>

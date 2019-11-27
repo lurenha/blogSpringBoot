@@ -36,9 +36,9 @@ public class IndexController {
 
 
     @GetMapping("/")
-    public String index(@RequestParam(defaultValue = "0", value = "page") Integer pageNum, Model model, HttpServletRequest request) {
+    public String index(@RequestParam(defaultValue = "0", value = "page") Integer pageNum,@RequestParam(required=false, value = "title")String title, Model model ) {
         User user = userService.findByid(1);
-        model.addAttribute("page", blogService.findPubpage(pageNum, 5));
+        model.addAttribute("page", blogService.findPubpage(pageNum, 5,title));
         model.addAttribute("commentsPage", commentService.findpage(0, 5));
         model.addAttribute("types", typeService.findallPro());
         model.addAttribute("tags", tagService.findallPro());

@@ -80,9 +80,14 @@ public class BlogService implements IBlogService {
     }
 
     @Override
-    public PageInfo<Blog> findPubpage(Integer pageNum, Integer pagesize) {
+    public PageInfo<Blog> findPubpage(Integer pageNum, Integer pagesize,String title) {
+        if (title != null && title.trim().length() > 0) {
+            title = "%" + title + "%";
+        } else {
+            title = null;
+        }
         PageHelper.startPage(pageNum, pagesize);
-        List<Blog> bloglist =blogDao.findallPubBlog();
+        List<Blog> bloglist =blogDao.findallPubBlog(title);
         PageInfo<Blog> blogs = new PageInfo<>(bloglist);
         return blogs;
     }

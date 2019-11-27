@@ -239,7 +239,7 @@
                 <!--footer尾部上一页，下一页-->
                 <div class="ui segment" th:if="${page.pages}>1">
                     <div class="ui two column grid">
-                        <div class=" column">
+                        <div class="column">
                             <a href="#" th:href="@{/(page=${page.prePage})}" th:unless="${page.isFirstPage}"
                                class="ui teal basic button">上一页</a>
                         </div>
@@ -407,7 +407,11 @@
 <script src="../static/js/particle_effects.js" th:src="@{/js/particle_effects.js}"></script>
 <script>
     var audio = document.getElementsByTagName('audio')[0];
-
+    $('#searchbtn').click(function () {
+        var searchtext=$('#searchtext').val();
+        var ctxPath  = [[@{/}]]+"?title="+searchtext;
+        $(location).attr('href', ctxPath);
+    });
     $('.music-1').click(function () {
         audio.src = "/music/Innocence.mp3";
         audio.play();
