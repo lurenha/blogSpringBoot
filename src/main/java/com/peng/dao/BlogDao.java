@@ -78,6 +78,7 @@ public interface BlogDao {
             "<when test='ty_id!=null'>" +
             "AND ty_id = #{ty_id}" +
             "</when>" +
+            "order by finaldate desc"+
             "</script>")
     List<Blog> findallBlog(@Param("title") String title, @Param("ty_id") Integer ty_id);
 
@@ -136,7 +137,7 @@ public interface BlogDao {
     int setPublishedByid(@Param("bl_id") Integer bl_id, @Param("published") Boolean published);
 
     //时间线搜索
-    @Select("SELECT  DATE_FORMAT(creatdate,'%c-%d') AS 'date',DATE_FORMAT(creatdate,'%Y-%m') AS 'month',bl_id,title FROM t_blog WHERE published=TRUE GROUP BY bl_id,DATE_FORMAT(creatdate,'%Y-%m') ORDER BY creatdate")
+    @Select("SELECT  DATE_FORMAT(creatdate,'%c-%d') AS 'date',DATE_FORMAT(creatdate,'%Y-%m') AS 'month',bl_id,title FROM t_blog WHERE published=TRUE GROUP BY bl_id,DATE_FORMAT(creatdate,'%Y-%m') ORDER BY creatdate desc")
     List<TimeLineBlog> findtimeLine();
 
     //访问量增加
