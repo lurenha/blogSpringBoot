@@ -64,10 +64,8 @@
 
 <!--底部footer栏-->
 <footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
-
     <!--这里的结构其实跟nav尽量保持一致-->
     <div class="ui center aligned container m-padded-tb-mini">
-
         <div class="ui stackable inverted divided grid">
 
             <div class="three wide column">
@@ -77,15 +75,6 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="three wide column">-->
-
-                <!--&lt;!&ndash;<h4 class="ui inverted header m-text-spaced m-opacity-small">推荐博客</h4>&ndash;&gt;-->
-
-                <!--&lt;!&ndash;<div class="ui inverted link list ">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a th:if="${blog.published} == true" th:each="blog : ${recommends}" href="#" th:text="${blog.title}" th:href="@{/blog/{id}(id=${blog.id})}" class="item">用户故事(User Story)</a>&ndash;&gt;-->
-
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--</div>-->
 
             <div class="three wide column">
                 <h4 class="ui inverted header  m-text-spaced m-opacity-small">联系我</h4>
@@ -101,11 +90,13 @@
                 <p class="m-text-thin m-text-spaced m-opacity-mini" th:text="${user.about}">不知你是否跟我一样，喜欢了解他人如何快乐地生活，积极向他们寻求生活的乐趣。
                     一起勇敢前行吧。</p>
             </div>
+
+            <div class="three wide column">
+                <h4 class="ui inverted header  m-text-spaced m-opacity-small">备案信息</h4>
+                <a href="http://beian.miit.gov.cn/">冀ICP备19018911号</a>
+            </div>
+
         </div>
-        <!--&lt;!&ndash;这里是一根线&ndash;&gt;-->
-        <!--<div class="ui inverted section divider"> </div>-->
-        <!--<p class="m-text-thin m-text-spaced m-opacity-mini">Copyright©2019-2020 zzj Designed by zzj</p>-->
-        <!--<p class="m-text-thin m-text-spaced m-opacity-mini">蜀ICP备19012122号</p>-->
     </div>
 </footer>
 

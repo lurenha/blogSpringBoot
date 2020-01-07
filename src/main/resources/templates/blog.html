@@ -67,19 +67,19 @@
                             <div class="middle aligned item">
                                 <img th:src="${user.avatar}" src="https://unsplash.it/100/100?image=1005" alt=""
                                      class="ui avatar image">
-                                <div class="content" th:text="${user.nickname}">曾中杰</div>
+                                <div class="content" th:text="${user.nickname}">nickname</div>
                             </div>
                             <div class="middle aligned  item">
-                                <i class="calendar icon"></i><span th:text="${#dates.format(blog.finaldate,'yyyy-MM-dd HH:mm:ss')}">2017-10-01</span>
+                                <i class="calendar icon"></i><span th:text="${#dates.format(blog.finaldate,'yyyy-MM-dd HH:mm:ss')}">2020-01-01</span>
                             </div>
                             <div class="middle aligned  item">
-                                <i class="eye icon"></i><span th:text="${blog.views}">2342</span>
+                                <i class="eye icon"></i><span th:text="${blog.views}">1000</span>
                             </div>
                         </div>
                     </div>
                     <div class="right aligned column">
                         <a th:href="@{/types/{id}(id=${blog.type.ty_id})}" class="ui  orange basic label"
-                           th:text="${blog.type.name}">小王子</a>
+                           th:text="${blog.type.name}">typeName</a>
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@
             <!--<div class="ui orange basic label" th:text="${blog.flag}">原创</div>-->
             <!--</div>-->
             <!--文章的标题-->
-            <h2 class="ui center aligned header" th:text="${blog.title}">关于刻意练习的清单</h2>
+            <h2 class="ui center aligned header" th:text="${blog.title}">blog.title</h2>
             <br>
             <!--文章的主要内容-->
             <div th:utext="${blog.content}"
@@ -103,7 +103,7 @@
             <!--标签-->
             <div class="m-padded-lr-responsive">
                 <a th:href="@{/tags/{id}(id=${tag.ta_id})}" th:each="tag : ${blog.tags}" th:text="${tag.name}"
-                   class="ui basic teal left pointing label">方法论</a>
+                   class="ui basic teal left pointing label">tags</a>
             </div>
             <!--赞赏-->
             <div class="ui center aligned basic segment">
@@ -132,9 +132,9 @@
                 <div class="eleven wide column">
                     <ui class="list">
                         <li>作者:<span th:text="${user.nickname}">昵称</span> (扫码联系作者)</li>
-                        <li>发表时间:<span th:text="${blog.creatdate}">2017-10-02 09:08</span></li>
+                        <li>发表时间:<span th:text="${blog.creatdate}">2020-01-01 09:00</span></li>
                         <li>版权声明:自由转载-非商用-非衍生-保持署名(创意共享3.0许可证)</li>
-                        <li>公众号转载:请在文末添加作者赞赏二维码</li>
+                        <!--<li>公众号转载:请在文末添加作者赞赏二维码</li>-->
                     </ui>
                 </div>
                 <div class="five wide column">
