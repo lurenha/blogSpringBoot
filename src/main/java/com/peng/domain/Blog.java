@@ -133,17 +133,24 @@ public class Blog implements Serializable {
     }
 
     public void setCreatdate(String creatdate) throws ParseException {
-        this.creatdate=DateUtile.setTime(creatdate);
+        this.creatdate = DateUtile.setTime(creatdate);
     }
 
-    public Date getFinaldate()
-    {
-        return  finaldate;
+    public void setCreatdate(Date creatdate) {
+        this.creatdate = creatdate;
+    }
+
+    public Date getFinaldate() {
+        return finaldate;
         //return DateUtile.getTime(finaldate);
     }
 
-    public void setFinaldate(String  finaldate) throws ParseException {
-        this.finaldate=DateUtile.setTime(finaldate);
+    public void setFinaldate(String finaldate) throws ParseException {
+        this.finaldate = DateUtile.setTime(finaldate);
+    }
+
+    public void setFinaldate(Date finaldate) {
+        this.finaldate = finaldate;
     }
 
     public Integer getViews() {

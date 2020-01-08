@@ -70,7 +70,6 @@
                 <artifactId>spring-boot-starter-thymeleaf</artifactId>
             </dependency>
 
-
             <!-- 切面 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -84,11 +83,18 @@
                 <version>2.4</version>
                 <classifier>jdk15</classifier><!--如果出现导不了包，加上这句-->
             </dependency>
+
             <!-- JWT token -->
             <dependency>
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>3.4.0</version>
+            </dependency>
+
+            <!-- redis -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
             </dependency>
         </dependencies>
 

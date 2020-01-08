@@ -51,6 +51,7 @@ public class BlogService implements IBlogService {
         for (Comment comment : comments) {
             ArrayList<Comment> tem = new ArrayList<>();
             backStack(tem, comment.getChildcoments());
+            tem.sort(((o1, o2) -> {return o2.getCreatdate().compareTo(o1.getCreatdate());}));
             comment.setChildcoments(tem);
         }
         return blog;
