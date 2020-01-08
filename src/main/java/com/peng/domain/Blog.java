@@ -33,6 +33,7 @@ public class Blog implements Serializable {
     private Type type;
     private List<Integer> tag_ids;
 
+
     @Override
     public String toString() {
         return "Blog{" +
@@ -53,6 +54,22 @@ public class Blog implements Serializable {
                 ", type=" + type +
                 ", tag_ids=" + tag_ids +
                 '}';
+    }
+
+    public Date getCreatdate() {
+        return creatdate;
+    }
+
+    public void setCreatdate(Date creatdate) {
+        this.creatdate = creatdate;
+    }
+
+    public Date getFinaldate() {
+        return finaldate;
+    }
+
+    public void setFinaldate(Date finaldate) {
+        this.finaldate = finaldate;
     }
 
     public List<Integer> getTag_ids() {
@@ -125,32 +142,6 @@ public class Blog implements Serializable {
 
     public void setPublished(Boolean published) {
         this.published = published;
-    }
-
-    public String getCreatdate() {
-
-        return DateUtile.getTime(creatdate);
-    }
-
-    public void setCreatdate(String creatdate) throws ParseException {
-        this.creatdate = DateUtile.setTime(creatdate);
-    }
-
-    public void setCreatdate(Date creatdate) {
-        this.creatdate = creatdate;
-    }
-
-    public Date getFinaldate() {
-        return finaldate;
-        //return DateUtile.getTime(finaldate);
-    }
-
-    public void setFinaldate(String finaldate) throws ParseException {
-        this.finaldate = DateUtile.setTime(finaldate);
-    }
-
-    public void setFinaldate(Date finaldate) {
-        this.finaldate = finaldate;
     }
 
     public Integer getViews() {

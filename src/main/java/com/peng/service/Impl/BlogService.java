@@ -8,6 +8,8 @@ import com.peng.domain.Comment;
 import com.peng.domain.Tag;
 import com.peng.domain.TimeLineBlog;
 import com.peng.service.IBlogService;
+import com.peng.util.RedisUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 @Service("IBlogService")
 public class BlogService implements IBlogService {
 
+    @Autowired
+    private RedisUtil redisUtil;
     @Autowired
     private BlogDao blogDao;
     @Autowired
@@ -51,7 +55,9 @@ public class BlogService implements IBlogService {
         for (Comment comment : comments) {
             ArrayList<Comment> tem = new ArrayList<>();
             backStack(tem, comment.getChildcoments());
-            tem.sort(((o1, o2) -> {return o2.getCreatdate().compareTo(o1.getCreatdate());}));
+            tem.sort(((o1, o2) -> {
+                return o2.getCreatdate().compareTo(o1.getCreatdate());
+            }));
             comment.setChildcoments(tem);
         }
         return blog;
@@ -65,6 +71,7 @@ public class BlogService implements IBlogService {
         blog.setTags(null);
         return blog;
     }
+
 
     @Override
     public PageInfo<Blog> findpage(Integer pageNum, Integer pagesize, String title, Integer ty_id) {
@@ -80,26 +87,32 @@ public class BlogService implements IBlogService {
 
     }
 
+
+    //缓存
     @Override
-    public PageInfo<Blog> findPubpage(Integer pageNum, Integer pagesize,String title) {
+    public PageInfo<Blog> findPubpage(Integer pageNum, Integer pagesize, String title) {
+        String key = "num:" + pageNum + "size:" + pagesize + "title:" + title;
+        if (redisUtil.hasKey(key)) {
+            return (PageInfo<Blog>) redisUtil.get(key);
+        }
         if (title != null && title.trim().length() > 0) {
             title = "%" + title + "%";
         } else {
             title = null;
         }
         PageHelper.startPage(pageNum, pagesize);
-        List<Blog> bloglist =blogDao.findallPubBlog(title);
+        List<Blog> bloglist = blogDao.findallPubBlog(title);
         PageInfo<Blog> blogs = new PageInfo<>(bloglist);
+        redisUtil.set(key, blogs, 60 * 60);
         return blogs;
     }
 
     @Override
     public boolean addORedit(Blog blog) {
         TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Integer bl_id = blog.getBl_id();
-            blog.setFinaldate(sdf.format(new Date()));
+            blog.setFinaldate(new Date());
             if (bl_id != null) {//更新
                 blogDao.updateBlog(blog);
                 blogDao.deleteBlog_tags(bl_id);
@@ -108,7 +121,7 @@ public class BlogService implements IBlogService {
                 }
             } else {//添加
                 blog.setViews(0);
-                blog.setCreatdate(sdf.format(new Date()));
+                blog.setCreatdate(new Date());
                 blogDao.addBlog(blog);
                 if (blog.getTags() != null) {
                     blogDao.addBlog_tags(blog);
@@ -161,11 +174,14 @@ public class BlogService implements IBlogService {
         return blogs;
     }
 
+
     @Override
     public Map findTimeLine() {
-        Map<String, List<TimeLineBlog>> map = new TreeMap<>((o1,o2)->{return o2.compareTo(o1);});
+        Map<String, List<TimeLineBlog>> map = new TreeMap<>((o1, o2) -> {
+            return o2.compareTo(o1);
+        });
         for (TimeLineBlog tlBlog : blogDao.findtimeLine()) {
-            if(!map.containsKey(tlBlog.getMonth())){
+            if (!map.containsKey(tlBlog.getMonth())) {
                 map.put(tlBlog.getMonth(), new ArrayList<>());
             }
             String temmouth = tlBlog.getMonth();
@@ -178,6 +194,17 @@ public class BlogService implements IBlogService {
     @Override
     public int addViews(Integer bl_id) {
         return blogDao.addViews(bl_id);
+    }
+
+    @Override
+    public int getPusBlogs() {
+        String key = "getPusBlogs";
+        if (redisUtil.hasKey(key)) {
+            return (int) redisUtil.get(key);
+        }
+        int count = (int) findpage(0, Integer.MAX_VALUE, null, null).getList().stream().filter(blog -> blog.getPublished()).count();
+        redisUtil.set(key, count, 60 * 60);
+        return count;
     }
 
 }

@@ -19,4 +19,5 @@ public interface IBlogService {
     PageInfo<Blog> findsByType(Integer pageNum, Integer pagesize,Integer ty_id);
     Map findTimeLine();
     int addViews(Integer bl_id);
+    int getPusBlogs();
 }

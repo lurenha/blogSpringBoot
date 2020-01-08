@@ -39,11 +39,9 @@ public class IndexController {
     public String index(@RequestParam(defaultValue = "0", value = "page") Integer pageNum,@RequestParam(required=false, value = "title")String title, Model model ) {
         User user = userService.findByid(1);
         model.addAttribute("page", blogService.findPubpage(pageNum, 5,title));
-        model.addAttribute("commentsPage", commentService.findpage(0, 5));
         model.addAttribute("types", typeService.findallPro());
         model.addAttribute("tags", tagService.findallPro());
-        Long blogsCount = blogService.findpage(0, Integer.MAX_VALUE, null, null).getList().stream().filter(blog -> blog.getPublished()).count();
-        model.addAttribute("blogsCount", blogsCount);
+        model.addAttribute("blogsCount", blogService.getPusBlogs());
         model.addAttribute("typesCount", typeService.findall().size());
         model.addAttribute("tagsCount", tagService.findall().size());
         model.addAttribute("commentsCount", commentService.findpage(0, Integer.MAX_VALUE).getSize());

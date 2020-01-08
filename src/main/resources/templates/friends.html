@@ -125,50 +125,41 @@
 
 
 <!--底部footer栏-->
-<footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+<footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
     <!--这里的结构其实跟nav尽量保持一致-->
     <div class="ui center aligned container m-padded-tb-mini">
-
         <div class="ui stackable inverted divided grid">
 
             <div class="three wide column">
                 <div class="ui inverted link list">
                     <div class="item">
-                        <img src="../static/images/qrcode.jpg" class="ui rounded image" style="width: 110px">
+                        <img src="../static/images/qrcode.jpg" th:src="@{/images/gongzhonghao.png}" class="ui rounded image" style="width: 110px">
                     </div>
-                </div>
-            </div>
-            <div class="three wide column">
-
-                <h4 class="ui inverted header m-text-spaced m-opacity-small">最新博客</h4>
-
-                <div class="ui inverted link list ">
-                    <a href="#" class="item">用户故事(User Story)</a>
-                    <a href="#" class="item">用户故事(User Story)</a>
-                    <a href="#" class="item">用户故事(User Story)</a>
                 </div>
             </div>
 
             <div class="three wide column">
                 <h4 class="ui inverted header  m-text-spaced m-opacity-small">联系我</h4>
                 <div class="ui inverted link list m-text-lined">
-                    <a href="#" class="item">QQ:1474159935</a>
-                    <a href="#" class="item">Wechat:zeng1474159935</a>
-                    <a href="#" class="item">Email:1474159935@qq.com</a>
+                    <div href="#" th:text="'QQ:'+${user.qq}" class="item">QQ:1474159935</div>
+                    <div href="#" th:text="'Wechat:'+${user.vx}" class="item">Wechat:zeng1474159935</div>
+                    <div href="#" th:text="'Email:'+${user.email}" class="item">Email:1474159935@qq.com</div>
                 </div>
             </div>
 
             <div class="seven wide column">
                 <h4 class="ui inverted header  m-text-spaced m-opacity-small">关于我</h4>
-                <p class="m-text-thin m-text-spaced m-opacity-mini">不知你是否跟我一样，喜欢了解他人如何快乐的生活，积极向他们寻求生活的乐趣。
+                <p class="m-text-thin m-text-spaced m-opacity-mini" th:text="${user.about}">不知你是否跟我一样，喜欢了解他人如何快乐地生活，积极向他们寻求生活的乐趣。
                     一起勇敢前行吧。</p>
             </div>
-        </div>
-        <!--这里是一根线-->
-        <div class="ui inverted section divider"></div>
-        <p class="m-text-thin m-text-spaced m-opacity-mini">Copyright©2019-2020zzj Designed by zzj</p>
-    </div>
 
+            <div class="three wide column">
+                <h4 class="ui inverted header  m-text-spaced m-opacity-small">备案信息</h4>
+                <a href="http://beian.miit.gov.cn/">冀ICP备19018911号</a>
+            </div>
+
+        </div>
+    </div>
 </footer>
 
 <!--粒子特效-->

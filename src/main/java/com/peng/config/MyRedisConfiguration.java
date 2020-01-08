@@ -4,7 +4,6 @@ package com.peng.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.peng.domain.Blog;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -38,16 +37,16 @@ public class MyRedisConfiguration {
         return template;
     }
 
-    @Bean
-    public RedisTemplate<String, Blog> blogRedisTemplate(RedisConnectionFactory factory){
-        RedisTemplate<String,Blog>template=new RedisTemplate<>();
-        //关联
-        template.setConnectionFactory(factory);
-        //设置key的序列化器
-        template.setKeySerializer(new StringRedisSerializer());
-        //设置value的序列化器
-        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Blog.class));
-        return template;
-    }
+//    @Bean
+//    public RedisTemplate<String, Blog> blogRedisTemplate(RedisConnectionFactory factory){
+//        RedisTemplate<String,Blog>template=new RedisTemplate<>();
+//        //关联
+//        template.setConnectionFactory(factory);
+//        //设置key的序列化器
+//        template.setKeySerializer(new StringRedisSerializer());
+//        //设置value的序列化器
+//        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Blog.class));
+//        return template;
+//    }
 
 }
