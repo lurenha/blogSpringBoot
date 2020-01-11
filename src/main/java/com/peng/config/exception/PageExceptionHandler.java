@@ -20,7 +20,7 @@ public class PageExceptionHandler {
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("message", msg);
-        return new JsonResult(50000,"系统异常",jsonObject);
+        return new JsonResult(50000,msg,jsonObject);
     }
 
     //

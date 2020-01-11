@@ -6,6 +6,7 @@ import com.peng.domain.User;
 import com.peng.service.IBlogService;
 import com.peng.service.IUserService;
 import com.peng.util.TokenUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,7 @@ public class AdminController {
         return new JsonResult(50008, "error", null);
     }
 
+    @RequiresPermissions("user:addORedit")
     @RequestMapping(value = "/addORedit", method = RequestMethod.POST)
     public JsonResult  addORedit_user(User user) {
         user.setUs_id(1);
@@ -66,6 +68,7 @@ public class AdminController {
         }
     }
 
+    @RequiresPermissions("user:find")
     @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
     public JsonResult find_blog(@PathVariable("idNum") Integer us_id) {
         User user = userService.findByid(us_id);
