@@ -1,4 +1,4 @@
-package com.peng.Filter.exception;
+package com.peng.config.exception;
 
 import com.peng.domain.JsonResult.JsonResult;
 import net.sf.json.JSONObject;

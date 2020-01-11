@@ -3,6 +3,7 @@ package com.peng.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.peng.domain.User;
 
@@ -65,6 +66,19 @@ public class TokenUtil {
             DecodedJWT jwt = verifier.verify(token);
             return  jwt.getClaim("userid").asInt();
         } catch (Exception e){
+            return null;
+        }
+    }
+    /**
+     * 获取name
+     * @param token
+     * @return
+     */
+    public static String getUsername(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getClaim("username").asString();
+        } catch (JWTDecodeException e) {
             return null;
         }
     }

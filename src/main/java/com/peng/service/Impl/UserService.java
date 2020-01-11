@@ -3,6 +3,9 @@ package com.peng.service.Impl;
 import com.peng.dao.UserDao;
 import com.peng.domain.User;
 import com.peng.service.IUserService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

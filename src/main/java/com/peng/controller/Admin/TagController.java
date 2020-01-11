@@ -5,6 +5,7 @@ package com.peng.controller.Admin;
 import com.peng.domain.JsonResult.JsonResult;
 import com.peng.domain.Tag;
 import com.peng.service.ITagService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,8 @@ import java.util.List;
 public class TagController {
     @Autowired
     private ITagService tagService;
+
+    @RequiresPermissions("tag:addORedit")
     @RequestMapping(path = "/addORedit", method = RequestMethod.POST)
     public JsonResult addORedit_tag(Tag tag) {
         boolean bool = tagService.addORedit(tag);
@@ -27,6 +30,7 @@ public class TagController {
     }
 
 
+    @RequiresPermissions("tag:delete")
     @RequestMapping(path = "/delete/{idNum}", method = RequestMethod.POST)
     public JsonResult delete_tag(@PathVariable("idNum") Integer ta_id) {
         boolean bool = tagService.deleteByid(ta_id);
@@ -38,6 +42,7 @@ public class TagController {
     }
 
 
+    @RequiresPermissions("tag:find")
     @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
     public JsonResult find_tag(@PathVariable("idNum") Integer ta_id) {
         Tag tag = tagService.findByid(ta_id);
@@ -45,6 +50,7 @@ public class TagController {
     }
 
 
+    @RequiresPermissions("tag:list")
     @RequestMapping(path = "/list", method = RequestMethod.POST)
     public JsonResult list_tag() {
         List<Tag> allType = tagService.findall();

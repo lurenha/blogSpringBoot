@@ -5,6 +5,7 @@ package com.peng.controller.Admin;
 import com.peng.domain.JsonResult.JsonResult;
 import com.peng.domain.Type;
 import com.peng.service.ITypeService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ public class TypeController {
     @Autowired
     private ITypeService typeService;
 
+    @RequiresPermissions("type:addORedit")
     @RequestMapping(path = "/addORedit", method = RequestMethod.POST)
     public JsonResult addORedit_type(Type type) {
         boolean bool = typeService.addORedit(type);
@@ -28,6 +30,7 @@ public class TypeController {
     }
 
 
+    @RequiresPermissions("type:delete")
     @RequestMapping(path = "/delete/{idNum}", method = RequestMethod.POST)
     public JsonResult delete_type(@PathVariable("idNum") Integer ty_id) {
         boolean bool = typeService.deleteByid(ty_id);
@@ -39,6 +42,7 @@ public class TypeController {
     }
 
 
+    @RequiresPermissions("type:find")
     @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
     public JsonResult find_type(@PathVariable("idNum") Integer ty_id) {
         Type type = typeService.findByid(ty_id);
@@ -46,6 +50,7 @@ public class TypeController {
     }
 
 
+    @RequiresPermissions("type:list")
     @RequestMapping(path = "/list", method = RequestMethod.POST)
     public JsonResult list_type() {
         List<Type> allType = typeService.findall();

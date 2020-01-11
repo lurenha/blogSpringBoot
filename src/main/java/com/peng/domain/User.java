@@ -7,6 +7,7 @@ import javax.rmi.CORBA.Util;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  *id,昵称，用户名，密码，邮箱，权限，简介，所在地，微信，扣扣
@@ -25,25 +26,24 @@ public class User implements Serializable {
     private String qq;
     private Date finaldate;
     private String avatar;
-    private String[] roles;
+    private List<String> permissionlist;
+    //private String[] roles;
+    private List<String> roles;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "us_id=" + us_id +
-                ", nickname='" + nickname + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", power=" + power +
-                ", about='" + about + '\'' +
-                ", location='" + location + '\'' +
-                ", vx='" + vx + '\'' +
-                ", qq='" + qq + '\'' +
-                ", finaldate=" + finaldate +
-                ", avatar='" + avatar + '\'' +
-                ", roles=" + Arrays.toString(roles) +
-                '}';
+    public List<String> getPermissionlist() {
+        return permissionlist;
+    }
+
+    public void setPermissionlist(List<String> permissionlist) {
+        this.permissionlist = permissionlist;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     public String getFinaldate() {
@@ -132,14 +132,6 @@ public class User implements Serializable {
 
     public void setQq(String qq) {
         this.qq = qq;
-    }
-
-    public String[] getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String[] roles) {
-        this.roles = roles;
     }
 
     public String getAvatar() {

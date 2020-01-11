@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +45,10 @@ public class AdminController {
             user.setPassword(null);
             user.setUsername(null);
             user.setUs_id(null);
-            user.setRoles(new String[]{"admin"});
+
+            ArrayList<String> roles = new ArrayList<>();
+            roles.add("admin");
+            user.setRoles(roles);
             return new JsonResult(20000, "ok", user);
         }
         return new JsonResult(50008, "error", null);

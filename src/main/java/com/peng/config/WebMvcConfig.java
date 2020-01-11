@@ -1,4 +1,4 @@
-package com.peng.Filter.Config;
+package com.peng.config;
 
 
 import org.springframework.stereotype.Component;
