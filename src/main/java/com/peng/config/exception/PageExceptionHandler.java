@@ -2,6 +2,7 @@ package com.peng.config.exception;
 
 import com.peng.domain.JsonResult.JsonResult;
 import net.sf.json.JSONObject;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -10,6 +11,21 @@ import org.springframework.web.bind.annotation.*;
  */
 @ControllerAdvice
 public class PageExceptionHandler {
+
+
+    @ResponseBody
+    @ExceptionHandler(UnauthorizedException.class)
+    public Object handleException(UnauthorizedException e) {
+        // 记录错误信息
+        String msg = e.getMessage();
+        if (msg == null || msg.equals("")) {
+            msg = "服务器出错";
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("message", msg);
+        return new JsonResult(50000,"该角色权限不足!",jsonObject);
+    }
+
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {

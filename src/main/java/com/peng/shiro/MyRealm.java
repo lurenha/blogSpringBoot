@@ -38,10 +38,8 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         Integer userid = TokenUtil.getUserid(principals.toString());
         User user = userService.findByid(userid);
-
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addStringPermissions(user.getPermissionlist());
-        System.out.println(user.getPermissionlist());
         return simpleAuthorizationInfo;
     }
 

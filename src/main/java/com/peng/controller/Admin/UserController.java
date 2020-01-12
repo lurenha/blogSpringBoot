@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/user")
-public class AdminController {
+public class UserController {
     @Autowired
     private IUserService userService;
 
@@ -43,6 +43,7 @@ public class AdminController {
         User user = null;
         if ((us_id = TokenUtil.getUserid(token)) != null) {
             user = userService.findByid(us_id);
+            System.out.println(user);
             user.setPassword(null);
             user.setUsername(null);
             user.setUs_id(null);

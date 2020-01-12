@@ -30,6 +30,26 @@ public class User implements Serializable {
     //private String[] roles;
     private List<String> roles;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "us_id=" + us_id +
+                ", nickname='" + nickname + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", power=" + power +
+                ", about='" + about + '\'' +
+                ", location='" + location + '\'' +
+                ", vx='" + vx + '\'' +
+                ", qq='" + qq + '\'' +
+                ", finaldate=" + finaldate +
+                ", avatar='" + avatar + '\'' +
+                ", permissionlist=" + permissionlist +
+                ", roles=" + roles +
+                '}';
+    }
+
     public List<String> getPermissionlist() {
         return permissionlist;
     }
