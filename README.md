@@ -38,5 +38,10 @@
 ##### 请参考 [https://github.com/lurenha/blogAdminVue](https://github.com/lurenha/blogAdminVue "https://github.com/lurenha/blogAdminVue")
 
 ------------
+
+### 鸣谢
+#### 该项目参考了曾中杰的 https://github.com/Mretron/MyBlogWebSite
+
+------------
 ## License
 欢迎小伙伴们star、fork。
