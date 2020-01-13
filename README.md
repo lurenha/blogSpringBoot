@@ -41,6 +41,7 @@
 
 ### 鸣谢
 #### 该项目参考了曾中杰的 https://github.com/Mretron/MyBlogWebSite
+#### SpringBoot整合Shiro参考 https://github.com/Heeexy/SpringBoot-Shiro-Vue
 
 ------------
 ## License
