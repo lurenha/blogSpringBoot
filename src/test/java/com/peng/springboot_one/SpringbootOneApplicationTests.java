@@ -1,5 +1,8 @@
 package com.peng.springboot_one;
 
+import com.peng.entity.Blog;
+import com.peng.entity.User;
+import com.peng.mapper.*;
 import com.peng.util.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,18 +11,29 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-//@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class SpringbootOneApplicationTests {
+    @Autowired
+    private BlogMapper blogMapper;
+    @Autowired
+    private CommentMapper commentMapper;
+    @Autowired
+    private FriendMapper friendMapper;
+    @Autowired
+    private IPAddressMapper ipAddressMapper;
+    @Autowired
+    private TagMapper tagMapper;
+    @Autowired
+    private TypeMapper typeMapper;
+    @Autowired
+    private UserMapper userMapper;
+
     @Test
     public void test01() {
-        Object[] arrs=new Object[]{"123","456",null};
-        StringBuffer sb=new StringBuffer();
-        for (Object ob : arrs) {
-            sb.append(ob);
-        }
-        System.out.println(sb.toString());
-
+        System.out.println(tagMapper.selectById(2));
+        System.out.println(typeMapper.selectById(2));
+        System.out.println(userMapper.selectById(1));
     }
 
 }

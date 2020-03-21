@@ -9,7 +9,7 @@ server:
 spring:
   # 数据源配置
   datasource:
-    url: jdbc:mysql://123.57.140.84:3306/myblog?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    url: jdbc:mysql://123.57.140.84:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: root
     password: weipeng.?7757LL$#>
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -37,6 +37,9 @@ spring:
 #mybatis:
 #  configuration:
 #    map-underscore-to-camel-case: true
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #pagehelper分页插件配置
 pagehelper:
