@@ -40,7 +40,7 @@ public class IndexController {
         User user = userService.findByid(1);
         model.addAttribute("page", blogService.findPubpage(pageNum, 5,title));
         model.addAttribute("types", typeService.findallPro());
-        model.addAttribute("tags", tagService.findallPro());
+        model.addAttribute("tags", tagService.findAllPro());
         model.addAttribute("blogsCount", blogService.getPusBlogs());
         model.addAttribute("typesCount", typeService.findall().size());
         model.addAttribute("tagsCount", tagService.findall().size());

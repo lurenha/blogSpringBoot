@@ -2,6 +2,7 @@ package com.peng.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.peng.aspect.MyCache;
 import com.peng.dao.TypeDao;
 import com.peng.domain.Type;
 import com.peng.service.ITypeService;
@@ -16,8 +17,6 @@ import java.util.List;
 public class TypeService implements ITypeService {
 
     @Autowired
-    private RedisUtil redisUtil;
-    @Autowired
     private TypeDao typeDao;
 
     @Override
@@ -30,16 +29,11 @@ public class TypeService implements ITypeService {
         return typeDao.findallType();
     }
 
-    //缓存
+
+    @MyCache
     @Override
     public List<Type> findallPro() {
-        String key="TypefindallPro";
-        if(redisUtil.hasKey(key)){
-            return (List<Type>)redisUtil.get(key);
-        }
-
         List<Type> types = typeDao.findallTypePro();
-        redisUtil.set(key,types,60*60);
         return types;
     }
 

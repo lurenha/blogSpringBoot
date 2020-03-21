@@ -3,7 +3,7 @@ package com.peng.domain;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.peng.util.DateUtile;
 
-import javax.rmi.CORBA.Util;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;

@@ -23,7 +23,8 @@ public class LogAspect {
      * 当然，我们也可以通过切点表达式直接指定需要拦截的package,需要拦截的class 以及 method
      * 切点表达式:   execution(...)
      */
-    @Pointcut("execution(public * com.peng.controller..*(..))") //controller目录下所有public方法
+//    @Pointcut("execution(public * com.peng.controller..*(..))") //controller目录下所有public方法
+    @Pointcut("execution(private * com.peng.controller..*(..))")
     public void log() {
     }
 

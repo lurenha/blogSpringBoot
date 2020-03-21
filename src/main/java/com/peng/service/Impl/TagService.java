@@ -1,6 +1,7 @@
 package com.peng.service.Impl;
 
 
+import com.peng.aspect.MyCache;
 import com.peng.dao.TagDao;
 import com.peng.domain.Tag;
 import com.peng.service.ITagService;
@@ -12,8 +13,6 @@ import java.util.List;
 
 @Service("ITagService")
 public class TagService implements ITagService {
-    @Autowired
-    private RedisUtil redisUtil;
     @Autowired
     private TagDao tagDao;
 
@@ -30,15 +29,11 @@ public class TagService implements ITagService {
         return tagList;
     }
 
-    //缓存
+
+    @MyCache
     @Override
-    public List<Tag> findallPro() {
-        String key="TagfindallPro";
-        if(redisUtil.hasKey(key)){
-            return (List<Tag>)redisUtil.get(key);
-        }
+    public List<Tag> findAllPro() {
         List<Tag> tagList = tagDao.findallTagPro();
-        redisUtil.set(key,tagList,60*60);
         return tagList;
     }
 

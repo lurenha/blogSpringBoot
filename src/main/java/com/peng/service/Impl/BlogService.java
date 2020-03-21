@@ -2,6 +2,7 @@ package com.peng.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.peng.aspect.MyCache;
 import com.peng.dao.BlogDao;
 import com.peng.domain.Blog;
 import com.peng.domain.Comment;
@@ -24,8 +25,6 @@ import java.util.stream.Collectors;
 @Service("IBlogService")
 public class BlogService implements IBlogService {
 
-    @Autowired
-    private RedisUtil redisUtil;
     @Autowired
     private BlogDao blogDao;
     @Autowired
@@ -90,11 +89,8 @@ public class BlogService implements IBlogService {
 
     //缓存
     @Override
+    @MyCache
     public PageInfo<Blog> findPubpage(Integer pageNum, Integer pagesize, String title) {
-        String key = "num:" + pageNum + "size:" + pagesize + "title:" + title;
-        if (redisUtil.hasKey(key)) {
-            return (PageInfo<Blog>) redisUtil.get(key);
-        }
         if (title != null && title.trim().length() > 0) {
             title = "%" + title + "%";
         } else {
@@ -103,7 +99,6 @@ public class BlogService implements IBlogService {
         PageHelper.startPage(pageNum, pagesize);
         List<Blog> bloglist = blogDao.findallPubBlog(title);
         PageInfo<Blog> blogs = new PageInfo<>(bloglist);
-        redisUtil.set(key, blogs, 60 * 60);
         return blogs;
     }
 
@@ -176,6 +171,7 @@ public class BlogService implements IBlogService {
 
 
     @Override
+    @MyCache
     public Map findTimeLine() {
         Map<String, List<TimeLineBlog>> map = new TreeMap<>((o1, o2) -> {
             return o2.compareTo(o1);
@@ -198,12 +194,7 @@ public class BlogService implements IBlogService {
 
     @Override
     public int getPusBlogs() {
-        String key = "getPusBlogs";
-        if (redisUtil.hasKey(key)) {
-            return (int) redisUtil.get(key);
-        }
         int count = (int) findpage(0, Integer.MAX_VALUE, null, null).getList().stream().filter(blog -> blog.getPublished()).count();
-        redisUtil.set(key, count, 60 * 60);
         return count;
     }
 

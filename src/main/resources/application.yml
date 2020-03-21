@@ -1,0 +1,52 @@
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /peng
+
+
+# Spring配置
+spring:
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://123.57.140.84:3306/myblog?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: root
+    password: weipeng.?7757LL$#>
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #thymeleaf页面模板配置
+    thymeleaf:
+      prefix: classpath:/templates/
+      suffix: .html
+      cache: true
+      mode: HTML5
+    # Redis数据库索引（默认为0）
+    redis:
+      database: 0
+      host: 127.0.0.1
+      port: 6379
+      password:
+
+#  jackson:
+#    serialization:
+#      write-dates-as-timestamps: true
+#    time-zone: GMT+8
+#    ## 默认日期格式化
+#    date-format: yyyy-MM-dd HH:mm:ss
+
+#开启驼峰命名转换
+#mybatis:
+#  configuration:
+#    map-underscore-to-camel-case: true
+
+#pagehelper分页插件配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+#控制台打印SQL
+logging:
+  file: ./logs/core.log
+#  level:
+#    com.peng.dao: DEBUG
