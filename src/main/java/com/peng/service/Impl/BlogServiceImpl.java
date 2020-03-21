@@ -1,30 +1,17 @@
-//package com.peng.service.Impl;
-//
-//import com.github.pagehelper.PageHelper;
-//import com.github.pagehelper.PageInfo;
-//import com.peng.aspect.MyCache;
-//import com.peng.dao.BlogDao;
-//import com.peng.domain.Blog;
-//import com.peng.domain.Comment;
-//import com.peng.domain.Tag;
-//import com.peng.domain.TimeLineBlog;
-//import com.peng.service.IBlogService;
-//import com.peng.util.RedisUtil;
-//import net.sf.json.JSONObject;
-//import org.springframework.beans.BeanUtils;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.TransactionDefinition;
-//import org.springframework.transaction.TransactionStatus;
-//
-//import java.text.SimpleDateFormat;
-//import java.util.*;
-//import java.util.stream.Collectors;
-//
-//@Service("IBlogService")
-//public class BlogService implements IBlogService {
-//
+package com.peng.service.Impl;
+
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.peng.entity.Blog;
+import com.peng.mapper.BlogMapper;
+import com.peng.service.IBlogService;
+import org.springframework.stereotype.Service;
+
+
+
+@Service
+public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IBlogService {
+
 //    @Autowired
 //    private BlogDao blogDao;
 //    @Autowired
@@ -197,5 +184,5 @@
 //        int count = (int) findpage(0, Integer.MAX_VALUE, null, null).getList().stream().filter(blog -> blog.getPublished()).count();
 //        return count;
 //    }
-//
-//}
+
+}

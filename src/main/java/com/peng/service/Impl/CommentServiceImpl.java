@@ -1,18 +1,15 @@
-//package com.peng.service.Impl;
-//
-//import com.github.pagehelper.PageHelper;
-//import com.github.pagehelper.PageInfo;
-//import com.peng.dao.CommentDao;
-//import com.peng.domain.Comment;
-//import com.peng.service.ICommentService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.Date;
-//import java.util.List;
-//
-//@Service("ICommentService")
-//public class CommentService implements ICommentService {
+package com.peng.service.Impl;
+
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.peng.entity.Comment;
+import com.peng.mapper.CommentMapper;
+import com.peng.service.ICommentService;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
 //    @Autowired
 //    private CommentDao commentDao;
 //
@@ -48,4 +45,4 @@
 //        commentDao.deleteCommentById(co_id);
 //        return true;
 //    }
-//}
+}

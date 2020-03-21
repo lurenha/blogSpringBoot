@@ -1,21 +1,19 @@
-//package com.peng.service.Impl;
-//
-//import com.github.pagehelper.PageHelper;
-//import com.github.pagehelper.PageInfo;
-//import com.peng.aspect.MyCache;
-//import com.peng.dao.TypeDao;
-//import com.peng.domain.Type;
-//import com.peng.service.ITypeService;
-//import com.peng.util.RedisUtil;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//
-//@Service("ITypeService")
-//public class TypeService implements ITypeService {
-//
+package com.peng.service.Impl;
+
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.peng.aspect.MyCache;
+import com.peng.entity.Type;
+import com.peng.mapper.TypeMapper;
+import com.peng.service.ITypeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+
+@Service
+public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements ITypeService {
+
 //    @Autowired
 //    private TypeDao typeDao;
 //
@@ -60,4 +58,4 @@
 //        }
 //
 //    }
-//}
+}

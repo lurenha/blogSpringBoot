@@ -1,15 +1,16 @@
-//package com.peng.service.Impl;
-//
-//import com.peng.dao.IPAdressDao;
-//import com.peng.domain.IPAddress;
-//import com.peng.service.IIpAddressService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service("IIpAddressService")
-//public class IpAddressService implements IIpAddressService {
+package com.peng.service.Impl;
+
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.peng.entity.IPAddress;
+import com.peng.mapper.IPAddressMapper;
+import com.peng.service.IIpAddressService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class IpAddressServiceImpl extends ServiceImpl<IPAddressMapper, IPAddress> implements IIpAddressService {
 //    @Autowired
 //    private IPAdressDao ipAdressDao;
 //
@@ -45,6 +46,6 @@
 //        ipAdressDao.deleteIpById(ip_id);
 //        return true;
 //    }
-//
-//
-//}
+
+
+}

@@ -1,19 +1,17 @@
-//package com.peng.service.Impl;
-//
-//import com.github.pagehelper.PageHelper;
-//import com.github.pagehelper.PageInfo;
-//import com.peng.dao.FriendDao;
-//
-//import com.peng.domain.Friend;
-//import com.peng.service.IFriendService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//
-//import java.util.List;
-//
-//@Service("IFriendService")
-//public class FriendService implements IFriendService {
+package com.peng.service.Impl;
+
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.peng.entity.Friend;
+import com.peng.mapper.FriendMapper;
+import com.peng.service.IFriendService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+
+@Service
+public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> implements IFriendService {
 //    @Autowired
 //    private FriendDao friendDao;
 //
@@ -52,4 +50,4 @@
 //        friendDao.deleteFriendById(fr_id);
 //        return true;
 //    }
-//}
+}
