@@ -1,16 +1,42 @@
 package com.peng.service.Impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.peng.entity.Blog;
 import com.peng.mapper.BlogMapper;
 import com.peng.service.IBlogService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IBlogService {
+
+    @Override
+    public PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Blog> list = this.list();
+        PageInfo<Blog> result = new PageInfo<>(list);
+        return result;
+    }
+
+    @Override
+    public PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize, Wrapper<Blog> queryWrapper) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Blog> list = this.list(queryWrapper);
+        PageInfo<Blog> result = new PageInfo<>(list);
+        return result;
+    }
+
+    @Override
+    public boolean setPublished(Long blId, boolean flag) {
+        return this.update(new LambdaUpdateWrapper<Blog>().eq(Blog::getBlId,blId).set(Blog::getPublished,flag));
+    }
 
 //    @Autowired
 //    private BlogDao blogDao;

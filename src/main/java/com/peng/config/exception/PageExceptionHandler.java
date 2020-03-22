@@ -1,6 +1,7 @@
 package com.peng.config.exception;
 
-import com.peng.domain.JsonResult.JsonResult;
+
+import com.peng.entity.Result.JsonResult;
 import net.sf.json.JSONObject;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.*;

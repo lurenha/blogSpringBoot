@@ -5,9 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.peng.domain.Comment;
-import com.peng.domain.Tag;
-import com.peng.domain.Type;
 import lombok.Data;
 
 import java.io.Serializable;

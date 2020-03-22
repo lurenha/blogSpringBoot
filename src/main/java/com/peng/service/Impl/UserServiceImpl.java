@@ -1,6 +1,7 @@
 package com.peng.service.Impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.peng.entity.User;
 import com.peng.mapper.UserMapper;
@@ -13,6 +14,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+    @Override
+    public User verifyLogin(String account, String password) {
+        return this.getOne(new LambdaQueryWrapper<User>().eq(User::getAccount,account).eq(User::getPassword,password));
+    }
 //    @Autowired
 //    private UserDao userDao;
 //
