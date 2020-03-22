@@ -1,5 +1,6 @@
 package com.peng.controller.Admin;
 
+import com.peng.aspect.MyCache;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
@@ -69,6 +70,5 @@ public class UserController {
         User user = userService.getById(usId);
         return ResultUtil.success(user, ResultCode.SUCCESS);
     }
-
 
 }

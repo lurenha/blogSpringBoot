@@ -25,7 +25,7 @@
 //                    fetchType = FetchType.DEFAULT)),
 //    })
 //    @Select("select * from t_user where us_id= #{us_id}")
-//    User findByid(Integer us_id);
+////    User findByid(Integer us_id);
 //
 //    @Select("select * from t_user where username=#{name} and password=#{password}")
 //    User verifylogin(@Param("name")String name,@Param("password")String password);

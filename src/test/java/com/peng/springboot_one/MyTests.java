@@ -11,6 +11,7 @@ import com.peng.entity.User;
 import com.peng.mapper.*;
 import com.peng.service.IBlogService;
 import com.peng.service.ICommentService;
+import com.peng.service.IUserService;
 import com.peng.util.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +27,9 @@ import java.util.Objects;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SpringbootOneApplicationTests {
+public class MyTests {
+    @Autowired
+    private RedisUtil redisUtil;
     @Autowired
     private BlogMapper blogMapper;
     @Autowired
@@ -47,7 +50,10 @@ public class SpringbootOneApplicationTests {
     private ICommentService iCommentService;
 
     @Autowired
-    private IBlogService blogService;
+    private IBlogService iblogService;
+
+    @Autowired
+    private IUserService iUserService;
 
 
     @Test
@@ -56,7 +62,7 @@ public class SpringbootOneApplicationTests {
         Integer pageSize=5;
         Long tyId=null;
         String title=null;
-        PageInfo<Blog> listByPage = blogService.getListByPage(pageNum, pageSize,new LambdaQueryWrapper<Blog>().eq(Objects.nonNull(tyId),Blog::getTyId,tyId).like(Objects.nonNull(title),Blog::getTitle,title));
+        PageInfo<Blog> listByPage = iblogService.getListByPage(pageNum, pageSize,new LambdaQueryWrapper<Blog>().eq(Objects.nonNull(tyId),Blog::getTyId,tyId).like(Objects.nonNull(title),Blog::getTitle,title));
         for (Blog blog:listByPage.getList()
              ) {
             System.out.println(blog.getTitle());
@@ -66,8 +72,9 @@ public class SpringbootOneApplicationTests {
 
     @Test
     public void test02() {
-        System.out.println(  blogService.setPublished(1l, true));
-
+        System.out.println(  iUserService.getPermissionList(1l));
+        System.out.println(iCommentService.getById(1l));
+        //redisUtil.set("k111", "123456");
     }
 
 

@@ -35,7 +35,7 @@ public class User implements Serializable {
     private Date updateTime;
     //------------------------------------------------------------------------------------------------------------------
     @TableField(exist=false)
-    private List<String> permissionlist;
+    private List<String> permissionList;
 
     @TableField(exist=false)
     private List<String> roles;

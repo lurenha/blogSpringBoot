@@ -8,6 +8,7 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 
@@ -18,10 +19,7 @@ public class MyCacheAspect {
     @Autowired
     private RedisUtil redisUtil;
 
-    @Around("execution(public * com.peng.service.Impl..*(..)) && @annotation(myCache)")
-    public Object around(ProceedingJoinPoint jp, MyCache myCache) throws Throwable {
-        long startTime = System.currentTimeMillis();
-        //获取Redis中的key
+    private String createCacheKey(ProceedingJoinPoint jp) {
         Signature signature = jp.getSignature();
         String methodName = signature.getName();
         String className = signature.getDeclaringTypeName();
@@ -30,28 +28,36 @@ public class MyCacheAspect {
         sbKey.append(".");
         sbKey.append(methodName);
         Object[] args = jp.getArgs();//方法参数值
-        for (Object object:args) {
+        for (Object object : args) {
             sbKey.append("-");
             sbKey.append(object);
         }
-        String key=sbKey.toString();
+        return sbKey.toString();
+    }
+
+
+    //@Around("@annotation(myCache)")
+    @Order(1)
+    @Around("execution(public * com.peng.service.Impl..*(..)) && @annotation(myCache)")
+    public Object around(ProceedingJoinPoint jp, MyCache myCache) {
+        long startTime = System.currentTimeMillis();
+        //生成Redis中的key
+        String key = createCacheKey(jp);
         //如果有缓存直接返回，没有正常执行并写入缓存
         try {
             if (redisUtil.hasKey(key)) {
-//                System.out.println(methodName+"-"+"找到缓存了！");
                 return redisUtil.get(key);
             } else {
-//                System.out.println(methodName+"----------------没有缓存！");
-                Object result = jp.proceed(args);
+                Object result = jp.proceed(jp.getArgs());
                 redisUtil.set(key, result, 60 * 60);
                 return result;
             }
-        } catch (Throwable t){
+        } catch (Throwable t) {
             log.error(t.toString());
             return null;
         } finally {
-            System.out.print(methodName+"-"+"方法执行时间：");
-            System.out.println(System.currentTimeMillis()-startTime);
+            log.info("{}  方法执行时间： {}",jp.getSignature().getName(),System.currentTimeMillis()-startTime);
         }
     }
+
 }

@@ -2,8 +2,10 @@ package com.peng.shiro;
 
 
 
+import com.peng.aspect.MyCache;
 import com.peng.entity.User;
 import com.peng.service.IUserService;
+import com.peng.util.RedisUtil;
 import com.peng.util.TokenUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -11,18 +13,17 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MyRealm extends AuthorizingRealm {
 
-
-    private IUserService userService;
-
+    @Lazy//Shiro会和AOP冲突导致AOP失效，延迟注入
     @Autowired
-    public void setUserService(IUserService userService) {
-        this.userService = userService;
-    }
+    private IUserService userService;
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
@@ -38,9 +39,10 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         Long userId = TokenUtil.getUserId(principals.toString());
-        User user = userService.getById(userId);
+        //去数据库查找权限
+        List<String> permissionList = userService.getPermissionList(userId);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addStringPermissions(user.getPermissionlist());
+        simpleAuthorizationInfo.addStringPermissions(permissionList);
         return simpleAuthorizationInfo;
     }
 
@@ -56,10 +58,10 @@ public class MyRealm extends AuthorizingRealm {
             throw new AuthenticationException("token invalid");
         }
 
-        User user = userService.getById(userId);
-        if (user == null) {
-            throw new AuthenticationException("User didn't existed!");
-        }
+//        User user = userService.getById(userId);
+//        if (user == null) {
+//            throw new AuthenticationException("User didn't existed!");
+//        }
 
         if (! TokenUtil.verify(token)) {
             throw new AuthenticationException("Username or password error");
