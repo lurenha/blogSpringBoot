@@ -2,8 +2,12 @@ package com.peng.config.exception;
 
 
 import com.peng.entity.Result.JsonResult;
-import net.sf.json.JSONObject;
+import com.peng.entity.Result.ResultCode;
+import com.peng.entity.Result.ResultUtil;
+import org.apache.logging.log4j.util.Strings;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -13,57 +17,44 @@ import org.springframework.web.bind.annotation.*;
 @ControllerAdvice
 public class PageExceptionHandler {
 
+    /***
+     * Token认证异常
+     */
+    @ResponseBody
+    @ExceptionHandler(AuthenticationException.class)
+    public Object handleException(AuthenticationException e) {
+        return ResultUtil.faile(ResultCode.Token_AUTH_ERROR);
+    }
 
+    /***
+     * 权限异常
+     */
     @ResponseBody
     @ExceptionHandler(UnauthorizedException.class)
     public Object handleException(UnauthorizedException e) {
-        // 记录错误信息
-        String msg = e.getMessage();
-        if (msg == null || msg.equals("")) {
-            msg = "服务器出错";
-        }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", msg);
-        return new JsonResult(50000,"该角色权限不足!",jsonObject);
+        return ResultUtil.faile(ResultCode.PERMISSION_NO_ACCESS);
     }
 
+    /***
+     * 请求方式（get/post）异常
+     */
+    @ResponseBody
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public Object handleException(HttpRequestMethodNotSupportedException e) {
+        return ResultUtil.faile(ResultCode.INTERFACE_METHOD_ERROR);
+    }
+
+    /***
+     * 其他异常
+     */
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
         // 记录错误信息
         String msg = e.getMessage();
-        if (msg == null || msg.equals("")) {
+        if (Strings.isBlank(msg)) {
             msg = "服务器出错";
         }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", msg);
-        return new JsonResult(50000,msg,jsonObject);
+        return new JsonResult(50000, msg, null);
     }
-
-    //
-//    @ExceptionHandler(value = Exception.class)
-//    public ModelAndView pageExceptionHandle(HttpServletRequest req, Exception e) throws Exception {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("msg", e.getMessage());
-//        modelAndView.addObject("url", req.getRequestURL());
-//        // 模板名称
-//        modelAndView.setViewName("error");
-//        return modelAndView;
-//
-//    }
-//
-//    @RestController
-//    public class FinalExceptionHandler implements ErrorController {
-//        @Override
-//        public String getErrorPath() {
-//            return "/error";
-//        }
-//
-//        @RequestMapping(value = "/error")
-//        public Object error(HttpServletResponse resp, HttpServletRequest req) {
-//            // 错误处理逻辑
-//            return "其他异常";
-//        }
-//    }
-
 }
