@@ -1,8 +1,8 @@
 # 服务器配置
 server:
   port: 8080
-  servlet:
-    context-path: /peng
+#  servlet:
+#    context-path: /peng
 
 
 # Spring配置
@@ -17,7 +17,7 @@ spring:
     thymeleaf:
       prefix: classpath:/templates/
       suffix: .html
-      cache: true
+      cache: false
       mode: HTML5
     # Redis数据库索引（默认为0）
     redis:

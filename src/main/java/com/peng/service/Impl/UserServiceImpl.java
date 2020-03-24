@@ -23,7 +23,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @MyCache
+    @MyCache(overTime = 60)
     public List<String> getPermissionList(Long usId) {
         return userMapper.getPermissionsById(usId);
     }

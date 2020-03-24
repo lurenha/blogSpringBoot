@@ -20,10 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -58,13 +55,13 @@ public class MyTests {
 
     @Test
     public void test01() {
-        Integer pageNum=2;
-        Integer pageSize=5;
-        Long tyId=null;
-        String title=null;
-        PageInfo<Blog> listByPage = iblogService.getListByPage(pageNum, pageSize,new LambdaQueryWrapper<Blog>().eq(Objects.nonNull(tyId),Blog::getTyId,tyId).like(Objects.nonNull(title),Blog::getTitle,title));
-        for (Blog blog:listByPage.getList()
-             ) {
+        Integer pageNum = 2;
+        Integer pageSize = 5;
+        Long tyId = null;
+        String title = null;
+        PageInfo<Blog> listByPage = iblogService.getListByPage(pageNum, pageSize, new LambdaQueryWrapper<Blog>().eq(Objects.nonNull(tyId), Blog::getTyId, tyId).like(Objects.nonNull(title), Blog::getTitle, title));
+        for (Blog blog : listByPage.getList()
+        ) {
             System.out.println(blog.getTitle());
 
         }
@@ -72,10 +69,47 @@ public class MyTests {
 
     @Test
     public void test02() {
-        System.out.println(  iUserService.getPermissionList(1l));
+        System.out.println(iUserService.getPermissionList(1l));
         System.out.println(iCommentService.getById(1l));
         //redisUtil.set("k111", "123456");
     }
 
+
+
+
+
+
+
+
+
+
+    @Test
+    public void test03() {
+        System.out.println("生成验证码，并存入redis");
+        Map<String, Object> map = new HashMap();
+        map.put("id", 1);
+        map.put("code", 123321);
+        map.put("count", 0);
+        redisUtil.hmset("phone+Terminal", map, 3000);
+    }
+
+    @Test
+    public void test04() {
+        System.out.println("从redis中验证");
+        if (redisUtil.hHasKey("phone+Terminal", "count")) {//
+            int count = (int)redisUtil.hget("phone+Terminal", "count");
+            if(count<5){
+                //去验证
+                //。。。。。
+                //验证之后 count+1
+                redisUtil.hincr("phone+Terminal", "count",1);
+                System.out.println("count+1了,现在count为:"+redisUtil.hget("phone+Terminal", "count"));
+            }else {
+                System.out.println("验证超过5次了");
+            }
+        }else{
+            System.out.println("redis中没有对应的信息");
+        }
+    }
 
 }

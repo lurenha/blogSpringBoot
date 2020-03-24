@@ -24,6 +24,7 @@ public class Blog implements Serializable {
     private String title;
     private String content;
     private String outline;
+    private String backgroundImage;
     private Boolean recommend;
     private Boolean commentabled;
     private Boolean published;

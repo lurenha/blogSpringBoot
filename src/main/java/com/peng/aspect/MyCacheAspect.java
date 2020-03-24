@@ -38,7 +38,8 @@ public class MyCacheAspect {
 
     //@Around("@annotation(myCache)")
     @Order(1)
-    @Around("execution(public * com.peng.service.Impl..*(..)) && @annotation(myCache)")
+//    @Around("execution(public * com.peng.service.Impl..*(..)) && @annotation(myCache)")
+    @Around("@annotation(myCache)")
     public Object around(ProceedingJoinPoint jp, MyCache myCache) {
         long startTime = System.currentTimeMillis();
         //生成Redis中的key
@@ -49,7 +50,7 @@ public class MyCacheAspect {
                 return redisUtil.get(key);
             } else {
                 Object result = jp.proceed(jp.getArgs());
-                redisUtil.set(key, result, 60 * 60);
+                redisUtil.set(key, result, myCache.overTime());
                 return result;
             }
         } catch (Throwable t) {
