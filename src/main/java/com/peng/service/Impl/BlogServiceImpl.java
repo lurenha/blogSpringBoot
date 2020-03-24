@@ -2,20 +2,43 @@ package com.peng.service.Impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.peng.aspect.MyCache;
 import com.peng.entity.Blog;
+import com.peng.entity.Comment;
 import com.peng.mapper.BlogMapper;
 import com.peng.service.IBlogService;
+import com.peng.service.ICommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IBlogService {
+    @Autowired
+    private ICommentService iCommentService;
+
+    @Override
+    @MyCache
+    public PageInfo<Blog> getIndexPage(String title, Integer pageNum) {
+        PageInfo<Blog> listByPage = this.getListByPage(pageNum, 5, new LambdaQueryWrapper<Blog>().eq(Blog::getPublished, true).like(Objects.nonNull(title), Blog::getTitle, title).orderByDesc(Blog::getCreateTime).select(Blog::getTitle, Blog::getCreateTime, Blog::getOutline, Blog::getViews, Blog::getBackgroundImage, Blog::getBlId));
+        listByPage.getList().stream().forEach(blog -> {
+            blog.setCommentNum(getCommentNum(blog.getBlId()));
+        });
+        return listByPage;
+    }
+
+    @Override
+    public Integer getCommentNum(Long blId) {
+        return iCommentService.lambdaQuery().eq(Comment::getBlId,blId).count();
+    }
 
     @Override
     public PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize) {

@@ -144,8 +144,8 @@
 								<div class="post-container">
 									<div class="entry-content"  th:text="${blog.outline}">确实讨厌去写所谓的年终总结，在公司已经被动的想领导上交一个总结，自己就懒得去总结，不然，我觉得脑子里应该会编写出八九不离十的内容，所以正经八儿的事情略了，瞎说一下。 年初的人事调动是个人最不能接受的事情，但不接受也得接受，老板一句“这是命令...</div>
 									<div class="post-footer">
-										<a class="gaz-btn primary" href="">READ MORE</a>
-										<span class="total-comments-on-post pull-right"><a href="">31 Comments</a></span>
+										<a class="gaz-btn primary" th:href="@{/blog/{id}(id=${blog.blId})}">READ MORE</a>
+										<span class="total-comments-on-post pull-right"><a href="#" ><span th:text="${blog.commentNum}">30</span> Comments</a></span>
 									</div>
 								</div>
 							</div>

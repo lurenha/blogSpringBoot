@@ -34,6 +34,9 @@ public class Blog implements Serializable {
     private Date updateTime;
     //------------------------------------------------------------------------------------------------------------------
     @TableField(exist=false)
+    private Integer commentNum;
+
+    @TableField(exist=false)
     private List<Tag> tags;
 
     @TableField(exist=false)
