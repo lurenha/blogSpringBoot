@@ -1,10 +1,11 @@
 package com.peng.controller;
 
 
-
 import com.peng.aspect.MyCache;
 import com.peng.entity.Blog;
+import com.peng.entity.User;
 import com.peng.service.IBlogService;
+import com.peng.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ public class IndexController {
     @Autowired
     private IBlogService iBlogService;
 
-//    @Autowired
+    //    @Autowired
 //    private TypeService typeService;
 //
 //    @Autowired
@@ -32,22 +33,22 @@ public class IndexController {
 //    @Autowired
 //    private CommentService commentService;
 //
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    private IUserService iUserService;
 
 
     @GetMapping("/")
-    public String index(@RequestParam(value = "page", defaultValue = "1") Integer pageNum,@RequestParam(required=false, value = "title")String title, Model model ) {
-//        User user = userService.findByid(1);
-        model.addAttribute("page", iBlogService.getIndexPage(title,pageNum));
+    public String index(@RequestParam(value = "page", defaultValue = "1") Integer pageNum, @RequestParam(required = false, value = "title") String title, Model model) {
+        User adminInfo = iUserService.getAdminInfo();
+        model.addAttribute("page", iBlogService.getIndexPage(title, pageNum));
 //        model.addAttribute("types", typeService.findallPro());
 //        model.addAttribute("tags", tagService.findAllPro());
 //        model.addAttribute("blogsCount", blogService.getPusBlogs());
 //        model.addAttribute("typesCount", typeService.findall().size());
 //        model.addAttribute("tagsCount", tagService.findall().size());
 //        model.addAttribute("commentsCount", commentService.findpage(0, Integer.MAX_VALUE).getSize());
-//        model.addAttribute("user", user);
-        return "test/index";
+        model.addAttribute("user", adminInfo);
+        return "/index";
     }
 
 
@@ -55,7 +56,7 @@ public class IndexController {
     public String blog() {
         return "test/detail";
     }
-    
+
     @GetMapping("/blog/{blId}")
     public String blog(@PathVariable Long blId, Model model) {
         Blog blog = iBlogService.getById(blId);

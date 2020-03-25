@@ -70,7 +70,7 @@
                                 <div class="content" th:text="${user.nickname}">nickname</div>
                             </div>
                             <div class="middle aligned  item">
-                                <i class="calendar icon"></i><span th:text="${#dates.format(blog.finaldate,'yyyy-MM-dd HH:mm:ss')}">2020-01-01</span>
+                                <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd HH:mm:ss')}">2020-01-01</span>
                             </div>
                             <div class="middle aligned  item">
                                 <i class="eye icon"></i><span th:text="${blog.views}">1000</span>
@@ -78,16 +78,16 @@
                         </div>
                     </div>
                     <div class="right aligned column">
-                        <a th:href="@{/types/{id}(id=${blog.type.ty_id})}" class="ui  orange basic label"
+                        <a th:href="@{/types/{id}(id=${blog.type.tyId})}" class="ui  orange basic label"
                            th:text="${blog.type.name}">typeName</a>
                     </div>
                 </div>
             </div>
         </div>
         <!--文章的图片-->
-        <!--<div class="ui attached segment">-->
-        <!--<img th:src="${blog.firstPicture}" src="https://unsplash.it/800/450?image=1008" alt="" class="ui fluid rounded image">-->
-        <!--</div>-->
+        <div class="ui attached segment">
+        <img th:src="${blog.backgroundImage}" src="https://unsplash.it/800/450?image=1008" alt="" class="ui fluid rounded image">
+        </div>
         <!--文章的内容部分-->
         <div class="ui  attached padded segment">
             <!---这里是博客的flag：原创，转载-->
@@ -132,7 +132,7 @@
                 <div class="eleven wide column">
                     <ui class="list">
                         <li>作者:<span th:text="${user.nickname}">昵称</span> (扫码联系作者)</li>
-                        <li>发表时间:<span th:text="${blog.creatdate}">2020-01-01 09:00</span></li>
+                        <li>发表时间:<span th:text="${#dates.format(blog.createTime,'yyyy-MM-dd HH:mm:ss')}">2020-01-01 09:00</span></li>
                         <li>版权声明:自由转载-非商用-非衍生-保持署名(创意共享3.0许可证)</li>
                         <!--<li>公众号转载:请在文末添加作者赞赏二维码</li>-->
                     </ui>
@@ -160,14 +160,14 @@
                                      th:if="${comment.adminComment}">博主
                                 </div>
                                 <div class="metadata">
-                                    <span th:text="${comment.creatdate}" class="date">Today at 5:42PM</span>
+                                    <span th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm:ss')}" class="date">Today at 5:42PM</span>
                                 </div>
                                 <div th:text="${comment.content}" class="text">
                                     How artistic!
                                 </div>
                                 <div class="actions">
                                     <a class="reply" data-comment="1" data-commmentnickname="Matt"
-                                       th:attr="data-commentid=${comment.co_id},data-commentnickname=${comment.nickname}"
+                                       th:attr="data-commentid=${comment.coId},data-commentnickname=${comment.nickname}"
                                        onclick="reply(this)">回复</a>
                                 </div>
                             </div>
@@ -183,7 +183,7 @@
                                             <div class="ui mini basic teal left pointing label m-padded-mini"
                                                  th:if="${reply.adminComment}">博主
                                             </div>
-                                            &nbsp;<span th:if="${reply.parent_id}!=${comment.co_id}"
+                                            &nbsp;<span th:if="${reply.parent_id}!=${comment.coId}"
                                                         th:text="| @${reply.parent.nickname}|"
                                                         class="m-teal">@ 小白</span></div>
                                         <div class="metadata">
@@ -194,7 +194,7 @@
                                         </div>
                                         <div class="actions">
                                             <a class="reply" data-comment="1" data-commmentnickname="Matt"
-                                               th:attr="data-commentid=${reply.co_id},data-commentnickname=${reply.nickname}"
+                                               th:attr="data-commentid=${reply.coId},data-commentnickname=${reply.nickname}"
                                                onclick="reply(this)">回复</a>
                                         </div>
                                     </div>
@@ -206,9 +206,9 @@
             </div>
             <div id="comment-form" class="ui form">
                 <!--这里使用了一个隐藏域来保存当前评论的博客id-->
-                <input type="hidden" name="blog.bl_id" th:value="${blog.bl_id}">
+                <input type="hidden" name="blog.blId" th:value="${blog.blId}">
                 <!--这里表示回复的父节点，如果没有父节点区域，就为-1-->
-                <input type="hidden" name="parentcomment.co_id" value="-1">
+                <input type="hidden" name="parentcomment.coId" value="-1">
                 <div class="field">
                     <textarea name="content" placeholder="请输入评论信息..."></textarea>
                 </div>
@@ -377,7 +377,7 @@
     });
 
     var serurl = "www.zengzhongjie.com";
-    var url = /*[[@{/blog/{id}(id=${blog.bl_id})}]]*/"";
+    var url = /*[[@{/blog/{id}(id=${blog.blId})}]]*/"";
     var qrcode = new QRCode("qrcode", {
         text: serurl + url,
         width: 110,
@@ -405,7 +405,7 @@
 
     /*下面这个js实现打开这个网页，显示当前博客所有的评论信息*/
     $(function () {
-        $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.bl_id})}]]*/"comments/28");
+        $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.blId})}]]*/"comments/28");
     });
 
     /*点击提交评论，进行表单验证，验证通过再提交数据*/
@@ -427,8 +427,8 @@
     /*实现表单提交*/
     function postData() {
         $("#comment-container").load(/*[[@{/comments}]]*/"", {
-            "parent_id": $("[name='parentcomment.co_id']").val(),
-            "bl_id": $("[name='blog.bl_id']").val(),
+            "parent_id": $("[name='parentcomment.coId']").val(),
+            "blId": $("[name='blog.blId']").val(),
             "nickname": $("[name='nickname']").val(),
             "email": $("[name='email']").val(),
             "content": $("[name='content']").val()
@@ -440,8 +440,8 @@
 
     function clearContent() {
         $("[name='content']").val('');
-        $("[name='parentcomment.co_id']").val(-1);
-        $("[name='atment.co_id']").val(-1);
+        $("[name='parentcomment.coId']").val(-1);
+        $("[name='atment.coId']").val(-1);
         $("[name='content']").attr("placeholder", "请输入评论信息...");
     }
 
@@ -450,7 +450,7 @@
         var commentId = $(obj).data('commentid');
         var commentNickname = $(obj).data('commentnickname');
         $("[name='content']").attr("placeholder", "@" + commentNickname).focus();
-        $("[name='parentcomment.co_id']").val(commentId);
+        $("[name='parentcomment.coId']").val(commentId);
         $(window).scrollTo($('#comment-form'), 500);
     }
 

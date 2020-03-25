@@ -18,6 +18,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserMapper userMapper;
 
     @Override
+    @MyCache
+    public User getAdminInfo() {
+        User admin = this.getOne(new LambdaQueryWrapper<User>().eq(User::getRoleId, 1));//roleId自行修改
+        return admin;
+    }
+
+    @Override
     public User verifyLogin(String account, String password) {
         return this.getOne(new LambdaQueryWrapper<User>().eq(User::getAccount,account).eq(User::getPassword,password));
     }

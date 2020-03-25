@@ -69,9 +69,11 @@ public class MyTests {
 
     @Test
     public void test02() {
-        System.out.println(iUserService.getPermissionList(1l));
-        System.out.println(iCommentService.getById(1l));
-        //redisUtil.set("k111", "123456");
+        PageInfo<Blog> indexPage = iblogService.getIndexPage(null, 1);
+        for (Blog blog : indexPage.getList()
+        ) {
+            System.out.println(blog);
+        }
     }
 
 

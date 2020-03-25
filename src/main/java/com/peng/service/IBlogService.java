@@ -11,8 +11,6 @@ import java.util.Map;
 public interface IBlogService extends IService<Blog> {
     PageInfo<Blog> getIndexPage(String title, Integer pageNum);
 
-    Integer getCommentNum(Long blId);
-
     PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize);
 
     PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize, Wrapper<Blog> queryWrapper);

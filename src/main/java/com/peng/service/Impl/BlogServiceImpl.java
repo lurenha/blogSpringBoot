@@ -23,22 +23,22 @@ import java.util.Objects;
 @Service
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IBlogService {
     @Autowired
-    private ICommentService iCommentService;
+    private BlogMapper blogMapper;
 
     @Override
     @MyCache
     public PageInfo<Blog> getIndexPage(String title, Integer pageNum) {
-        PageInfo<Blog> listByPage = this.getListByPage(pageNum, 5, new LambdaQueryWrapper<Blog>().eq(Blog::getPublished, true).like(Objects.nonNull(title), Blog::getTitle, title).orderByDesc(Blog::getCreateTime).select(Blog::getTitle, Blog::getCreateTime, Blog::getOutline, Blog::getViews, Blog::getBackgroundImage, Blog::getBlId));
-        listByPage.getList().stream().forEach(blog -> {
-            blog.setCommentNum(getCommentNum(blog.getBlId()));
-        });
-        return listByPage;
+        PageHelper.startPage(pageNum, 5);
+        List<Blog> list = blogMapper.findIndexPage(title);
+        PageInfo<Blog> result = new PageInfo<>(list);
+
+//        PageInfo<Blog> listByPage = this.getListByPage(pageNum, 5, new LambdaQueryWrapper<Blog>().eq(Blog::getPublished, true).like(Objects.nonNull(title), Blog::getTitle, title).orderByDesc(Blog::getCreateTime).select(Blog::getTitle, Blog::getCreateTime, Blog::getOutline, Blog::getViews, Blog::getBackgroundImage, Blog::getBlId));
+//        listByPage.getList().stream().forEach(blog -> {
+//            blog.setCommentNum(getCommentNum(blog.getBlId()));
+//        });
+        return result;
     }
 
-    @Override
-    public Integer getCommentNum(Long blId) {
-        return iCommentService.lambdaQuery().eq(Comment::getBlId,blId).count();
-    }
 
     @Override
     public PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize) {

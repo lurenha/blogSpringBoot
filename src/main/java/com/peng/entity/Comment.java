@@ -36,12 +36,10 @@ public class Comment implements Serializable {
     private Blog blog;
 
     @TableField(exist = false)
-    private List<Comment> childcoments;
+    private List<Comment> childList;
 
     @TableField(exist = false)
     private Comment parent;
 
-    @TableField(exist = false)
-    private IPAddress ipAddress;
 
 }
