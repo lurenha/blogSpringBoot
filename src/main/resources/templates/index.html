@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <!--首先完成移动端的预览设置问题,设备的宽度初始缩放倍数为1.0倍，这里还可以设置用户禁止缩放等等-->
     <meta name="viewport" content="device-width,initial-scale=1.0">
-    <title th:text="${user.nickname}">Peng</th:text></title>
+    <title th:text="${user.name}">Peng</th:text></title>
     <!--接下来进行semanticUI的css CDN的引用-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
     <!--引入我们自己写的css-->
@@ -32,7 +32,7 @@
                 <a class="item">
                     <img class="ui circular image mestyle image" th:src="${user.avatar}"
                          src="http://b-ssl.duitang.com/uploads/item/201706/25/20170625143749_mtSZE.jpeg">
-                    &nbsp;&nbsp;&nbsp;<span th:text="${user.nickname}">Mr_name</span>
+                    &nbsp;&nbsp;&nbsp;<span th:text="${user.name}">Mr_name</span>
                 </a>&nbsp;
                 <a class=" item m-item m-mobile-hide"><i class="fas fa-carrot"></i>首页</a>
                 <a class="item m-item m-mobile-hide"><i class="fas fa-ice-cream"></i>分类</a>
@@ -69,7 +69,7 @@
                              th:src="@{/images/myPic.jpg}">
                     </div>
                     <div class="content">
-                        <a class="header" href="#aboutme" th:text="${user.nickname}">强强</a>
+                        <a class="header" href="#aboutme" th:text="${user.name}">强强</a>
                         <div class="meta">
                             <a style="" th:text="${user.about}">Java程序员、生活梦想家</a>
                         </div>
@@ -85,7 +85,7 @@
                         <a href="#" class="ui qq circular icon button" th:data-content="${user.email}"
                            data-position="bottom center"><i class="envelope icon"></i></a>
 
-                        <a href="#" class="ui qq circular icon button" th:data-content="${user.vx}"
+                        <a href="#" class="ui qq circular icon button" th:data-content="${user.wechat}"
                            data-position="bottom center"><i class="weixin icon"></i></a>
 
                         <a href="#" class="ui qq circular icon button" th:data-content="${user.qq}"
@@ -124,11 +124,11 @@
 
                             <h3 class="ui  header m-padded-tb-up">
                                 <a th:text="${blog.title}"
-                                   th:href="@{/blog/{id}(id=${blog.bl_id})}" href="#"
+                                   th:href="@{/blog/{id}(id=${blog.blId})}" href="#"
                                    target="_blank"
                                    style="font-family:宋体;color: black !important;">title</a>
                             </h3>
-                            <a href="#" target="_blank" th:href="@{/blog/{id}(id=${blog.bl_id})}" class="ui header">
+                            <a href="#" target="_blank" th:href="@{/blog/{id}(id=${blog.blId})}" class="ui header">
                                 <p th:text="${blog.outline}" class="  "
                                    style="font-size: 15px; font-weight: 500 !important;letter-spacing: 1px !important;line-height: 2.5;">
                                     outline
@@ -141,18 +141,18 @@
                                             <img th:src="${user.avatar}" src="https://unsplash.it/100/100?image=1005"
                                                  class="ui avatar image">
                                             <div class="content">
-                                                <h5 th:text="${user.nickname}"
+                                                <h5 th:text="${user.name}"
                                                     class="ui header m-opacity-mini">nickname</h5></div>
                                         </div>
                                         <div class="item">
                                             <i class="calendar icon"></i><span
-                                                th:text="${#dates.format(blog.finaldate,'yyyy-MM-dd')}">2020-01-01</span>
+                                                th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-01-01</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="left aligned seven wide column">
 
-                                    <a th:href="@{/tags/{id}(id=${tag.ta_id})}" th:each="tag : ${blog.tags}" href="#"
+                                    <a th:href="@{/tags/{id}(id=${tag.taId})}" th:each="tag : ${blog.tags}" href="#"
                                        class=" m-margin-smalls">
                                         <i class="fas fa-tag"></i>
                                         <span th:text="${tag.name}">tag.name</span>
@@ -160,7 +160,7 @@
                                 </div>
 
                                 <div class="right aligned three wide column">
-                                    <a href="#" th:href="@{/types/{id}(id=${blog.type.ty_id})}"
+                                    <a href="#" th:href="@{/types/{id}(id=${blog.type.tyId})}"
                                        th:text="${blog.type.name}" target="_blank"
                                        class="ui  red basic label m-text-thin ">type.name</a>
                                 </div>
@@ -169,7 +169,7 @@
                         <!--5份来显示图片-->
                         <div class="five wide column">
 
-                            <!--<a href="#" th:href="@{/blog/{id}(id=${blog.bl_id})}" target="_blank" >-->
+                            <!--<a href="#" th:href="@{/blog/{id}(id=${blog.blId})}" target="_blank" >-->
                             <!--<img th:src="@{${blog.firstPicture}}" src="https://unsplash.it/800/450?image=1005" alt="" class="ui  rounded image">-->
                             <!--</a>-->
                         </div>
@@ -211,10 +211,10 @@
                     </div>
                     <div class="ui orange segment">
                         <div class="ui fluid vertical menu">
-                            <a th:each="type : ${types}" th:href="@{/types/{id}(id=${type.ty_id})}" class="item"
+                            <a th:each="type : ${types}" th:href="@{/types/{id}(id=${type.tyId})}" class="item"
                                href="#" target="_blank">
                                 <span th:text="${type.name}">type.name</span>
-                                <div th:text="${#arrays.length(type.blogs)}"
+                                <div th:text="${type.blogsNum}"
                                      class="ui orange basic left pointing label">13
                                 </div>
                             </a>
@@ -235,10 +235,10 @@
                         </div>
                     </div>
                     <div class="ui teal segment">
-                        <a th:each="tag : ${tags}" th:href="@{/tags/{id}(id=${tag.ta_id})}" href="#" target="_blank"
+                        <a th:each="tag : ${tags}" th:href="@{/tags/{id}(id=${tag.taId})}" href="#" target="_blank"
                            class="ui teal basic left pointing label m-margin-tiny">
                             <span th:text="${tag.name}">tag.name</span>
-                            <div th:text="${#arrays.length(tag.blogs)}" class="detail">23</div>
+                            <div th:text="${tag.blogsNum}" class="detail">23</div>
                         </a>
                     </div>
                 </div>
@@ -299,7 +299,7 @@
                 <h4 class="ui inverted header  m-text-spaced m-opacity-small">联系我</h4>
                 <div class="ui inverted link list m-text-lined">
                     <div href="#" th:text="'QQ:'+${user.qq}" class="item">QQ:1474159935</div>
-                    <div href="#" th:text="'Wechat:'+${user.vx}" class="item">Wechat:zeng1474159935</div>
+                    <div href="#" th:text="'Wechat:'+${user.wechat}" class="item">Wechat:zeng1474159935</div>
                     <div href="#" th:text="'Email:'+${user.email}" class="item">Email:1474159935@qq.com</div>
                 </div>
             </div>

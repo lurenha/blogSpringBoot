@@ -27,4 +27,7 @@ public class Tag implements Serializable {
     @TableField(exist=false)
     private List<Blog> blogs;
 
+    @TableField(exist=false)
+    private Integer blogsNum;
+
 }
