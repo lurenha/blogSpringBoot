@@ -7,6 +7,7 @@ import com.peng.entity.Type;
 import com.peng.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ICacheService {
     PageInfo<Blog> getIndexPage(String title, Integer pageNum);
@@ -20,4 +21,5 @@ public interface ICacheService {
     List<String> getPermissionList(Long usId);
     PageInfo<Blog> getPageByType(Integer pageNum,Long tyId);
     PageInfo<Blog> getPageByTag(Integer pageNum,Long taId);
+    Map findTimeLine();
 }

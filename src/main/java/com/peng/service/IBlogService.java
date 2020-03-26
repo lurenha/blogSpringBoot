@@ -24,6 +24,9 @@ public interface IBlogService extends IService<Blog> {
     Blog findFullById(Long blId);
 
     void addViews(Blog blog);
+
+    Map findTimeLine();
+
 //    Blog findByid(Integer bl_id);
 //    Blog findByidPro(Integer bl_id);
 //    PageInfo<Blog> findpage(Integer pageNum,Integer pagesize,String title,Integer ty_id);

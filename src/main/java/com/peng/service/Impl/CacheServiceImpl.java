@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CacheServiceImpl implements ICacheService {
@@ -91,4 +92,11 @@ public class CacheServiceImpl implements ICacheService {
     public PageInfo<Blog> getPageByTag(Integer pageNum, Long taId) {
         return iBlogService.getPageByTag(pageNum, taId);
     }
+
+    @Override
+    @MyCache
+    public Map findTimeLine() {
+        return iBlogService.findTimeLine();
+    }
+
 }

@@ -5,6 +5,7 @@ import com.peng.entity.Blog;
 import com.peng.entity.Comment;
 import com.peng.entity.Tag;
 import com.peng.entity.Type;
+import com.peng.entity.other.TimeLineBlog;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 
@@ -63,7 +64,11 @@ public interface BlogMapper extends BaseMapper<Blog> {
     @Select("select * from t_blog where bl_id=#{blId} ")
     Blog findFullBlogById(Long blId);
 
-
+    /***
+     *  //时间线搜索
+     */
+    @Select("SELECT  DATE_FORMAT(create_time,'%c-%d') AS 'date',DATE_FORMAT(create_time,'%Y-%m') AS 'month',bl_id,title FROM t_blog WHERE published=TRUE GROUP BY bl_id,DATE_FORMAT(create_time,'%Y-%m') ORDER BY create_time desc")
+    List<TimeLineBlog> findTimeLine();
     //---------------------------------------------------查询需要用到的子查询-------------------------------------------------------------
     /***
      *  //根据博客查询对应的tags（内联查询）
