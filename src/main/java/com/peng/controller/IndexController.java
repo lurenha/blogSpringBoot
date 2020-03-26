@@ -57,10 +57,10 @@ public class IndexController {
     @GetMapping("/blog/{blId}")
     public String blog(@PathVariable Long blId, Model model) {
         Blog blog = iBlogService.findFullById(blId);
-//        blogService.addViews(bl_id);
-//        if (!byidPro.getPublished()) {
-//            throw new RuntimeException("无效资源！");
-//        }
+        iBlogService.addViews(blog);
+        if (!blog.getPublished()) {
+            throw new RuntimeException("无效资源！");
+        }
         model.addAttribute("blog", blog);
         model.addAttribute("user", iCacheService.getAdminInfo());
         return "/blog";

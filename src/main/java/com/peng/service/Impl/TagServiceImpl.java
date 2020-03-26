@@ -22,6 +22,8 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
         return tagMapper.getIndexTag();
     }
 
+
+
 //    @Autowired
 //    private TagDao tagDao;
 //

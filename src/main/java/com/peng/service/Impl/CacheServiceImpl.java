@@ -79,4 +79,16 @@ public class CacheServiceImpl implements ICacheService {
     public List<String> getPermissionList(Long usId) {
         return iUserService.getPermissionList(usId);
     }
+
+    @Override
+    @MyCache
+    public PageInfo<Blog> getPageByType(Integer pageNum, Long tyId) {
+        return iBlogService.getPageByType(pageNum,tyId);
+    }
+
+    @Override
+    @MyCache
+    public PageInfo<Blog> getPageByTag(Integer pageNum, Long taId) {
+        return iBlogService.getPageByTag(pageNum, taId);
+    }
 }

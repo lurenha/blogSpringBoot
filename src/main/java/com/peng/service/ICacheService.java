@@ -18,4 +18,6 @@ public interface ICacheService {
     Integer getCommentNum();
     User getAdminInfo();
     List<String> getPermissionList(Long usId);
+    PageInfo<Blog> getPageByType(Integer pageNum,Long tyId);
+    PageInfo<Blog> getPageByTag(Integer pageNum,Long taId);
 }

@@ -32,6 +32,23 @@ public interface BlogMapper extends BaseMapper<Blog> {
     List<Blog> findIndexPage(@Param("title") String title);
 
     /***
+     *  //查询首页Blog信息(关联标签，类型)
+     *  根据tag查找Blog(发布的)
+     */
+    @Select("select bl_id,title,outline,background_image,recommend,commentabled,published,views,ty_id,create_time,update_time from t_blog where ty_id = #{tyId} and published=true order by create_time desc")
+    @ResultMap(value = "blogInfo")
+    List<Blog> getPageByType(Long tyId);
+
+    /***
+     *  //查询首页Blog信息(关联标签，类型)
+     *  根据tag查找Blog(发布的)
+     */
+    @Select("SELECT b.bl_id,b.title,b.outline,b.background_image,b.recommend,b.commentabled,b.published,b.views,b.ty_id,b.create_time,b.update_time FROM t_blog AS b LEFT JOIN t_blog_tag AS bt ON b.bl_id=bt.bl_id WHERE bt.ta_id=#{taId} and b.published=true order by b.create_time desc")
+    @ResultMap(value = "blogInfo")
+    List<Blog> getPageByTag(Long taId);
+
+
+    /***
      *  //查询Blog完整信息(关联标签，类型，评论)
      */
     @Results(value = {
@@ -43,7 +60,7 @@ public interface BlogMapper extends BaseMapper<Blog> {
             @Result(property = "comments", column = "bl_id", many = @Many(select = "com.peng.mapper.BlogMapper.findCommentByBlog",
                     fetchType = FetchType.DEFAULT))
     })
-    @Select("select * from t_blog where bl_id=#{blId}")
+    @Select("select * from t_blog where bl_id=#{blId} ")
     Blog findFullBlogById(Long blId);
 
 

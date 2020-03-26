@@ -35,6 +35,22 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         return result;
     }
 
+    @Override
+    public PageInfo<Blog> getPageByType(Integer pageNum,Long tyId) {
+        PageHelper.startPage(pageNum, 5);
+        List<Blog> list = blogMapper.getPageByType(tyId);
+        PageInfo<Blog> result = new PageInfo<>(list);
+        return result;
+    }
+
+    @Override
+    public PageInfo<Blog> getPageByTag(Integer pageNum,Long taId) {
+        PageHelper.startPage(pageNum, 5);
+        List<Blog> list = blogMapper.getPageByTag(taId);
+        PageInfo<Blog> result = new PageInfo<>(list);
+        return result;
+    }
+
 
     @Override
     public PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize) {
@@ -71,6 +87,11 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
             comment.setChildList(tem);
         }
         return blog;
+    }
+
+    @Override
+    public void addViews(Blog blog) {
+        this.update(new LambdaUpdateWrapper<Blog>().set(Blog::getViews, blog.getViews() + 1));
     }
 
     private void backStack(List<Comment> parentlist, List<Comment> childlist) {
