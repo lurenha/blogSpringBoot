@@ -16,6 +16,8 @@ public interface IBlogService extends IService<Blog> {
     PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize, Wrapper<Blog> queryWrapper);
 
     boolean setPublished(Long blId, boolean flag);
+
+    Blog findFullById(Long blId);
 //    Blog findByid(Integer bl_id);
 //    Blog findByidPro(Integer bl_id);
 //    PageInfo<Blog> findpage(Integer pageNum,Integer pagesize,String title,Integer ty_id);

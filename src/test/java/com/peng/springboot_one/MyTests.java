@@ -69,11 +69,16 @@ public class MyTests {
 
     @Test
     public void test02() {
-        PageInfo<Blog> indexPage = iblogService.getIndexPage(null, 1);
-        for (Blog blog : indexPage.getList()
-        ) {
-            System.out.println(blog);
-        }
+//        PageInfo<Blog> indexPage = iblogService.getIndexPage(null, 1);
+//        for (Blog blog : indexPage.getList()
+//        ) {
+//            System.out.println(blog);
+//        }
+
+        Blog fullById = iblogService.findFullById((long) 1);
+        System.out.println(fullById);
+
+//        System.out.println(iCommentService.getById(1));
     }
 
 

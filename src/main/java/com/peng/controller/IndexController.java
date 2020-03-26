@@ -31,37 +31,39 @@ public class IndexController {
     private ITypeService iTypeService;
     @Autowired
     private ITagService iTagService;
+    @Autowired
+    private ICacheService iCacheService;
 
 
     @GetMapping("/")
     public String index(@RequestParam(value = "page", defaultValue = "1") Integer pageNum, @RequestParam(required = false, value = "title") String title, Model model) {
-        model.addAttribute("page", iBlogService.getIndexPage(title, pageNum));
-        model.addAttribute("types", iTypeService.getIndexTypes());
-        model.addAttribute("tags", iTagService.getIndexTags());
-        model.addAttribute("blogsCount", iBlogService.count(new LambdaQueryWrapper<Blog>().eq(Blog::getPublished,true)));
-        model.addAttribute("typesCount", iTypeService.count());
-        model.addAttribute("tagsCount", iTagService.count());
-        model.addAttribute("commentsCount", iCommentService.count());
-        model.addAttribute("user", iUserService.getAdminInfo());
+        model.addAttribute("page", iCacheService.getIndexPage(title, pageNum));
+        model.addAttribute("types", iCacheService.getIndexTypes());
+        model.addAttribute("tags", iCacheService.getIndexTags());
+        model.addAttribute("blogsCount", iCacheService.getPushedBlogNum());
+        model.addAttribute("typesCount", iCacheService.getTypeNum());
+        model.addAttribute("tagsCount", iCacheService.getTagNum());
+        model.addAttribute("commentsCount", iCacheService.getCommentNum());
+        model.addAttribute("user", iCacheService.getAdminInfo());
         return "/index";
     }
 
 
     @GetMapping("/blog")
     public String blog() {
-        return "test/detail";
+        return "/blog";
     }
 
     @GetMapping("/blog/{blId}")
     public String blog(@PathVariable Long blId, Model model) {
-        Blog blog = iBlogService.getById(blId);
+        Blog blog = iBlogService.findFullById(blId);
 //        blogService.addViews(bl_id);
 //        if (!byidPro.getPublished()) {
 //            throw new RuntimeException("无效资源！");
 //        }
         model.addAttribute("blog", blog);
-//        model.addAttribute("user", userService.findByid(1));
-        return "test/detail";
+        model.addAttribute("user", iCacheService.getAdminInfo());
+        return "/blog";
     }
 
 

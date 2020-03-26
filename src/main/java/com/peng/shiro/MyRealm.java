@@ -4,6 +4,7 @@ package com.peng.shiro;
 
 import com.peng.aspect.MyCache;
 import com.peng.entity.User;
+import com.peng.service.ICacheService;
 import com.peng.service.IUserService;
 import com.peng.util.RedisUtil;
 import com.peng.util.TokenUtil;
@@ -23,7 +24,7 @@ public class MyRealm extends AuthorizingRealm {
 
     @Lazy//Shiro会和AOP冲突导致AOP失效，延迟注入
     @Autowired
-    private IUserService userService;
+    private ICacheService iCacheService;
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
@@ -40,7 +41,7 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         Long userId = TokenUtil.getUserId(principals.toString());
         //去数据库查找权限
-        List<String> permissionList = userService.getPermissionList(userId);
+        List<String> permissionList = iCacheService.getPermissionList(userId);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addStringPermissions(permissionList);
         return simpleAuthorizationInfo;

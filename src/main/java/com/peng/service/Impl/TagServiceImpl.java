@@ -18,7 +18,6 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
     private TagMapper tagMapper;
 
     @Override
-    @MyCache
     public List<Tag> getIndexTags() {
         return tagMapper.getIndexTag();
     }

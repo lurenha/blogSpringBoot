@@ -13,9 +13,11 @@ import com.peng.entity.Comment;
 import com.peng.mapper.BlogMapper;
 import com.peng.service.IBlogService;
 import com.peng.service.ICommentService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,23 +28,17 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     private BlogMapper blogMapper;
 
     @Override
-    @MyCache
     public PageInfo<Blog> getIndexPage(String title, Integer pageNum) {
         PageHelper.startPage(pageNum, 5);
         List<Blog> list = blogMapper.findIndexPage(title);
         PageInfo<Blog> result = new PageInfo<>(list);
-
-//        PageInfo<Blog> listByPage = this.getListByPage(pageNum, 5, new LambdaQueryWrapper<Blog>().eq(Blog::getPublished, true).like(Objects.nonNull(title), Blog::getTitle, title).orderByDesc(Blog::getCreateTime).select(Blog::getTitle, Blog::getCreateTime, Blog::getOutline, Blog::getViews, Blog::getBackgroundImage, Blog::getBlId));
-//        listByPage.getList().stream().forEach(blog -> {
-//            blog.setCommentNum(getCommentNum(blog.getBlId()));
-//        });
         return result;
     }
 
 
     @Override
     public PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<Blog> list = this.list();
         PageInfo<Blog> result = new PageInfo<>(list);
         return result;
@@ -50,7 +46,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
 
     @Override
     public PageInfo<Blog> getListByPage(Integer pageNum, Integer pageSize, Wrapper<Blog> queryWrapper) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<Blog> list = this.list(queryWrapper);
         PageInfo<Blog> result = new PageInfo<>(list);
         return result;
@@ -58,7 +54,37 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
 
     @Override
     public boolean setPublished(Long blId, boolean flag) {
-        return this.update(new LambdaUpdateWrapper<Blog>().eq(Blog::getBlId,blId).set(Blog::getPublished,flag));
+        return this.update(new LambdaUpdateWrapper<Blog>().eq(Blog::getBlId, blId).set(Blog::getPublished, flag));
+    }
+
+    @Override
+    public Blog findFullById(Long blId) {
+        Blog blog = blogMapper.findFullBlogById(blId);
+        //递归遍历子节点 将节点深度>1的 所有子节点添加至父节点
+        List<Comment> comments = blog.getComments();
+        for (Comment comment : comments) {
+            ArrayList<Comment> tem = new ArrayList<>();
+            backStack(tem, comment.getChildList());
+            tem.sort(((o1, o2) -> {
+                return o2.getCreateTime().compareTo(o1.getCreateTime());
+            }));
+            comment.setChildList(tem);
+        }
+        return blog;
+    }
+
+    private void backStack(List<Comment> parentlist, List<Comment> childlist) {
+        if (childlist == null) {
+            return;
+        }
+        for (Comment child : childlist) {
+            backStack(parentlist, child.getChildList());
+            Comment com = new Comment();
+            BeanUtils.copyProperties(child, com);
+            com.setChildList(null);
+            parentlist.add(com);
+        }
+
     }
 
 //    @Autowired

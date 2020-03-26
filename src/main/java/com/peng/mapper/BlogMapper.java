@@ -11,14 +11,15 @@ import org.apache.ibatis.mapping.FetchType;
 import java.util.List;
 
 public interface BlogMapper extends BaseMapper<Blog> {
-
+    /***
+     *  //查询首页Blog信息(关联标签，类型)
+     */
     @Results(id = "blogInfo", value = {
+            @Result(id = true, property = "blId", column = "bl_id"),
             @Result(property = "tags", column = "bl_id", many = @Many(select = "com.peng.mapper.BlogMapper.findTagsByBlog",
                     fetchType = FetchType.DEFAULT)),
             @Result(property = "type", column = "ty_id", one = @One(select = "com.peng.mapper.BlogMapper.findTypeByBlog",
                     fetchType = FetchType.DEFAULT)),
-//            @Result(property = "comments", column = "bl_id", many = @Many(select = "com.peng.mapper.BlogMapper.findCommentByBlog",
-//                    fetchType = FetchType.DEFAULT))
     })
     @Select("<script>" +
             "select bl_id,title,outline,background_image,recommend,commentabled,published,views,ty_id,create_time,update_time from t_blog where published=true" +
@@ -30,7 +31,23 @@ public interface BlogMapper extends BaseMapper<Blog> {
     )
     List<Blog> findIndexPage(@Param("title") String title);
 
+    /***
+     *  //查询Blog完整信息(关联标签，类型，评论)
+     */
+    @Results(value = {
+            @Result(id = true, property = "blId", column = "bl_id"),
+            @Result(property = "tags", column = "bl_id", many = @Many(select = "com.peng.mapper.BlogMapper.findTagsByBlog",
+                    fetchType = FetchType.DEFAULT)),
+            @Result(property = "type", column = "ty_id", one = @One(select = "com.peng.mapper.BlogMapper.findTypeByBlog",
+                    fetchType = FetchType.DEFAULT)),
+            @Result(property = "comments", column = "bl_id", many = @Many(select = "com.peng.mapper.BlogMapper.findCommentByBlog",
+                    fetchType = FetchType.DEFAULT))
+    })
+    @Select("select * from t_blog where bl_id=#{blId}")
+    Blog findFullBlogById(Long blId);
 
+
+    //---------------------------------------------------查询需要用到的子查询-------------------------------------------------------------
     /***
      *  //根据博客查询对应的tags（内联查询）
      */
@@ -48,6 +65,7 @@ public interface BlogMapper extends BaseMapper<Blog> {
      *  //根据博客查询对应的comments
      */
     @Results(id = "commentMap", value = {
+            @Result(id = true, property = "coId", column = "co_id"),
             @Result(property = "childList", column = "co_id", many = @Many(select = "com.peng.mapper.BlogMapper.findChildListByComment",
                     fetchType = FetchType.DEFAULT)),
             @Result(property = "parent", column = "parent_id", one = @One(select = "com.peng.mapper.BlogMapper.findParentByComment",

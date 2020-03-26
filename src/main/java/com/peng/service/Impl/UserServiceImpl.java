@@ -18,7 +18,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserMapper userMapper;
 
     @Override
-    @MyCache
     public User getAdminInfo() {
         User admin = this.getOne(new LambdaQueryWrapper<User>().eq(User::getRoleId, 1));//roleId自行修改
         return admin;
@@ -30,7 +29,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    @MyCache(overTime = 60)
     public List<String> getPermissionList(Long usId) {
         return userMapper.getPermissionsById(usId);
     }

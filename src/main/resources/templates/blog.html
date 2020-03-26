@@ -33,7 +33,7 @@
         <div class="ui  secondary stackable menu">
             <a class="item">
                 <img class="ui circular image mestyle image"  th:src="${user.avatar}" src="http://b-ssl.duitang.com/uploads/item/201706/25/20170625143749_mtSZE.jpeg">
-                &nbsp;&nbsp;&nbsp;<span th:text="${user.nickname}">Mr_name</span>
+                &nbsp;&nbsp;&nbsp;<span th:text="${user.name}">Mr_name</span>
             </a>&nbsp;
             <a class="item m-item m-mobile-hide"><i class="fas fa-carrot"></i>首页</a>
             <a class="item m-item m-mobile-hide"><i class="fas fa-ice-cream"></i>分类</a>
@@ -67,7 +67,7 @@
                             <div class="middle aligned item">
                                 <img th:src="${user.avatar}" src="https://unsplash.it/100/100?image=1005" alt=""
                                      class="ui avatar image">
-                                <div class="content" th:text="${user.nickname}">nickname</div>
+                                <div class="content" th:text="${user.name}">name</div>
                             </div>
                             <div class="middle aligned  item">
                                 <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd HH:mm:ss')}">2020-01-01</span>
@@ -102,7 +102,7 @@
                  class="m-padded-tb-large m-padded-lr-responsive typo typo-selection js-toc-content"></div>
             <!--标签-->
             <div class="m-padded-lr-responsive">
-                <a th:href="@{/tags/{id}(id=${tag.ta_id})}" th:each="tag : ${blog.tags}" th:text="${tag.name}"
+                <a th:href="@{/tags/{id}(id=${tag.taId})}" th:each="tag : ${blog.tags}" th:text="${tag.name}"
                    class="ui basic teal left pointing label">tags</a>
             </div>
             <!--赞赏-->
@@ -131,7 +131,7 @@
             <div class="ui middle aligned grid">
                 <div class="eleven wide column">
                     <ui class="list">
-                        <li>作者:<span th:text="${user.nickname}">昵称</span> (扫码联系作者)</li>
+                        <li>作者:<span th:text="${user.name}">昵称</span> (扫码联系作者)</li>
                         <li>发表时间:<span th:text="${#dates.format(blog.createTime,'yyyy-MM-dd HH:mm:ss')}">2020-01-01 09:00</span></li>
                         <li>版权声明:自由转载-非商用-非衍生-保持署名(创意共享3.0许可证)</li>
                         <!--<li>公众号转载:请在文末添加作者赞赏二维码</li>-->
@@ -151,13 +151,13 @@
                         <h3 class="ui dividing header">评论</h3>
                         <div class="comment" th:each="comment : ${blog.getComments()}">
                             <a class="avatar">
-                                <img src="http://cdn.duitang.com/uploads/item/201603/24/20160324222105_YcJvX.thumb.700_0.jpeg"
-                                     th:src="@{${comment.ipAddress?.avatar}}">
+                                <img src="https://b-ssl.duitang.com/uploads/item/201802/21/20180221223815_xkkyq.jpg">
+<!--                                     th:src="@{${comment.ipAddress?.avatar}}">-->
                             </a>
                             <div class="content">
-                                <span th:text="${comment.nickname}" class="author">Matt</span>
+                                <span th:text="${comment.name}" class="author">Matt</span>
                                 <div class="ui mini basic teal left pointing label m-padded-mini"
-                                     th:if="${comment.adminComment}">博主
+                                     th:if="${comment.isAdmin}">博主
                                 </div>
                                 <div class="metadata">
                                     <span th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm:ss')}" class="date">Today at 5:42PM</span>
@@ -167,34 +167,36 @@
                                 </div>
                                 <div class="actions">
                                     <a class="reply" data-comment="1" data-commmentnickname="Matt"
-                                       th:attr="data-commentid=${comment.coId},data-commentnickname=${comment.nickname}"
+                                       th:attr="data-commentid=${comment.coId},data-commentnickname=${comment.name}"
                                        onclick="reply(this)">回复</a>
                                 </div>
                             </div>
                             <div class="comments">
-                                <div class="comment" th:each="reply : ${comment.childcoments}">
+                                <div class="comment" th:each="reply : ${comment.childList}">
                                     <a class="avatar">
-                                        <img src="http://cdn.duitang.com/uploads/item/201603/24/20160324222105_YcJvX.thumb.700_0.jpeg"
-                                             th:src="@{${reply.ipAddress?.avatar}}">
+                                        <img src="https://b-ssl.duitang.com/uploads/item/201802/21/20180221223815_xkkyq.jpg">
+<!--                                             th:src="@{${reply.ipAddress?.avatar}}">-->
                                     </a>
                                     <div class="content">
                                         <div class="author">
-                                            <span th:text="${reply.nickname}">小红</span>
+                                            <span th:text="${reply.name}">小红</span>
                                             <div class="ui mini basic teal left pointing label m-padded-mini"
-                                                 th:if="${reply.adminComment}">博主
+                                                 th:if="${reply.isAdmin}">博主
                                             </div>
-                                            &nbsp;<span th:if="${reply.parent_id}!=${comment.coId}"
-                                                        th:text="| @${reply.parent.nickname}|"
+<!--                                            &nbsp;<span th:if="${reply.parentId}!=${comment.coId}"-->
+                                            &nbsp;<span
+                                                        th:text="| @${reply.parent.name}|"
                                                         class="m-teal">@ 小白</span></div>
+
                                         <div class="metadata">
-                                            <span class="date" th:text="${reply.creatdate}">Today at 5:42PM</span>
+                                            <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm:ss')}" >Today at 5:42PM</span>
                                         </div>
                                         <div class="text" th:text="${reply.content}">
                                             How artistic!
                                         </div>
                                         <div class="actions">
                                             <a class="reply" data-comment="1" data-commmentnickname="Matt"
-                                               th:attr="data-commentid=${reply.coId},data-commentnickname=${reply.nickname}"
+                                               th:attr="data-commentid=${reply.coId},data-commentnickname=${reply.name}"
                                                onclick="reply(this)">回复</a>
                                         </div>
                                     </div>

@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface TypeMapper extends BaseMapper<Type> {
     @Results(value = {
+            @Result(id = true, property = "tyId", column = "ty_id"),
             @Result(property = "blogsNum", column = "ty_id", many = @Many(select = "com.peng.mapper.TypeMapper.getBlogNumByType",
                     fetchType = FetchType.DEFAULT)),
     })

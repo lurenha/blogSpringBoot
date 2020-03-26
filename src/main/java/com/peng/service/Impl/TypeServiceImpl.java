@@ -21,7 +21,6 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements IT
     private TypeMapper typeMapper;
 
     @Override
-    @MyCache
     public List<Type> getIndexTypes() {
         return typeMapper.getIndexTypes();
     }

@@ -33,13 +33,19 @@ spring:
 #    ## 默认日期格式化
 #    date-format: yyyy-MM-dd HH:mm:ss
 
-#开启驼峰命名转换
+##开启驼峰命名转换
 #mybatis:
 #  configuration:
 #    map-underscore-to-camel-case: true
+
 mybatis-plus:
   configuration:
+    map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    refresh-mapper: true
+    #驼峰下划线转换
+    column-underline: true
 
 #pagehelper分页插件配置
 pagehelper:
