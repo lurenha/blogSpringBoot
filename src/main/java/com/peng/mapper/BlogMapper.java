@@ -67,6 +67,9 @@ public interface BlogMapper extends BaseMapper<Blog> {
     /***
      *  //时间线搜索
      */
+    @Results(value = {
+            @Result(id = true, property = "blId", column = "bl_id"),
+    })
     @Select("SELECT  DATE_FORMAT(create_time,'%c-%d') AS 'date',DATE_FORMAT(create_time,'%Y-%m') AS 'month',bl_id,title FROM t_blog WHERE published=TRUE GROUP BY bl_id,DATE_FORMAT(create_time,'%Y-%m') ORDER BY create_time desc")
     List<TimeLineBlog> findTimeLine();
     //---------------------------------------------------查询需要用到的子查询-------------------------------------------------------------
