@@ -63,10 +63,12 @@ public class UserController {
             user = userService.getById(usId);
             user.setPassword(null);
             user.setUsId(null);
-            ArrayList<String> roles = new ArrayList<>();
-            roles.add("admin");
-            user.setRoles(roles);
-            return ResultUtil.success(user, ResultCode.SUCCESS);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("user", user);
+            map.put("roles",new String[]{"admin"});
+            map.put("permissions",new String[]{"*:*:*"});
+            return ResultUtil.success(map, ResultCode.SUCCESS);
         }
         return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
     }
