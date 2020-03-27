@@ -8,10 +8,10 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
 @MapperScan("com.peng.mapper")
-public class SpringbootOneApplication extends SpringBootServletInitializer {
+public class MyBlogApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringbootOneApplication.class, args);
+        SpringApplication.run(MyBlogApplication.class, args);
     }
 
     @Override//为了打包springboot项目

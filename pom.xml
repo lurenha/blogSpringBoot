@@ -124,7 +124,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>com.peng.SpringbootOneApplication</mainClass>
+                    <mainClass>com.peng.MyBlogApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
