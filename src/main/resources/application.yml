@@ -9,9 +9,9 @@ server:
 spring:
   # 数据源配置
   datasource:
-    url: jdbc:mysql://123.57.140.84:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    url: jdbc:mysql://123.57.000.00:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: root
-    password: weipeng.?7757LL$#>
+    password: 123456789
     driver-class-name: com.mysql.cj.jdbc.Driver
     #thymeleaf页面模板配置
     thymeleaf:
