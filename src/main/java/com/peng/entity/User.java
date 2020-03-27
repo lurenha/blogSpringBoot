@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.peng.util.DateUtile;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,7 +21,7 @@ public class User implements Serializable {
     @TableId(value = "us_id",type = IdType.AUTO)
     private Long usId;
     private String name;
-    private String account;
+    private String username;
     private String password;
     private String email;
     private String about;

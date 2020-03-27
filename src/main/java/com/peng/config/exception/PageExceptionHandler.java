@@ -18,6 +18,15 @@ import org.springframework.web.bind.annotation.*;
 public class PageExceptionHandler {
 
     /***
+     * 验证码认证异常
+     */
+    @ResponseBody
+    @ExceptionHandler(CaptchaExpireException.class)
+    public Object handleException(CaptchaExpireException e) {
+        return ResultUtil.faile(ResultCode.CODE_AUTH_ERROR);
+    }
+
+    /***
      * Token认证异常
      */
     @ResponseBody

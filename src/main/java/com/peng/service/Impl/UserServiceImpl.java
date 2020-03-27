@@ -24,8 +24,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public User verifyLogin(String account, String password) {
-        return this.getOne(new LambdaQueryWrapper<User>().eq(User::getAccount,account).eq(User::getPassword,password));
+    public User verifyLogin(String username, String password) {
+        return this.getOne(new LambdaQueryWrapper<User>().eq(User::getUsername,username).eq(User::getPassword,password));
     }
 
     @Override

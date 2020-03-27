@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface IUserService extends IService<User> {
     User getAdminInfo();
-    User verifyLogin(String account, String password);
+    User verifyLogin(String username, String password);
     List<String> getPermissionList(Long usId);
 }
