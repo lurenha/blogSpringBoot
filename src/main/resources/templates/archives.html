@@ -59,7 +59,7 @@
                 <ul>
                     <div th:each="tlblog : ${Stat.current.value}">
                         <li>
-                            <a th:href="@{/blog/{ta_id}(ta_id=${tlblog.bl_id})}" href="#" th:text="${tlblog.title}">title</a>
+                            <a th:href="@{/blog/{blId}(blId=${tlblog.blId})}" href="#" th:text="${tlblog.title}">title</a>
                             <span th:text="${tlblog.date}">6-01</span>
                         </li>
                     </div>

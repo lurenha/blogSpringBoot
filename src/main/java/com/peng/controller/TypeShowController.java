@@ -1,11 +1,8 @@
 package com.peng.controller;
 
 
-import com.peng.domain.Type;
-import com.peng.domain.User;
-import com.peng.service.Impl.BlogService;
-import com.peng.service.Impl.TypeService;
-import com.peng.service.Impl.UserService;
+import com.peng.entity.Type;
+import com.peng.service.ICacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,30 +18,21 @@ public class TypeShowController {
 
 
     @Autowired
-    private TypeService typeService;
+    private ICacheService iCacheService;
 
-    @Autowired
-    private BlogService blogService;
+    @GetMapping("/types/{tyId}")
+    public String types(@PathVariable Long tyId, @RequestParam(value = "page", defaultValue = "1") Integer pageNum, Model model){
 
-    @Autowired
-    private UserService userService;
-
-    @GetMapping("/types/{ty_id}")
-    public String types(@PathVariable Integer ty_id, @RequestParam(value = "page", defaultValue = "1") Integer pageNum, Model model){
-
-        List<Type> types = typeService.findallPro();
-        if(ty_id==-1){
-
-            ty_id =types.get(0).getTy_id();
-
+        List<Type> types = iCacheService.getIndexTypes();
+        if(tyId==-1){
+            tyId =types.get(0).getTyId();
         }
-        User user=userService.findByid(1);
         model.addAttribute("types",types);
-        model.addAttribute("page",blogService.findsByType(pageNum,5,ty_id));
-        model.addAttribute("activeTypeId",ty_id);
-        model.addAttribute("user",user);
+        model.addAttribute("page",iCacheService.getPageByType(pageNum,tyId));
+        model.addAttribute("activeTypeId",tyId);
+        model.addAttribute("user",iCacheService.getAdminInfo());
 
-        return "types";
+        return "/types";
 
     }
 

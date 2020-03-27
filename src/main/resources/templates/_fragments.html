@@ -37,7 +37,7 @@
         <div class="ui  secondary stackable menu">
             <a class="item">
                 <img class="ui circular image mestyle image"  th:src="${user.avatar}" src="http://b-ssl.duitang.com/uploads/item/201706/25/20170625143749_mtSZE.jpeg">
-                &nbsp;&nbsp;&nbsp;<span th:text="${user.nickname}">Mr_name</span>
+                &nbsp;&nbsp;&nbsp;<span th:text="${user.name}">Mr_name</span>
             </a>&nbsp;
             <a class="item m-item m-mobile-hide" th:href="@{/}" th:classappend="${n==1} ? 'active'"><i class="fas fa-carrot"></i>首页</a>
             <a class="item m-item m-mobile-hide" th:href="@{/types/-1}" th:classappend="${n==2} ? 'active'"><i class="fas fa-ice-cream"></i>分类</a>
@@ -80,7 +80,7 @@
                 <h4 class="ui inverted header  m-text-spaced m-opacity-small">联系我</h4>
                 <div class="ui inverted link list m-text-lined">
                     <div href="#" th:text="'QQ:'+${user.qq}" class="item">QQ:1474159935</div>
-                    <div href="#" th:text="'Wechat:'+${user.vx}" class="item">Wechat:zeng1474159935</div>
+                    <div href="#" th:text="'Wechat:'+${user.wechat}" class="item">Wechat:zeng1474159935</div>
                     <div href="#" th:text="'Email:'+${user.email}" class="item">Email:1474159935@qq.com</div>
                 </div>
             </div>

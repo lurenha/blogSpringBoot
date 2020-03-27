@@ -1,13 +1,19 @@
 package com.peng.controller.Admin;
 
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageInfo;
-import com.peng.domain.Blog;
-import com.peng.domain.JsonResult.JsonResult;
+import com.peng.entity.Blog;
+import com.peng.entity.Result.JsonResult;
+import com.peng.entity.Result.ResultCode;
+import com.peng.entity.Result.ResultUtil;
 import com.peng.service.IBlogService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 
 @RestController
@@ -18,54 +24,54 @@ public class BlogController {
 
     @RequiresPermissions("blog:addORedit")
     @RequestMapping(path = "/addORedit", method = RequestMethod.POST)
-    public JsonResult addORedit_blog(Blog blog) {
-        boolean bool = blogService.addORedit(blog);
+    public JsonResult saveOrUpdate(Blog blog) {
+        boolean bool = blogService.saveOrUpdate(blog);
         if (bool) {
-            return new JsonResult(20000, "提交成功!", bool);
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
-            return new JsonResult(50001, "提交失败!", bool);
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
 
     }
 
     @RequiresPermissions("blog:delete")
     @RequestMapping(path = "/delete/{idNum}", method = RequestMethod.POST)
-    public JsonResult delete_blog(@PathVariable("idNum") Integer bl_id) {
-        boolean bool = blogService.deleteByid(bl_id);
+    public JsonResult removeById(@PathVariable("idNum") Long blId) {
+        boolean bool = blogService.removeById(blId);
         if (bool) {
-            return new JsonResult(20000, "提交成功!", bool);
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
-            return new JsonResult(50001, "提交失败!", bool);
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
     }
 
     @RequiresPermissions("blog:find")
     @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
-    public JsonResult find_blog(@PathVariable("idNum") Integer bl_id) {
-        Blog blog = blogService.findByid(bl_id);
-        return new JsonResult(20000, "ok", blog);
+    public JsonResult getById(@PathVariable("idNum") Long blId) {
+        Blog blog = blogService.getById(blId);
+        return ResultUtil.success(blog, ResultCode.SUCCESS);
     }
 
     @RequiresPermissions(logical = Logical.AND, value = {"blog:list"})
     @RequestMapping("/list")
-    public JsonResult list_blog(@RequestParam(value = "page", defaultValue = "1") Integer pageNum,
-                                @RequestParam(value = "limit", defaultValue = "10") Integer pagesize,
-                                @RequestParam(value = "title", required = false) String title,
-                                @RequestParam(value = "type", required = false) Integer ty_id
+    public JsonResult list(@RequestParam(value = "page", defaultValue = "1") Integer pageNum,
+                           @RequestParam(value = "limit", defaultValue = "10") Integer pageSize,
+                           @RequestParam(value = "title", required = false) String title,
+                           @RequestParam(value = "type", required = false) Long tyId
     ) {
-        PageInfo<Blog> findpage = blogService.findpage(pageNum, pagesize, title, ty_id);
-        return new JsonResult(20000, "ok", findpage);
+        PageInfo<Blog> listByPage = blogService.getListByPage(pageNum, pageSize, new LambdaQueryWrapper<Blog>().eq(Objects.nonNull(tyId), Blog::getTyId, tyId).like(Objects.nonNull(title), Blog::getTitle, title));
+        return ResultUtil.success(listByPage, ResultCode.SUCCESS);
     }
 
 
     @RequiresPermissions("blog:addORedit")
     @RequestMapping(path = "/setPublished", method = RequestMethod.POST)
-    public JsonResult setPublished(@RequestParam(value = "bl_id") Integer bl_id, @RequestParam(value = "published") Boolean published) {
-        boolean bool = blogService.setPublishedByid(bl_id, published);
+    public JsonResult setPublished(@RequestParam(value = "blId") Long blId, @RequestParam(value = "published") Boolean published) {
+        boolean bool = blogService.setPublished(blId, published);
         if (bool) {
-            return new JsonResult(20000, "提交成功!", bool);
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
-            return new JsonResult(50001, "提交失败!", bool);
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
     }
 

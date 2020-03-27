@@ -1,9 +1,10 @@
 package com.peng.controller.Admin;
 
 
-
-import com.peng.domain.JsonResult.JsonResult;
-import com.peng.domain.Type;
+import com.peng.entity.Result.JsonResult;
+import com.peng.entity.Result.ResultCode;
+import com.peng.entity.Result.ResultUtil;
+import com.peng.entity.Type;
 import com.peng.service.ITypeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,12 @@ public class TypeController {
 
     @RequiresPermissions("type:addORedit")
     @RequestMapping(path = "/addORedit", method = RequestMethod.POST)
-    public JsonResult addORedit_type(Type type) {
-        boolean bool = typeService.addORedit(type);
+    public JsonResult saveOrUpdate(Type type) {
+        boolean bool = typeService.saveOrUpdate(type);
         if (bool) {
-            return new JsonResult(20000, "提交成功!", bool);
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
-            return new JsonResult(50001, "提交失败!", bool);
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
 
     }
@@ -32,28 +33,28 @@ public class TypeController {
 
     @RequiresPermissions("type:delete")
     @RequestMapping(path = "/delete/{idNum}", method = RequestMethod.POST)
-    public JsonResult delete_type(@PathVariable("idNum") Integer ty_id) {
-        boolean bool = typeService.deleteByid(ty_id);
+    public JsonResult removeById(@PathVariable("idNum") Long tyId) {
+        boolean bool = typeService.removeById(tyId);
         if (bool) {
-            return new JsonResult(20000, "提交成功!", bool);
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
-            return new JsonResult(50001, "提交失败!", bool);
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
     }
 
 
     @RequiresPermissions("type:find")
     @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
-    public JsonResult find_type(@PathVariable("idNum") Integer ty_id) {
-        Type type = typeService.findByid(ty_id);
-        return new JsonResult(20000, "ok", type);
+    public JsonResult getById(@PathVariable("idNum") Long tyId) {
+        Type type = typeService.getById(tyId);
+        return ResultUtil.success(type, ResultCode.SUCCESS);
     }
 
 
     @RequiresPermissions("type:list")
     @RequestMapping(path = "/list", method = RequestMethod.POST)
-    public JsonResult list_type() {
-        List<Type> allType = typeService.findall();
-        return new JsonResult(20000, "ok", allType);
+    public JsonResult list() {
+        List<Type> typeList = typeService.list();
+        return ResultUtil.success(typeList, ResultCode.SUCCESS);
     }
 }

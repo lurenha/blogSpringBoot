@@ -1,14 +1,12 @@
 package com.peng.service;
 
 
-import com.peng.domain.Tag;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.peng.entity.Tag;
 
 import java.util.List;
 
-public interface ITagService {
-    Tag findByid(Integer ta_id);
-    List<Tag> findall();
-    List<Tag> findallPro();
-    boolean addORedit(Tag tag);
-    boolean deleteByid(Integer ta_id);
+public interface ITagService extends IService<Tag> {
+      List<Tag> getIndexTags();
+
 }

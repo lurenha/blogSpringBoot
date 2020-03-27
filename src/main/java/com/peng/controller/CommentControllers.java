@@ -1,12 +1,11 @@
 package com.peng.controller;
 
 
-import com.peng.domain.Comment;
-import com.peng.domain.IPAddress;
-import com.peng.domain.JsonResult.JsonResult;
-import com.peng.service.Impl.BlogService;
-import com.peng.service.Impl.CommentService;
-import com.peng.service.Impl.IpAddressService;
+
+import com.peng.entity.Blog;
+import com.peng.entity.Comment;
+import com.peng.service.IBlogService;
+import com.peng.service.ICommentService;
 import com.peng.util.IPUtile;
 import com.peng.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,46 +21,31 @@ import javax.servlet.http.HttpServletRequest;
 public class CommentControllers {
 
     @Autowired
-    private CommentService commentService;
+    private ICommentService iCommentService;
+
 
     @Autowired
-    private IpAddressService ipAddressService;
+    private IBlogService iBlogService;
 
-    @Autowired
-    private BlogService blogService;
 
-//    @Value("${comment.avatar}")
-//    private String avatar;
-
-    @GetMapping("/comments/{blog_id}")
-    public String comments(@PathVariable Integer blog_id, Model model) {
-        model.addAttribute("blog", blogService.findByidPro(blog_id));
+    @GetMapping("/comments/{blId}")
+    public String comments(@PathVariable Long blId, Model model) {
+        Blog blog = iBlogService.findFullById(blId);
+        if (!blog.getPublished()) {
+            throw new RuntimeException("无效资源！");
+        }
+        model.addAttribute("blog", blog);
         return "blog :: commentList";
     }
 
     @PostMapping("/comments")
-    public String postcomments(Comment comment, HttpServletRequest request) {
-//        //是否是管理员
-//        String token = request.getHeader("Peng-Token");
-//        comment.setAdminComment(false);
-//        if (token != null) {
-//            if (TokenUtil.verify(token)) {
-//                comment.setAdminComment(true);
-//            }
-//        }
-        //IP相关
-        String ipAddr = IPUtile.getIpAddr(request);
-        IPAddress ipAddress = ipAddressService.findByAdress(ipAddr);
-        if (ipAddress == null) {
-            ipAddressService.addORedit(new IPAddress(ipAddr, "http://b-ssl.duitang.com/uploads/item/201802/21/20180221223815_xkkyq.jpg"));
-            ipAddress = ipAddressService.findByAdress(ipAddr);
-        }
+    public String postComments(Comment comment) {
         //保存评论
-        if (comment.getParent_id() <= -1)
-            comment.setParent_id(null);
-        comment.setIp_id(ipAddress.getIp_id());
-        commentService.addORedit(comment);
-        return "redirect:/comments/" + comment.getBl_id();
+        if (comment.getParentId() <= -1)
+            comment.setParentId(null);
+
+        iCommentService.saveOrUpdate(comment);
+        return "redirect:/comments/" + comment.getBlId();
     }
 
 }

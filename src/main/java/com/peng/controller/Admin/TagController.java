@@ -1,9 +1,10 @@
 package com.peng.controller.Admin;
 
 
-
-import com.peng.domain.JsonResult.JsonResult;
-import com.peng.domain.Tag;
+import com.peng.entity.Result.JsonResult;
+import com.peng.entity.Result.ResultCode;
+import com.peng.entity.Result.ResultUtil;
+import com.peng.entity.Tag;
 import com.peng.service.ITagService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,12 @@ public class TagController {
 
     @RequiresPermissions("tag:addORedit")
     @RequestMapping(path = "/addORedit", method = RequestMethod.POST)
-    public JsonResult addORedit_tag(Tag tag) {
-        boolean bool = tagService.addORedit(tag);
-        if(bool){
-            return new JsonResult(20000, "提交成功!", bool);
-        }else {
-            return new JsonResult(50001, "提交失败!", bool);
+    public JsonResult saveOrUpdate(Tag tag) {
+        boolean bool = tagService.saveOrUpdate(tag);
+        if (bool) {
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
+        } else {
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
 
     }
@@ -32,28 +33,28 @@ public class TagController {
 
     @RequiresPermissions("tag:delete")
     @RequestMapping(path = "/delete/{idNum}", method = RequestMethod.POST)
-    public JsonResult delete_tag(@PathVariable("idNum") Integer ta_id) {
-        boolean bool = tagService.deleteByid(ta_id);
-        if(bool){
-            return new JsonResult(20000, "提交成功!", bool);
-        }else {
-            return new JsonResult(50001, "提交失败!", bool);
+    public JsonResult removeById(@PathVariable("idNum") Long taId) {
+        boolean bool = tagService.removeById(taId);
+        if (bool) {
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
+        } else {
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
     }
 
 
     @RequiresPermissions("tag:find")
     @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
-    public JsonResult find_tag(@PathVariable("idNum") Integer ta_id) {
-        Tag tag = tagService.findByid(ta_id);
-        return new JsonResult(20000, "ok", tag);
+    public JsonResult getById(@PathVariable("idNum") Long taId) {
+        Tag tag = tagService.getById(taId);
+        return ResultUtil.success(tag, ResultCode.SUCCESS);
     }
 
 
     @RequiresPermissions("tag:list")
     @RequestMapping(path = "/list", method = RequestMethod.POST)
-    public JsonResult list_tag() {
-        List<Tag> allType = tagService.findall();
-        return new JsonResult(20000, "ok", allType);
+    public JsonResult list() {
+        List<Tag> tagList = tagService.list();
+        return ResultUtil.success(tagList, ResultCode.SUCCESS);
     }
 }

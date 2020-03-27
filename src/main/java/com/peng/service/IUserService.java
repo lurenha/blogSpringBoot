@@ -1,10 +1,13 @@
 package com.peng.service;
 
 
-import com.peng.domain.User;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.peng.entity.User;
 
-public interface IUserService {
-    User findByid(Integer us_id);
-    User verifylogin(String name,String password);
-    boolean addORedit(User user);
+import java.util.List;
+
+public interface IUserService extends IService<User> {
+    User getAdminInfo();
+    User verifyLogin(String account, String password);
+    List<String> getPermissionList(Long usId);
 }

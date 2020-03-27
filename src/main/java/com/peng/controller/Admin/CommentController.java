@@ -1,8 +1,11 @@
 package com.peng.controller.Admin;
 
+
 import com.github.pagehelper.PageInfo;
-import com.peng.domain.Comment;
-import com.peng.domain.JsonResult.JsonResult;
+import com.peng.entity.Comment;
+import com.peng.entity.Result.JsonResult;
+import com.peng.entity.Result.ResultCode;
+import com.peng.entity.Result.ResultUtil;
 import com.peng.service.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,38 +17,38 @@ public class CommentController {
     private ICommentService commentService;
 
     @RequestMapping(path = "/addORedit", method = RequestMethod.POST)
-    public JsonResult addORedit_comment(Comment comment) {
-        boolean bool = commentService.addORedit(comment);
-        if(bool){
-            return new JsonResult(20000, "提交成功!", bool);
-        }else {
-            return new JsonResult(50001, "提交失败!", bool);
+    public JsonResult saveOrUpdate(Comment comment) {
+        boolean bool = commentService.saveOrUpdate(comment);
+        if (bool) {
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
+        } else {
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
 
     }
 
 
     @RequestMapping(path = "/delete/{idNum}", method = RequestMethod.POST)
-    public JsonResult delete_comment(@PathVariable("idNum") Integer co_id) {
-        boolean bool = commentService.deleteByid(co_id);
-        if(bool){
-            return new JsonResult(20000, "提交成功!", bool);
-        }else {
-            return new JsonResult(50001, "提交失败!", bool);
+    public JsonResult removeById(@PathVariable("idNum") Long coId) {
+        boolean bool = commentService.removeById(coId);
+        if (bool) {
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
+        } else {
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
     }
 
 
     @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
-    public JsonResult find_comment(@PathVariable("idNum") Integer co_id) {
-        Comment comment = commentService.findByid(co_id);
-        return new JsonResult(20000, "ok", comment);
+    public JsonResult getById(@PathVariable("idNum") Long coId) {
+        Comment comment = commentService.getById(coId);
+        return ResultUtil.success(comment, ResultCode.SUCCESS);
     }
 
 
     @RequestMapping("/list/{pageNum}")
-    public JsonResult list_comment(@PathVariable("pageNum") Integer pageNum, @RequestParam(value="pagesize",defaultValue="10") Integer pagesize ) {
-        PageInfo<Comment> findpage = commentService.findpage(pageNum,pagesize);
-        return new JsonResult(20000, "ok", findpage);
+    public JsonResult getListByPage(@PathVariable("pageNum") Integer pageNum, @RequestParam(value = "pagesize", defaultValue = "10") Integer pagesize) {
+        PageInfo<Comment> listByPage = commentService.getListByPage(pageNum, pagesize);
+        return ResultUtil.success(listByPage, ResultCode.SUCCESS);
     }
 }

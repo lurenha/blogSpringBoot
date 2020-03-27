@@ -1,11 +1,9 @@
 package com.peng.controller;
 
 
-import com.peng.domain.Tag;
-import com.peng.domain.User;
-import com.peng.service.Impl.BlogService;
-import com.peng.service.Impl.TagService;
-import com.peng.service.Impl.UserService;
+
+import com.peng.entity.Tag;
+import com.peng.service.ICacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,29 +16,22 @@ import java.util.List;
 @Controller
 public class TagShowController {
 
-    @Autowired
-    private TagService tagService;
 
     @Autowired
-    private BlogService blogService;
+    private ICacheService iCacheService;
 
-    @Autowired
-    private UserService userService;
+    @GetMapping("/tags/{taId}")
+    public String tags(@PathVariable Long taId, @RequestParam(value = "page", defaultValue = "1") Integer pageNum, Model model){
 
-
-    @GetMapping("/tags/{ta_id}")
-    public String tags(@PathVariable Integer ta_id, @RequestParam(value = "page", defaultValue = "1") Integer pageNum, Model model){
-
-        List<Tag> tags = tagService.findallPro();
-        if(ta_id==-1){
-            ta_id = tags.get(0).getTa_id();
+        List<Tag> tags = iCacheService.getIndexTags();
+        if(taId==-1){
+            taId = tags.get(0).getTaId();
         }
-        User user=userService.findByid(1);
         model.addAttribute("tags",tags);
-        model.addAttribute("page",blogService.findsByTag(pageNum,5,ta_id));
-        model.addAttribute("activeTagId",ta_id);
-        model.addAttribute("user",user);
-        return "tags";
+        model.addAttribute("page",iCacheService.getPageByTag(pageNum,taId));
+        model.addAttribute("activeTagId",taId);
+        model.addAttribute("user",iCacheService.getAdminInfo());
+        return "/tags";
     }
 
 

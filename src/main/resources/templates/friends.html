@@ -55,10 +55,10 @@
         <h3 class="ui header m-text"><i class="fab fa-wolf-pack-battalion"></i>推荐网站:</h3>
         <br>
         <div class="ui cards ">
-            <a th:href="@{'http://'+${friend.website}}" th:if="${friend.flag}==1" th:each="friend : ${friends}"
+            <a th:href="@{${friend.website}}" th:if="${friend.flag}==1" th:each="friend : ${friends}"
                class="orange card m-card-center">
                 <div class="content">
-                    <div th:text="${friend.nickname}" class="header" href="#">Cute Dog</div>
+                    <div th:text="${friend.name}" class="header" href="#">Cute Dog</div>
                     <p th:text="${friend.description}"></p>
                 </div>
             </a>
@@ -77,7 +77,7 @@
                 <div class="ui link cards">
 
 
-                    <a th:href="@{'http://'+${friend.website}}" th:if="${friend.flag}==2" th:each="friend : ${friends}"
+                    <a th:href="@{${friend.website}}" th:if="${friend.flag}==2" th:each="friend : ${friends}"
                        class="teal card m-card-center">
 
                         <!--<div  class="image">-->
@@ -85,7 +85,7 @@
                         <!--</div>-->
 
                         <div class="content">
-                            <div th:text="${friend.nickname}" class="header">Molly</div>
+                            <div th:text="${friend.name}" class="header">Molly</div>
                             <!--<div class="meta">-->
                             <!--<span class="date" th:text="${friend.occupation}">Coworker</span>-->
                             <!--</div>-->
@@ -103,9 +103,9 @@
             <!--<h3 class="ui header m-text"><i class="fas fa-cloud"></i>喜欢的网站:</h3>-->
             <!--<br>-->
             <!--<div class="ui cards">-->
-            <!--<a th:href="@{'http://'+${friend.website}}"   th:each="friend : ${friends}" class="black card m-card-center">-->
+            <!--<a th:href="@{${friend.website}}"   th:each="friend : ${friends}" class="black card m-card-center">-->
             <!--<div class="content">-->
-            <!--<div   class="header" th:text="${friend.nickname}">Cute Dog</div>-->
+            <!--<div   class="header" th:text="${friend.name}">Cute Dog</div>-->
             <!--<p th:text="${friend.description}"></p>-->
             <!--</div>-->
             <!--</a>-->
@@ -142,7 +142,7 @@
                 <h4 class="ui inverted header  m-text-spaced m-opacity-small">联系我</h4>
                 <div class="ui inverted link list m-text-lined">
                     <div href="#" th:text="'QQ:'+${user.qq}" class="item">QQ:1474159935</div>
-                    <div href="#" th:text="'Wechat:'+${user.vx}" class="item">Wechat:zeng1474159935</div>
+                    <div href="#" th:text="'Wechat:'+${user.wechat}" class="item">Wechat:zeng1474159935</div>
                     <div href="#" th:text="'Email:'+${user.email}" class="item">Email:1474159935@qq.com</div>
                 </div>
             </div>

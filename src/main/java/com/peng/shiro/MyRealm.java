@@ -1,8 +1,12 @@
 package com.peng.shiro;
 
 
-import com.peng.domain.User;
-import com.peng.service.Impl.UserService;
+
+import com.peng.aspect.MyCache;
+import com.peng.entity.User;
+import com.peng.service.ICacheService;
+import com.peng.service.IUserService;
+import com.peng.util.RedisUtil;
 import com.peng.util.TokenUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -10,18 +14,17 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MyRealm extends AuthorizingRealm {
 
-
-    private UserService userService;
-
+    @Lazy//Shiro会和AOP冲突导致AOP失效，延迟注入
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+    private ICacheService iCacheService;
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
@@ -36,10 +39,11 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        Integer userid = TokenUtil.getUserid(principals.toString());
-        User user = userService.findByid(userid);
+        Long userId = TokenUtil.getUserId(principals.toString());
+        //去数据库查找权限
+        List<String> permissionList = iCacheService.getPermissionList(userId);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addStringPermissions(user.getPermissionlist());
+        simpleAuthorizationInfo.addStringPermissions(permissionList);
         return simpleAuthorizationInfo;
     }
 
@@ -49,16 +53,16 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
         String token = (String) auth.getCredentials();
-        // 解密获得userid，用于和数据库进行对比
-        Integer userid = TokenUtil.getUserid(token);
-        if (userid == null) {
+        // 解密获得usId，用于和数据库进行对比
+        Long userId = TokenUtil.getUserId(token);
+        if (userId == null) {
             throw new AuthenticationException("token invalid");
         }
 
-        User user = userService.findByid(userid);
-        if (user == null) {
-            throw new AuthenticationException("User didn't existed!");
-        }
+//        User user = userService.getById(userId);
+//        if (user == null) {
+//            throw new AuthenticationException("User didn't existed!");
+//        }
 
         if (! TokenUtil.verify(token)) {
             throw new AuthenticationException("Username or password error");
