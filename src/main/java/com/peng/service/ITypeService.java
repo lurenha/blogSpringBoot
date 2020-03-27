@@ -9,9 +9,5 @@ import java.util.List;
 
 public interface ITypeService extends IService<Type> {
     List<Type> getIndexTypes();
-//    Type findByid(Integer ty_id);
-//    List<Type> findall();
-//    List<Type> findallPro();
-//    boolean addORedit(Type type);
-//    boolean deleteByid(Integer ty_id);
+
 }

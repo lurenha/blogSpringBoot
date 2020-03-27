@@ -3,10 +3,7 @@ package com.peng.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.peng.aspect.MyCache;
-import com.peng.entity.Blog;
-import com.peng.entity.Tag;
-import com.peng.entity.Type;
-import com.peng.entity.User;
+import com.peng.entity.*;
 import com.peng.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +23,8 @@ public class CacheServiceImpl implements ICacheService {
     private ITypeService iTypeService;
     @Autowired
     private ITagService iTagService;
+    @Autowired
+    private IFriendService iFriendService;
 
     @Override
     @MyCache
@@ -97,6 +96,12 @@ public class CacheServiceImpl implements ICacheService {
     @MyCache
     public Map findTimeLine() {
         return iBlogService.findTimeLine();
+    }
+
+    @Override
+    @MyCache
+    public List<Friend> getIndexFriends() {
+        return iFriendService.list();
     }
 
 }

@@ -38,10 +38,9 @@ public class MyCacheAspect {
 
     //@Around("@annotation(myCache)")
     @Order(1)
-//    @Around("execution(public * com.peng.service.Impl..*(..)) && @annotation(myCache)")
-    @Around("@annotation(myCache)")
+    @Around("execution(public * com.peng.service.Impl..*(..)) && @annotation(myCache)")
     public Object around(ProceedingJoinPoint jp, MyCache myCache) {
-        long startTime = System.currentTimeMillis();
+//        long startTime = System.currentTimeMillis();
         //生成Redis中的key
         String key = createCacheKey(jp);
         //如果有缓存直接返回，没有正常执行并写入缓存
@@ -57,7 +56,7 @@ public class MyCacheAspect {
             log.error(t.toString());
             return null;
         } finally {
-            log.info("{}  方法执行时间： {}",jp.getSignature().getName(),System.currentTimeMillis()-startTime);
+//            log.info("{}  方法执行时间： {}",jp.getSignature().getName(),System.currentTimeMillis()-startTime);
         }
     }
 

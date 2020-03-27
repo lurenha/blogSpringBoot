@@ -25,48 +25,4 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type> implements IT
         return typeMapper.getIndexTypes();
     }
 
-//    @Autowired
-//    private TypeDao typeDao;
-//
-//    @Override
-//    public Type findByid(Integer ty_id) {
-//        return typeDao.findTypeByid(ty_id);
-//    }
-//
-//    @Override
-//    public List<Type> findall() {
-//        return typeDao.findallType();
-//    }
-//
-//
-//    @MyCache
-//    @Override
-//    public List<Type> findallPro() {
-//        List<Type> types = typeDao.findallTypePro();
-//        return types;
-//    }
-//
-//
-//    @Override
-//    public boolean addORedit(Type type) {
-//        Integer ty_id = type.getTy_id();
-//        if (ty_id != null) {//更新
-//            typeDao.updateType(type);
-//        } else {//添加
-//            typeDao.addType(type);
-//        }
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean deleteByid(Integer ty_id) {
-//        Type type = typeDao.findTypeByidPro(ty_id);
-//        if (type.getBlogs() == null || type.getBlogs().size() == 0) {
-//            typeDao.deleteTypebyid(ty_id);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//
-//    }
 }

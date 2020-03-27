@@ -1,21 +1,17 @@
 package com.peng.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.peng.aspect.MyCache;
+
 import com.peng.entity.Blog;
-import com.peng.entity.User;
 import com.peng.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -23,14 +19,6 @@ public class IndexController {
 
     @Autowired
     private IBlogService iBlogService;
-    @Autowired
-    private IUserService iUserService;
-    @Autowired
-    private ICommentService iCommentService;
-    @Autowired
-    private ITypeService iTypeService;
-    @Autowired
-    private ITagService iTagService;
     @Autowired
     private ICacheService iCacheService;
 

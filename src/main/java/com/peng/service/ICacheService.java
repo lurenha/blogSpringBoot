@@ -1,10 +1,7 @@
 package com.peng.service;
 
 import com.github.pagehelper.PageInfo;
-import com.peng.entity.Blog;
-import com.peng.entity.Tag;
-import com.peng.entity.Type;
-import com.peng.entity.User;
+import com.peng.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -22,4 +19,5 @@ public interface ICacheService {
     PageInfo<Blog> getPageByType(Integer pageNum,Long tyId);
     PageInfo<Blog> getPageByTag(Integer pageNum,Long taId);
     Map findTimeLine();
+    List<Friend> getIndexFriends();
 }

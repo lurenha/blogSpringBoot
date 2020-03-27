@@ -32,27 +32,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public List<String> getPermissionList(Long usId) {
         return userMapper.getPermissionsById(usId);
     }
-//    @Autowired
-//    private UserDao userDao;
-//
-//    @Override
-//    public User findByid(Integer us_id) {
-//        return userDao.findByid(us_id);
-//    }
-//
-//    @Override
-//    public User verifylogin(String name, String password) {
-//        return userDao.verifylogin(name, password);
-//    }
-//
-//    @Override
-//    public boolean addORedit(User user) {
-//        Integer us_id = user.getUs_id();
-//        if (us_id != null) {//更新
-//            userDao.updateUser(user);
-//        } else {//添加
-//            userDao.addUser(user);
-//        }
-//        return true;
-//    }
+
 }

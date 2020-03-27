@@ -1,8 +1,8 @@
 # 服务器配置
 server:
   port: 8080
-#  servlet:
-#    context-path: /peng
+  servlet:
+    context-path: /peng
 
 
 # Spring配置

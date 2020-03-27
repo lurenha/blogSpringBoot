@@ -218,8 +218,8 @@
                     <div class="m-margin-bottom-small m-mobile-wide  field">
                         <div class="ui m-margin-bottom-small m-mobile-wide left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="nickname" placeholder="昵称"
-                                   th:value="${session.user}!=null?${session.user.nickname}">
+                            <input type="text" name="name" placeholder="昵称"
+                                   th:value="${session.user}!=null?${session.user.name}">
                         </div>
                     </div>
                     <div class="m-margin-bottom-small m-mobile-wide  field">
@@ -301,7 +301,7 @@
 <script th:inline="javascript">
 
     hide();
-    $("[name='nickname']").val(localStorage.getItem("nickname"))
+    $("[name='name']").val(localStorage.getItem("name"))
     $("[name='email']").val(localStorage.getItem("email"))
     function hide() {
         $('.trans').transition('toggle');
@@ -338,7 +338,7 @@
                 }]
             },
             content: {
-                identifier: 'nickname',
+                identifier: 'name',
                 rules: [{
                     type: 'empty',
                     prompt: '请输入你的大名'
@@ -414,7 +414,7 @@
     $('#commentpost-btn').click(function () {
         var boo = $('.ui.form').form('validate form');
         if (boo) {
-            localStorage.setItem("nickname", $("[name='nickname']").val());
+            localStorage.setItem("name", $("[name='name']").val());
             localStorage.setItem("email", $("[name='email']").val());
             postData();
         } else {
@@ -429,9 +429,9 @@
     /*实现表单提交*/
     function postData() {
         $("#comment-container").load(/*[[@{/comments}]]*/"", {
-            "parent_id": $("[name='parentcomment.coId']").val(),
+            "parentId": $("[name='parentcomment.coId']").val(),
             "blId": $("[name='blog.blId']").val(),
-            "nickname": $("[name='nickname']").val(),
+            "name": $("[name='name']").val(),
             "email": $("[name='email']").val(),
             "content": $("[name='content']").val()
         }, function (responseTxt, statusTxt, xhr) {
