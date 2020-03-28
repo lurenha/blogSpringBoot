@@ -10,4 +10,5 @@ public interface IUserService extends IService<User> {
     User getAdminInfo();
     User verifyLogin(String username, String password);
     List<String> getPermissionList(Long usId);
+    boolean isAdmin(Long usId);
 }

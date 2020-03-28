@@ -16,7 +16,7 @@ import java.util.List;
  * */
 @JsonInclude(value= JsonInclude.Include.NON_NULL)//为NULL的字段不返回为（JSON）
 @Data
-@TableName("t_user")
+@TableName("sys_user")
 public class User implements Serializable {
     @TableId(value = "us_id",type = IdType.AUTO)
     private Long usId;

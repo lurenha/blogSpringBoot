@@ -2,8 +2,7 @@ package com.peng.util;
 
 /**
  * Base64工具类
- * 
- * @author ruoyi
+ *
  */
 public final class Base64Util
 {

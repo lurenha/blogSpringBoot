@@ -3,8 +3,7 @@ package com.peng.util;
 
 /**
  * 通用常量信息
- * 
- * @author ruoyi
+ *
  */
 public class Constants
 {

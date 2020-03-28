@@ -5,6 +5,8 @@ import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
 import com.peng.entity.User;
+import com.peng.entity.sys.SysMenu;
+import com.peng.service.ISysMenuService;
 import com.peng.service.IUserService;
 import com.peng.util.Constants;
 import com.peng.util.RedisUtil;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,6 +29,8 @@ public class LoginController {
     private IUserService userService;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private ISysMenuService iSysMenuService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public JsonResult login(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("code") String code, @RequestParam("uuid") String uuid) {
@@ -73,23 +78,14 @@ public class LoginController {
 
     @RequestMapping(value = "/getRouters", method = RequestMethod.GET)
     public JsonResult getRouters(ServletRequest request) {
-//        HttpServletRequest req = (HttpServletRequest) request;
-//        String token = req.getHeader("Peng-Token");
-//
-//        Long usId = null;
-//        User user = null;
-//        if ((usId = TokenUtil.getUserId(token)) != null) {
-//            user = userService.getById(usId);
-//            user.setPassword(null);
-//            user.setUsId(null);
-//
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("user", user);
-//            map.put("roles", new String[]{"admin"});
-//            map.put("permissions", new String[]{"*:*:*"});
-//            return ResultUtil.success(map, ResultCode.SUCCESS);
-//        }
-        return ResultUtil.successNoData(ResultCode.SUCCESS);
+        HttpServletRequest req = (HttpServletRequest) request;
+        String token = req.getHeader("Peng-Token");
+        Long usId = TokenUtil.getUserId(token);
+        if (usId == null) {
+            return ResultUtil.faile(ResultCode.Token_AUTH_ERROR);
+        }
+        List<SysMenu> menus = iSysMenuService.selectMenuTreeByUserId(usId);
+        return ResultUtil.success(iSysMenuService.buildMenus(menus), ResultCode.SUCCESS);
     }
 
 

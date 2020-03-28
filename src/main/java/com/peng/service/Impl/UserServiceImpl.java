@@ -33,4 +33,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return userMapper.getPermissionsById(usId);
     }
 
+    @Override
+    public boolean isAdmin(Long usId) {
+        return userMapper.getRoleKeyById(usId).equals("admin");
+    }
+
 }

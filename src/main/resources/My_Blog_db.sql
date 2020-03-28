@@ -394,10 +394,10 @@ INSERT INTO `t_type` VALUES (6, 'Java', '2020-03-21 22:11:52', '2020-03-21 22:11
 INSERT INTO `t_type` VALUES (7, '中间件', '2020-03-21 22:11:52', '2020-03-21 22:11:52');
 
 -- ----------------------------
--- Table structure for t_user
+-- Table structure for sys_user
 -- ----------------------------
-DROP TABLE IF EXISTS `t_user`;
-CREATE TABLE `t_user`  (
+DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user`  (
   `us_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名',
   `username` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账号',
@@ -417,9 +417,9 @@ CREATE TABLE `t_user`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of t_user
+-- Records of sys_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES (1, '低调做个路人', 'weipeng', '775736156', '1143038749@qq.com', '他的希望和信心从不消失，如今正像微风渐起那么重新旺盛起来。—《老人与海》', '北京朝阳区', '18531159505', '1143038749', 'https://c-ssl.duitang.com/uploads/item/201601/15/20160115155749_BQ3Vk.thumb.700_0.jpeg', 1, '2019-12-06 14:33:53', '2020-03-21 22:00:55');
-INSERT INTO `t_user` VALUES (2, '游客01', 'youke', '123456', NULL, NULL, NULL, NULL, NULL, NULL, 2, '2020-01-06 14:33:53', '2020-03-21 22:01:01');
+INSERT INTO `sys_user` VALUES (1, '低调做个路人', 'weipeng', '775736156', '1143038749@qq.com', '他的希望和信心从不消失，如今正像微风渐起那么重新旺盛起来。—《老人与海》', '北京朝阳区', '18531159505', '1143038749', 'https://c-ssl.duitang.com/uploads/item/201601/15/20160115155749_BQ3Vk.thumb.700_0.jpeg', 1, '2019-12-06 14:33:53', '2020-03-21 22:00:55');
+INSERT INTO `sys_user` VALUES (2, '游客01', 'youke', '123456', NULL, NULL, NULL, NULL, NULL, NULL, 2, '2020-01-06 14:33:53', '2020-03-21 22:01:01');
 
 SET FOREIGN_KEY_CHECKS = 1;
