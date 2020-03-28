@@ -3,7 +3,6 @@ package com.peng.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.peng.aspect.MyCache;
 import com.peng.entity.User;
 import com.peng.mapper.UserMapper;
 import com.peng.service.IUserService;
@@ -30,7 +29,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public List<String> getPermissionList(Long usId) {
-        return userMapper.getPermissionsById(usId);
+        if (this.isAdmin(usId)) {
+            return userMapper.getPermissionsAll();
+        } else {
+            return userMapper.getPermissionsById(usId);
+        }
+
     }
 
     @Override
