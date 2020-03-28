@@ -21,15 +21,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/user")
+@RequestMapping("/system/user")
 public class UserController {
     @Autowired
-    private IUserService userService;
+    private IUserService iUserService;
 
     @RequiresPermissions("user:addORedit")
     @RequestMapping(value = "/addORedit", method = RequestMethod.POST)
     public JsonResult saveOrUpdate(User user) {
-        Boolean bool = userService.saveOrUpdate(user);
+        Boolean bool = iUserService.saveOrUpdate(user);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
@@ -37,11 +37,18 @@ public class UserController {
         }
     }
 
-    @RequiresPermissions("user:find")
-    @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
+//    @RequiresPermissions("user:find")
+    @GetMapping("/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long usId) {
-        User user = userService.getById(usId);
+        User user = iUserService.getById(usId);
         return ResultUtil.success(user, ResultCode.SUCCESS);
+    }
+
+//    @RequiresPermissions("user:find")
+    @GetMapping("/list")
+    public JsonResult list(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                           @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        return ResultUtil.success(iUserService.getListByPage(pageNum, pageSize), ResultCode.SUCCESS);
     }
 
 }

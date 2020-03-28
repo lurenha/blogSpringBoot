@@ -3,6 +3,9 @@ package com.peng.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.peng.entity.Blog;
 import com.peng.entity.User;
 import com.peng.mapper.UserMapper;
 import com.peng.service.IUserService;
@@ -40,6 +43,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public boolean isAdmin(Long usId) {
         return userMapper.getRoleKeyById(usId).equals("admin");
+    }
+
+    @Override
+    public PageInfo<User> getListByPage(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> list = this.list();
+        PageInfo<User> result = new PageInfo<>(list);
+        return result;
     }
 
 }

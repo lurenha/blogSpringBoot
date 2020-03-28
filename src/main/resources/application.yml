@@ -7,25 +7,24 @@ server:
 
 # Spring配置
 spring:
+  #thymeleaf页面模板配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    mode: HTML5
+  # Redis数据库索引（默认为0）
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
   # 数据源配置
   datasource:
     url: jdbc:mysql://123.57.140.84:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-    #thymeleaf页面模板配置
-    thymeleaf:
-      prefix: classpath:/templates/
-      suffix: .html
-      cache: false
-      mode: HTML5
-    # Redis数据库索引（默认为0）
-    redis:
-      database: 0
-      host: 127.0.0.1
-      port: 6379
-      password:
-
 #  jackson:
 #    serialization:
 #      write-dates-as-timestamps: true
@@ -33,10 +32,6 @@ spring:
 #    ## 默认日期格式化
 #    date-format: yyyy-MM-dd HH:mm:ss
 
-##开启驼峰命名转换
-#mybatis:
-#  configuration:
-#    map-underscore-to-camel-case: true
 
 mybatis-plus:
   configuration:
