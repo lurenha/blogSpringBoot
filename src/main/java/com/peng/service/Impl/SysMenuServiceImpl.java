@@ -7,7 +7,7 @@ import com.peng.entity.other.MetaVo;
 import com.peng.entity.other.RouterVo;
 import com.peng.entity.sys.SysMenu;
 
-import com.peng.mapper.SysMenuMapper;
+import com.peng.mapper.sys.SysMenuMapper;
 import com.peng.service.ISysMenuService;
 import com.peng.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

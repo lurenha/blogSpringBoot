@@ -2,6 +2,7 @@ package com.peng.entity.sys;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -93,6 +94,7 @@ public class SysMenu implements Serializable {
     /**
      * 子菜单
      */
+    @TableField(exist=false)
     private List<SysMenu> children = new ArrayList<SysMenu>();
 
 

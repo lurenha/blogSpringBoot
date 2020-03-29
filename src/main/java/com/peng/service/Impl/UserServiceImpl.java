@@ -1,6 +1,7 @@
 package com.peng.service.Impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -46,9 +47,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public PageInfo<User> getListByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<User> getListByPage(Integer pageNum, Integer pageSize, Wrapper<User> queryWrapper) {
         PageHelper.startPage(pageNum, pageSize);
-        List<User> list = this.list();
+        List<User> list = this.list(queryWrapper);
         PageInfo<User> result = new PageInfo<>(list);
         return result;
     }
