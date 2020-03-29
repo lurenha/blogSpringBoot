@@ -56,11 +56,8 @@ public class SysRoleController {
     //    @RequiresPermissions("user:find")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody SysRole role) {
-        List<SysRole> roleList = iSysRoleService.list(new LambdaQueryWrapper<SysRole>().select(SysRole::getRoleName, SysRole::getRoleKey));
-        for (SysRole sysRole : roleList) {
-            if (sysRole.getRoleName().equals(role.getRoleName()) || sysRole.getRoleKey().equals(role.getRoleKey())) {
-                return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
-            }
+        if(iSysRoleService.count(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleName,role.getRoleName()).or().eq(SysRole::getRoleKey,role.getRoleKey()))>0){
+            return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
         }
         Boolean bool = iSysRoleService.addRoleWithMenuBatch(role);
         if (bool) {
@@ -77,13 +74,14 @@ public class SysRoleController {
     //    @RequiresPermissions("user:find")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody SysRole role) {
-        if (Objects.isNull(role.getRoleId())) return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
-        List<SysRole> roleList = iSysRoleService.list(new LambdaQueryWrapper<SysRole>().select(SysRole::getRoleName, SysRole::getRoleKey).ne(SysRole::getRoleId, role.getRoleId()));
-        for (SysRole sysRole : roleList) {
-            if (sysRole.getRoleName().equals(role.getRoleName()) || sysRole.getRoleKey().equals(role.getRoleKey())) {
-                return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
-            }
+        if (Objects.isNull(role.getRoleId())) {
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
+        if(iSysRoleService.count(new LambdaQueryWrapper<SysRole>().ne(SysRole::getRoleId,role.getRoleId()).eq(SysRole::getRoleName,role.getRoleName()))>0||
+                iSysRoleService.count(new LambdaQueryWrapper<SysRole>().ne(SysRole::getRoleId,role.getRoleId()).eq(SysRole::getRoleKey,role.getRoleKey()))>0){
+            return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
+        }
+
         Boolean bool = iSysRoleService.updateRoleWithMenuBatch(role);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);

@@ -39,6 +39,18 @@ public class UserController {
     //    @RequiresPermissions("user:addORedit")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody User user) {
+        if (Objects.isNull(user.getUsId())) {
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
+        }
+        if(iUserService.count(new LambdaQueryWrapper<User>().ne(User::getUsId,user.getUsId()).eq(User::getUsername,user.getUsername()))>0){
+            return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
+        }
+//        List<User> userList = iUserService.list(new LambdaQueryWrapper<User>().select(User::getUsername).ne(User::getUsername, user.getUsername()));
+//        if (userList.stream().filter(us -> {
+//            return us.getUsername().equals(user.getUsername());
+//        }).count() > 0) {
+//            return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_USER);
+//        }
         Boolean bool = iUserService.updateById(user);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
@@ -53,6 +65,16 @@ public class UserController {
     //    @RequiresPermissions("user:addORedit")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody User user) {
+        if(iUserService.count(new LambdaQueryWrapper<User>().eq(User::getUsername,user.getUsername()))>0){
+            return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
+        }
+//        List<User> userList = iUserService.list(new LambdaQueryWrapper<User>().select(User::getUsername));
+//        if (userList.stream().filter(us -> {
+//            return us.getUsername().equals(user.getUsername());
+//        }).count() > 0) {
+//            return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_USER);
+//        }
+
         Boolean bool = iUserService.save(user);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
@@ -93,8 +115,8 @@ public class UserController {
     //    @RequiresPermissions("user:find")
     @GetMapping("/delete/{userIds}")
     public JsonResult remove(@PathVariable Long[] userIds) {
-        for (Long id :userIds) {
-            if(iUserService.isAdmin(id)){
+        for (Long id : userIds) {
+            if (iUserService.isAdmin(id)) {
                 return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
             }
         }

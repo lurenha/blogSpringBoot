@@ -73,7 +73,6 @@ public class SysRole implements Serializable
 
     /** 菜单组 */
     @TableField(exist=false)
-    @NotNull(message = "关联菜单ID不能为空")
     private Long[] menuIds;
 
 

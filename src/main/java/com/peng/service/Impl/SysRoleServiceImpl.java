@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
@@ -31,8 +32,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional
     public Boolean addRoleWithMenuBatch(SysRole sysRole) {
         this.save(sysRole);
-        List<Long> menuIds = Arrays.asList(sysRole.getMenuIds());
-        sysRoleMapper.addRoleMenuBatch(sysRole.getRoleId(), menuIds);
+        if (Objects.nonNull(sysRole.getMenuIds()) && sysRole.getMenuIds().length > 0) {
+            List<Long> menuIds = Arrays.asList(sysRole.getMenuIds());
+            sysRoleMapper.addRoleMenuBatch(sysRole.getRoleId(), menuIds);
+        }
         return true;
     }
 
@@ -42,7 +45,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         this.updateById(sysRole);
         List<Long> menuIds = Arrays.asList(sysRole.getMenuIds());
         sysRoleMapper.deleteRoleMenuBatch(sysRole.getRoleId());
-        sysRoleMapper.addRoleMenuBatch(sysRole.getRoleId(), menuIds);
+        if (Objects.nonNull(sysRole.getMenuIds()) && sysRole.getMenuIds().length > 0) {
+            sysRoleMapper.addRoleMenuBatch(sysRole.getRoleId(), menuIds);
+        }
         return true;
     }
 
@@ -50,8 +55,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional
     public Boolean deleteByIdsWithMenuBatch(List<Long> roleIds) {
         this.removeByIds(roleIds);
-        roleIds.stream().forEach(id->{
-            sysRoleMapper.deleteRoleMenuBatch(id);});
+        roleIds.stream().forEach(id -> {
+            sysRoleMapper.deleteRoleMenuBatch(id);
+        });
         return true;
     }
 }
