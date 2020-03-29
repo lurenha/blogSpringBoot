@@ -83,7 +83,6 @@ public class UserController {
     public JsonResult list(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                            @RequestParam(value = "userName", required = false) String userName) {
-//        PageInfo<User> userPage = iUserService.getListByPage(pageNum, pageSize, new LambdaQueryWrapper<User>().like(Objects.nonNull(userName), User::getUsername, userName));
         PageInfo<User> userPage = iUserService.getListByPage(pageNum, pageSize, new LambdaQueryWrapper<User>().like(Objects.nonNull(userName), User::getUsername, userName));
         return ResultUtil.success(userPage, ResultCode.SUCCESS);
     }

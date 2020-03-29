@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.peng.entity.other.MetaVo;
 import com.peng.entity.other.RouterVo;
+import com.peng.entity.other.TreeSelect;
 import com.peng.entity.sys.SysMenu;
 
 import com.peng.mapper.sys.SysMenuMapper;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
@@ -24,6 +26,52 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     private SysMenuMapper sysMenuMapper;
     @Autowired
     private IUserService iUserService;
+
+    /**
+     * 根据用户查询系统菜单列表
+     *
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
+    @Override
+    public List<SysMenu> selectMenuList(Long userId)
+    {
+        return selectMenuList(new SysMenu(), userId);
+    }
+
+    /**
+     * 查询系统菜单列表
+     *
+     * @param menu 菜单信息
+     * @return 菜单列表
+     */
+    @Override
+    public List<SysMenu> selectMenuList(SysMenu menu, Long userId)
+    {
+        List<SysMenu> menuList = null;
+        // 管理员显示所有菜单信息
+        if (iUserService.isAdmin(userId))
+        {
+            menuList = sysMenuMapper.selectMenuList(menu);
+        }
+        else
+        {
+            menu.getParams().put("usId", userId);
+            menuList = sysMenuMapper.selectMenuListByUserId(menu);
+        }
+        return menuList;
+    }
+
+    /**
+     * 根据角色ID查询菜单树信息
+     *
+     * @param roleId 角色ID
+     * @return 选中菜单列表
+     */
+    public List<Integer> selectMenuListByRoleId(Long roleId)
+    {
+        return sysMenuMapper.selectMenuListByRoleId(roleId);
+    }
 
     @Override
     public List<SysMenu> selectMenuTreeByUserId(Long userId)    {
@@ -66,6 +114,46 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             routers.add(router);
         }
         return routers;
+    }
+
+    /**
+     * 构建前端所需要下拉树结构
+     *
+     * @param menus 菜单列表
+     * @return 下拉树结构列表
+     */
+    @Override
+    public List<TreeSelect> buildMenuTreeSelect(List<SysMenu> menus)
+    {
+        List<SysMenu> menuTrees = buildMenuTree(menus);
+        return menuTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    /**
+     * 构建前端所需要树结构
+     *
+     * @param menus 菜单列表
+     * @return 树结构列表
+     */
+    @Override
+    public List<SysMenu> buildMenuTree(List<SysMenu> menus)
+    {
+        List<SysMenu> returnList = new ArrayList<SysMenu>();
+        for (Iterator<SysMenu> iterator = menus.iterator(); iterator.hasNext();)
+        {
+            SysMenu t = (SysMenu) iterator.next();
+            // 根据传入的某个父节点ID,遍历该父节点的所有子节点
+            if (t.getParentId() == 0)
+            {
+                recursionFn(menus, t);
+                returnList.add(t);
+            }
+        }
+        if (returnList.isEmpty())
+        {
+            returnList = menus;
+        }
+        return returnList;
     }
 
     /**

@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,6 +19,9 @@ import java.util.List;
  * */
 @JsonInclude(value= JsonInclude.Include.NON_NULL)//为NULL的字段不返回为（JSON）
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("t_tag")
 public class Tag implements Serializable {
     @TableId(value = "ta_id",type = IdType.AUTO)

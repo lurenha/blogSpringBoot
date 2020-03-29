@@ -17,14 +17,24 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      * @param menu 菜单信息
      * @return 菜单列表
      */
+    @Select("<script>" +
+            " select menu_id, menu_name, parent_id, order_num, path, component, is_frame, menu_type, visible, ifnull(perms,'') as perms, icon, create_time \n" +
+            "from sys_menu where 1=1\n" +
+            "<if test='menuName!=null and menuName!=\"\"'> " +
+            "AND menu_name like concat('%', #{menuName}, '%')" +
+            "</if>"+
+            "<if test='visible!=null and visible!=\"\"'> " +
+            "AND visible = #{visible}" +
+            "</if>"+
+            "</script>")
     List<SysMenu> selectMenuList(SysMenu menu);
 
-    /**
-     * 根据用户所有权限
-     *
-     * @return 权限列表
-     */
-    List<String> selectMenuPerms();
+//    /**
+//     * 根据用户所有权限
+//     *
+//     * @return 权限列表
+//     */
+//    List<String> selectMenuPerms();
 
     /**
      * 根据用户查询系统菜单列表
@@ -34,13 +44,13 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      */
     List<SysMenu> selectMenuListByUserId(SysMenu menu);
 
-    /**
-     * 根据用户ID查询权限
-     *
-     * @param userId 用户ID
-     * @return 权限列表
-     */
-    List<String> selectMenuPermsByUserId(Long userId);
+//    /**
+//     * 根据用户ID查询权限
+//     *
+//     * @param userId 用户ID
+//     * @return 权限列表
+//     */
+//    List<String> selectMenuPermsByUserId(Long userId);
 
     /**
      * 查询所有菜单
@@ -73,54 +83,60 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      * @param roleId 角色ID
      * @return 选中菜单列表
      */
+    @Select("select m.menu_id, m.parent_id\n" +
+            "from sys_menu m\n" +
+            "left join sys_role_menu rm on m.menu_id = rm.menu_id\n" +
+            "where rm.role_id = #{roleId}\n" +
+            "and m.menu_id not in (select m.parent_id from sys_menu m inner join sys_role_menu rm on m.menu_id = rm.menu_id and rm.role_id = #{roleId})\n" +
+            "order by m.parent_id, m.order_num")
     List<Integer> selectMenuListByRoleId(Long roleId);
 
-    /**
-     * 根据菜单ID查询信息
-     *
-     * @param menuId 菜单ID
-     * @return 菜单信息
-     */
-    SysMenu selectMenuById(Long menuId);
-
-    /**
-     * 是否存在菜单子节点
-     *
-     * @param menuId 菜单ID
-     * @return 结果
-     */
-    int hasChildByMenuId(Long menuId);
-
-    /**
-     * 新增菜单信息
-     *
-     * @param menu 菜单信息
-     * @return 结果
-     */
-    int insertMenu(SysMenu menu);
-
-    /**
-     * 修改菜单信息
-     *
-     * @param menu 菜单信息
-     * @return 结果
-     */
-    int updateMenu(SysMenu menu);
-
-    /**
-     * 删除菜单管理信息
-     *
-     * @param menuId 菜单ID
-     * @return 结果
-     */
-    int deleteMenuById(Long menuId);
-
-    /**
-     * 校验菜单名称是否唯一
-     *
-     * @param menuName 菜单名称
-     * @param parentId 父菜单ID
-     * @return 结果
-     */
-    SysMenu checkMenuNameUnique(@Param("menuName") String menuName, @Param("parentId") Long parentId);
+//    /**
+//     * 根据菜单ID查询信息
+//     *
+//     * @param menuId 菜单ID
+//     * @return 菜单信息
+//     */
+//    SysMenu selectMenuById(Long menuId);
+//
+//    /**
+//     * 是否存在菜单子节点
+//     *
+//     * @param menuId 菜单ID
+//     * @return 结果
+//     */
+//    int hasChildByMenuId(Long menuId);
+//
+//    /**
+//     * 新增菜单信息
+//     *
+//     * @param menu 菜单信息
+//     * @return 结果
+//     */
+//    int insertMenu(SysMenu menu);
+//
+//    /**
+//     * 修改菜单信息
+//     *
+//     * @param menu 菜单信息
+//     * @return 结果
+//     */
+//    int updateMenu(SysMenu menu);
+//
+//    /**
+//     * 删除菜单管理信息
+//     *
+//     * @param menuId 菜单ID
+//     * @return 结果
+//     */
+//    int deleteMenuById(Long menuId);
+//
+//    /**
+//     * 校验菜单名称是否唯一
+//     *
+//     * @param menuName 菜单名称
+//     * @param parentId 父菜单ID
+//     * @return 结果
+//     */
+//    SysMenu checkMenuNameUnique(@Param("menuName") String menuName, @Param("parentId") Long parentId);
 }

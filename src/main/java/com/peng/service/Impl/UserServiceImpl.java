@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.peng.entity.Blog;
 import com.peng.entity.User;
 import com.peng.mapper.UserMapper;
 import com.peng.service.IUserService;
