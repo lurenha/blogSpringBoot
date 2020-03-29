@@ -30,6 +30,7 @@ public enum ResultCode {
     RESULE_DATA_NONE(50001, "数据未找到"),
     DATA_IS_WRONG(50002, "数据有误"),
     DATA_ALREADY_EXISTED(50003, "数据已存在"),
+    DATA_ALREADY_EXISTED_ROLE(50004, "重复的角色名或角色Key"),
 
     /* 接口错误：60001-69999 */
     INTERFACE_INNER_INVOKE_ERROR(60001, "内部系统接口调用异常"),

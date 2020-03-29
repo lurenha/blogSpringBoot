@@ -3,6 +3,7 @@ package com.peng.controller.Admin;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
+import com.peng.entity.other.TreeSelect;
 import com.peng.entity.sys.SysMenu;
 import com.peng.service.ISysMenuService;
 import com.peng.util.TokenUtil;
@@ -42,6 +43,21 @@ public class SysMenuController
         map.put("checkedKeys", iSysMenuService.selectMenuListByRoleId(roleId));
         map.put("menus", iSysMenuService.buildMenuTreeSelect(menus));
         return ResultUtil.success(map, ResultCode.SUCCESS);
+    }
+
+
+    /**
+     * 加载菜单列表树
+     */
+    @GetMapping(value = "/treeselect")
+    public JsonResult roleMenuTreeselect(ServletRequest request)
+    {
+        HttpServletRequest req = (HttpServletRequest) request;
+        String token = req.getHeader("Peng-Token");
+        Long usId = TokenUtil.getUserId(token);
+        List<SysMenu> menus = iSysMenuService.selectMenuList(usId);
+        List<TreeSelect> treeSelects = iSysMenuService.buildMenuTreeSelect(menus);
+        return ResultUtil.success(treeSelects, ResultCode.SUCCESS);
     }
 
 
