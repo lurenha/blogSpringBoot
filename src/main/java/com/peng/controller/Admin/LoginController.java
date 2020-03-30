@@ -55,7 +55,7 @@ public class LoginController {
 
     }
 
-    @RequestMapping(value = "/getInfo", method = RequestMethod.GET)
+    @RequestMapping(value = {"/getInfo"}, method = RequestMethod.GET)
     public JsonResult getInfo(ServletRequest request) {
         HttpServletRequest req = (HttpServletRequest) request;
         String token = req.getHeader("Peng-Token");
@@ -66,7 +66,6 @@ public class LoginController {
             user = userService.getById(usId);
             user.setPassword(null);
             user.setUsId(null);
-
             Map<String, Object> map = new HashMap<>();
             map.put("user", user);
             map.put("roles", new String[]{"admin"});

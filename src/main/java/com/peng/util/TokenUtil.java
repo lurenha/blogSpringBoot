@@ -10,15 +10,16 @@ import com.peng.entity.User;
 import java.util.Date;
 
 public class TokenUtil {
-    private static final long EXPIRE_TIME= 12*60*60*1000; //12小时过期
-    private static final String TOKEN_SECRET="token1997WeiPeng";  //密钥盐
+    private static final long EXPIRE_TIME = 12 * 60 * 60 * 1000; //12小时过期
+    private static final String TOKEN_SECRET = "token1997WeiPeng";  //密钥盐
 
     /**
      * 签名生成
+     *
      * @param user
      * @return
      */
-    public static String sign(User user){
+    public static String sign(User user) {
         String token = null;
         try {
             Date expiresAt = new Date(System.currentTimeMillis() + EXPIRE_TIME);
@@ -29,7 +30,7 @@ public class TokenUtil {
                     .withExpiresAt(expiresAt)
                     // 使用了HMAC256加密算法。
                     .sign(Algorithm.HMAC256(TOKEN_SECRET));
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return token;
@@ -38,10 +39,11 @@ public class TokenUtil {
 
     /**
      * 签名验证
+     *
      * @param token
      * @return
      */
-    public static boolean verify(String token){
+    public static boolean verify(String token) {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("peng").build();
             DecodedJWT jwt = verifier.verify(token);
@@ -50,27 +52,26 @@ public class TokenUtil {
 //            System.out.println("name: " + jwt.getClaim("name").asString());
 //            System.out.println("过期时间：      " + jwt.getExpiresAt());
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * 获取内容
+     *
      * @param token
      * @return
      */
-    public static Long getUserId(String token){
-        try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("peng").build();
-            DecodedJWT jwt = verifier.verify(token);
-            return  jwt.getClaim("usId").asLong();
-        } catch (Exception e){
-            return null;
-        }
+    public static Long getUserId(String token) {
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("peng").build();
+        DecodedJWT jwt = verifier.verify(token);
+        return jwt.getClaim("usId").asLong();
     }
+
     /**
      * 获取name
+     *
      * @param token
      * @return
      */

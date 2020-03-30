@@ -8,9 +8,12 @@ import com.github.pagehelper.PageInfo;
 import com.peng.entity.Blog;
 import com.peng.entity.Comment;
 import com.peng.entity.User;
+import com.peng.entity.sys.SysRole;
 import com.peng.mapper.*;
+import com.peng.mapper.sys.SysRoleMapper;
 import com.peng.service.IBlogService;
 import com.peng.service.ICommentService;
+import com.peng.service.ISysRoleService;
 import com.peng.service.IUserService;
 import com.peng.util.RedisUtil;
 import org.junit.Test;
@@ -52,6 +55,12 @@ public class MyTests {
     @Autowired
     private IUserService iUserService;
 
+    @Autowired
+    private ISysRoleService iSysRoleService;
+
+    @Autowired
+    private SysRoleMapper sysRoleMapper;
+
 
     @Test
     public void test01() {
@@ -69,25 +78,12 @@ public class MyTests {
 
     @Test
     public void test02() {
-//        PageInfo<Blog> indexPage = iblogService.getIndexPage(null, 1);
-//        for (Blog blog : indexPage.getList()
-//        ) {
-//            System.out.println(blog);
-//        }
-
-        Blog fullById = iblogService.findFullById((long) 1);
-        System.out.println(fullById);
-
-//        System.out.println(iCommentService.getById(1));
+        List<Long> list = new ArrayList<>();
+        list.add(10l);
+        list.add(11l);
+        list.add(12l);
+        sysRoleMapper.addRoleMenuBatch(10l, list);
     }
-
-
-
-
-
-
-
-
 
 
     @Test
@@ -104,17 +100,17 @@ public class MyTests {
     public void test04() {
         System.out.println("从redis中验证");
         if (redisUtil.hHasKey("phone+Terminal", "count")) {//
-            int count = (int)redisUtil.hget("phone+Terminal", "count");
-            if(count<5){
+            int count = (int) redisUtil.hget("phone+Terminal", "count");
+            if (count < 5) {
                 //去验证
                 //。。。。。
                 //验证之后 count+1
-                redisUtil.hincr("phone+Terminal", "count",1);
-                System.out.println("count+1了,现在count为:"+redisUtil.hget("phone+Terminal", "count"));
-            }else {
+                redisUtil.hincr("phone+Terminal", "count", 1);
+                System.out.println("count+1了,现在count为:" + redisUtil.hget("phone+Terminal", "count"));
+            } else {
                 System.out.println("验证超过5次了");
             }
-        }else{
+        } else {
             System.out.println("redis中没有对应的信息");
         }
     }

@@ -36,7 +36,6 @@ public class User implements Serializable {
     @NotBlank(message = "用户账号不能为空")
     @Size(min = 0, max = 20, message = "用户账号长度不能超过20个字符")
     private String username;
-    @NotBlank(message = "用户密码不能为空")
     private String password;
     private String email;
     private String about;
