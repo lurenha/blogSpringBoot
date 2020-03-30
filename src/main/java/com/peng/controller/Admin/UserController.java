@@ -141,7 +141,7 @@ public class UserController {
     }
 
     /**
-     * 个人信息修改页
+     * 个人信息页
      */
     @GetMapping("/profile")
     public JsonResult profile(ServletRequest request) {
@@ -149,6 +149,7 @@ public class UserController {
         String token = req.getHeader("Peng-Token");
         Long userId = TokenUtil.getUserId(token);
         User user = iUserService.getById(userId);
+        user.setUsId(null);
         user.setPassword(null);
         SysRole sysRole = iSysRoleService.getById(user.getRoleId());
         Map<String, Object> map = new HashMap<>();
@@ -158,9 +159,31 @@ public class UserController {
     }
 
     /**
+     * 个人信息页修改
+     */
+    @PostMapping("/profile/update")
+    public JsonResult profileUpdate(@Validated @RequestBody User user,ServletRequest request) {
+        HttpServletRequest req = (HttpServletRequest) request;
+        String token = req.getHeader("Peng-Token");
+        Long userId = TokenUtil.getUserId(token);
+        if (iUserService.count(new LambdaQueryWrapper<User>().ne(User::getUsId, userId).eq(User::getUsername, user.getUsername())) > 0) {
+            return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
+        }
+        user.setUsId(userId);
+        user.setPassword(null);
+        user.setAvatar(null);
+        Boolean bool = iUserService.updateById(user);
+        if (bool) {
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
+        } else {
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
+        }
+    }
+
+    /**
      * 个人信息修改密码
      */
-    @PostMapping("/updatePwd")
+    @PostMapping("/profile/updatePwd")
     public JsonResult profile(ServletRequest request, @RequestParam(value = "oldPassword") String oldPassword, @RequestParam(value = "newPassword") String newPassword) {
         HttpServletRequest req = (HttpServletRequest) request;
         String token = req.getHeader("Peng-Token");
