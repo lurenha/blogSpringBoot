@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +29,11 @@ import java.util.List;
 public class Blog implements Serializable {
     @TableId(value = "bl_id",type = IdType.AUTO)
     private Long blId;
+    @NotBlank(message = "标题不能为空")
     private String title;
+    @NotBlank(message = "内容不能为空")
     private String content;
+    @NotBlank(message = "简介不能为空")
     private String outline;
     private String backgroundImage;
     private Boolean recommend;

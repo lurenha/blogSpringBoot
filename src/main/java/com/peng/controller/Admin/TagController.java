@@ -18,7 +18,7 @@ public class TagController {
     @Autowired
     private ITagService tagService;
 
-    @RequiresPermissions("tag:addORedit")
+//    @RequiresPermissions("tag:addORedit")
     @RequestMapping(path = "/addORedit", method = RequestMethod.POST)
     public JsonResult saveOrUpdate(Tag tag) {
         boolean bool = tagService.saveOrUpdate(tag);
@@ -31,7 +31,7 @@ public class TagController {
     }
 
 
-    @RequiresPermissions("tag:delete")
+//    @RequiresPermissions("tag:delete")
     @RequestMapping(path = "/delete/{idNum}", method = RequestMethod.POST)
     public JsonResult removeById(@PathVariable("idNum") Long taId) {
         boolean bool = tagService.removeById(taId);
@@ -43,7 +43,7 @@ public class TagController {
     }
 
 
-    @RequiresPermissions("tag:find")
+//    @RequiresPermissions("tag:find")
     @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
     public JsonResult getById(@PathVariable("idNum") Long taId) {
         Tag tag = tagService.getById(taId);
@@ -51,7 +51,7 @@ public class TagController {
     }
 
 
-    @RequiresPermissions("tag:list")
+//    @RequiresPermissions("tag:list")
     @RequestMapping(path = "/list", method = RequestMethod.POST)
     public JsonResult list() {
         List<Tag> tagList = tagService.list();

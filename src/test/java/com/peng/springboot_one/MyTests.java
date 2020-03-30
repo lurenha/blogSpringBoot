@@ -78,11 +78,8 @@ public class MyTests {
 
     @Test
     public void test02() {
-        List<Long> list = new ArrayList<>();
-        list.add(10l);
-        list.add(11l);
-        list.add(12l);
-        sysRoleMapper.addRoleMenuBatch(10l, list);
+
+
     }
 
 

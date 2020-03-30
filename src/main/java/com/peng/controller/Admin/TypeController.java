@@ -18,7 +18,7 @@ public class TypeController {
     @Autowired
     private ITypeService typeService;
 
-    @RequiresPermissions("type:addORedit")
+//    @RequiresPermissions("type:addORedit")
     @RequestMapping(path = "/addORedit", method = RequestMethod.POST)
     public JsonResult saveOrUpdate(Type type) {
         boolean bool = typeService.saveOrUpdate(type);
@@ -31,7 +31,7 @@ public class TypeController {
     }
 
 
-    @RequiresPermissions("type:delete")
+//    @RequiresPermissions("type:delete")
     @RequestMapping(path = "/delete/{idNum}", method = RequestMethod.POST)
     public JsonResult removeById(@PathVariable("idNum") Long tyId) {
         boolean bool = typeService.removeById(tyId);
@@ -43,7 +43,7 @@ public class TypeController {
     }
 
 
-    @RequiresPermissions("type:find")
+//    @RequiresPermissions("type:find")
     @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
     public JsonResult getById(@PathVariable("idNum") Long tyId) {
         Type type = typeService.getById(tyId);
@@ -51,7 +51,7 @@ public class TypeController {
     }
 
 
-    @RequiresPermissions("type:list")
+//    @RequiresPermissions("type:list")
     @RequestMapping(path = "/list", method = RequestMethod.POST)
     public JsonResult list() {
         List<Type> typeList = typeService.list();

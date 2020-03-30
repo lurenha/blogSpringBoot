@@ -6,15 +6,10 @@ import com.peng.entity.Blog;
 import com.peng.entity.Comment;
 import com.peng.service.IBlogService;
 import com.peng.service.ICommentService;
-import com.peng.util.IPUtile;
-import com.peng.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-
-import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
