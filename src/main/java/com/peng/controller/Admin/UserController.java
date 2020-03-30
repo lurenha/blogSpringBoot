@@ -53,12 +53,6 @@ public class UserController {
         if (iUserService.count(new LambdaQueryWrapper<User>().ne(User::getUsId, user.getUsId()).eq(User::getUsername, user.getUsername())) > 0) {
             return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
         }
-//        List<User> userList = iUserService.list(new LambdaQueryWrapper<User>().select(User::getUsername).ne(User::getUsername, user.getUsername()));
-//        if (userList.stream().filter(us -> {
-//            return us.getUsername().equals(user.getUsername());
-//        }).count() > 0) {
-//            return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_USER);
-//        }
         Boolean bool = iUserService.updateById(user);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
@@ -76,12 +70,6 @@ public class UserController {
         if (iUserService.count(new LambdaQueryWrapper<User>().eq(User::getUsername, user.getUsername())) > 0) {
             return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
         }
-//        List<User> userList = iUserService.list(new LambdaQueryWrapper<User>().select(User::getUsername));
-//        if (userList.stream().filter(us -> {
-//            return us.getUsername().equals(user.getUsername());
-//        }).count() > 0) {
-//            return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_USER);
-//        }
 
         Boolean bool = iUserService.save(user);
         if (bool) {
