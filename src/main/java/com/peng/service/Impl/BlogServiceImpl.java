@@ -99,6 +99,21 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         this.update(new LambdaUpdateWrapper<Blog>().set(Blog::getViews, blog.getViews() + 1));
     }
 
+    @Override
+    public List<Comment> getCommentWithChildById(Long blId) {
+        List<Comment> commentList = blogMapper.findCommentByBlog(blId);
+        for (Comment comment : commentList) {
+            ArrayList<Comment> tem = new ArrayList<>();
+            backStack(tem, comment.getChildList());
+            tem.sort(((o1, o2) -> {
+                return o2.getCreateTime().compareTo(o1.getCreateTime());
+            }));
+            comment.setChildList(tem);
+        }
+        return commentList;
+
+    }
+
     private void backStack(List<Comment> parentlist, List<Comment> childlist) {
         if (childlist == null) {
             return;

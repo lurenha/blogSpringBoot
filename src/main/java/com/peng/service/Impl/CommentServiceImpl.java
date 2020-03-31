@@ -1,6 +1,7 @@
 package com.peng.service.Impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,6 +21,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         List<Comment> list = this.list();
         PageInfo<Comment> result = new PageInfo<>(list);
         return result;
+    }
+
+    @Override
+    public boolean setDeleted(Long coId, boolean flag) {
+        return this.update(new LambdaUpdateWrapper<Comment>().eq(Comment::getCoId, coId).set(Comment::getIsDelete, flag));
     }
 
 }

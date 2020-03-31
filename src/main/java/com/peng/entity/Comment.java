@@ -31,6 +31,7 @@ public class Comment implements Serializable {
     private String email;
     private String content;
     private Boolean isAdmin;
+    private Boolean isDelete;
     private Long blId;
     private Long parentId;
     private Long ipId;

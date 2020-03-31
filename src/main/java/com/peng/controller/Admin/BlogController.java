@@ -2,13 +2,16 @@ package com.peng.controller.Admin;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.pagehelper.PageInfo;
 import com.peng.entity.Blog;
+import com.peng.entity.Comment;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
 import com.peng.service.IBlogService;
+import com.peng.service.ICommentService;
 import com.peng.util.FileUploadUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -26,6 +31,8 @@ import java.util.Objects;
 public class BlogController {
     @Autowired
     private IBlogService blogService;
+    @Autowired
+    private ICommentService iCommentService;
     @Autowired
     private FileUploadUtils fileUploadUtils;
 
@@ -109,6 +116,13 @@ public class BlogController {
             return ResultUtil.success(url, ResultCode.SUCCESS);
         }
         return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
+    }
+
+    @GetMapping("/hasCommentDic")
+    public JsonResult getBlogHasCommentDictionaries(){
+        List<Object> blIds = iCommentService.listObjs(new LambdaQueryWrapper<Comment>().select(Comment::getBlId)).stream().distinct().collect(Collectors.toList());
+        List<Blog> blogListDic = blogService.list(new LambdaQueryWrapper<Blog>().in(Blog::getBlId, blIds).select(Blog::getBlId, Blog::getTitle));
+        return ResultUtil.success(blogListDic, ResultCode.SUCCESS);
     }
 
 }

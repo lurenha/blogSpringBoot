@@ -7,5 +7,6 @@ import com.peng.entity.Comment;
 
 public interface ICommentService extends IService<Comment> {
     PageInfo<Comment> getListByPage(Integer pageNum, Integer pageSize);
+    boolean setDeleted(Long coId, boolean flag);
 
 }

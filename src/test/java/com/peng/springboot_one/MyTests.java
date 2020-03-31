@@ -24,6 +24,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -78,8 +79,12 @@ public class MyTests {
 
     @Test
     public void test02() {
-        Blog blog= blogMapper.findBlogWithTagIdsById(75l);
-        System.out.println(blog);
+        List<Comment> commentList = iblogService.getCommentWithChildById(1l);
+        for (Comment comment:commentList
+             ) {
+            System.out.println(comment);
+
+        }
 
     }
 

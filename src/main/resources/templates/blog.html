@@ -162,9 +162,13 @@
                                 <div class="metadata">
                                     <span th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm:ss')}" class="date">Today at 5:42PM</span>
                                 </div>
-                                <div th:text="${comment.content}" class="text">
+                                <div th:text="${comment.content}" class="text" th:unless="${comment.isDelete}">
                                     How artistic!
                                 </div>
+                                <div class="text" th:if="${comment.isDelete}" >
+                                    该评论已被删除！
+                                </div>
+
                                 <div class="actions">
                                     <a class="reply" data-comment="1" data-commmentnickname="Matt"
                                        th:attr="data-commentid=${comment.coId},data-commentnickname=${comment.name}"
@@ -191,8 +195,11 @@
                                         <div class="metadata">
                                             <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm:ss')}" >Today at 5:42PM</span>
                                         </div>
-                                        <div class="text" th:text="${reply.content}">
+                                        <div class="text" th:text="${reply.content}" th:unless="${reply.isDelete}" >
                                             How artistic!
+                                        </div>
+                                        <div class="text" th:if="${reply.isDelete}" >
+                                            该评论已被删除！
                                         </div>
                                         <div class="actions">
                                             <a class="reply" data-comment="1" data-commmentnickname="Matt"

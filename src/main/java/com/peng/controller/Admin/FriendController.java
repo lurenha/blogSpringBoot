@@ -8,10 +8,8 @@ import com.peng.entity.Result.ResultUtil;
 import com.peng.service.IFriendService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,10 +19,22 @@ public class FriendController {
     @Autowired
     private IFriendService iFriendService;
 
-    @RequiresPermissions("friend:addORedit")
-    @RequestMapping(path = "/addORedit", method = RequestMethod.POST)
-    public JsonResult saveOrUpdate(Friend friend) {
-        boolean bool = iFriendService.saveOrUpdate(friend);
+    //    @RequiresPermissions("friend:addORedit")
+    @PostMapping("/add")
+    public JsonResult add(@Validated @RequestBody Friend friend) {
+        boolean bool = iFriendService.save(friend);
+        if (bool) {
+            return ResultUtil.successNoData(ResultCode.SUCCESS);
+        } else {
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
+        }
+
+    }
+
+    //    @RequiresPermissions("friend:addORedit")
+    @PostMapping("/update")
+    public JsonResult update(@Validated @RequestBody Friend friend) {
+        boolean bool = iFriendService.updateById(friend);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
@@ -34,8 +44,8 @@ public class FriendController {
     }
 
 
-    @RequiresPermissions("friend:delete")
-    @RequestMapping(path = "/delete/{idNum}", method = RequestMethod.POST)
+    //    @RequiresPermissions("friend:delete")
+    @GetMapping("/delete/{idNum}")
     public JsonResult removeById(@PathVariable("idNum") Long frId) {
         boolean bool = iFriendService.removeById(frId);
         if (bool) {
@@ -45,15 +55,15 @@ public class FriendController {
         }
     }
 
-    @RequiresPermissions("friend:find")
-    @RequestMapping(path = "/find/{idNum}", method = RequestMethod.POST)
+    //    @RequiresPermissions("friend:find")
+    @GetMapping("/find/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long frId) {
         Friend friend = iFriendService.getById(frId);
         return ResultUtil.success(friend, ResultCode.SUCCESS);
     }
 
-    @RequiresPermissions("friend:list")
-    @RequestMapping(path = "/list", method = RequestMethod.POST)
+    //    @RequiresPermissions("friend:list")
+    @GetMapping("/list")
     public JsonResult list() {
         List<Friend> friendList = iFriendService.list();
         return ResultUtil.success(friendList, ResultCode.SUCCESS);
