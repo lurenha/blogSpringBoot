@@ -43,9 +43,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional
     public Boolean updateRoleWithMenuBatch(SysRole sysRole) {
         this.updateById(sysRole);
-        List<Long> menuIds = Arrays.asList(sysRole.getMenuIds());
         sysRoleMapper.deleteRoleMenuBatch(sysRole.getRoleId());
         if (Objects.nonNull(sysRole.getMenuIds()) && sysRole.getMenuIds().length > 0) {
+            List<Long> menuIds = Arrays.asList(sysRole.getMenuIds());
             sysRoleMapper.addRoleMenuBatch(sysRole.getRoleId(), menuIds);
         }
         return true;

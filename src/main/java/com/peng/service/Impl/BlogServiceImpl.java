@@ -17,6 +17,7 @@ import com.peng.service.ICommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -35,7 +36,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     }
 
     @Override
-    public PageInfo<Blog> getPageByType(Integer pageNum,Long tyId) {
+    public PageInfo<Blog> getPageByType(Integer pageNum, Long tyId) {
         PageHelper.startPage(pageNum, 5);
         List<Blog> list = blogMapper.getPageByType(tyId);
         PageInfo<Blog> result = new PageInfo<>(list);
@@ -43,7 +44,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     }
 
     @Override
-    public PageInfo<Blog> getPageByTag(Integer pageNum,Long taId) {
+    public PageInfo<Blog> getPageByTag(Integer pageNum, Long taId) {
         PageHelper.startPage(pageNum, 5);
         List<Blog> list = blogMapper.getPageByTag(taId);
         PageInfo<Blog> result = new PageInfo<>(list);
@@ -89,6 +90,11 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     }
 
     @Override
+    public Blog findBlogWithTagIdsById(Long blId) {
+        return blogMapper.findBlogWithTagIdsById(blId);
+    }
+
+    @Override
     public void addViews(Blog blog) {
         this.update(new LambdaUpdateWrapper<Blog>().set(Blog::getViews, blog.getViews() + 1));
     }
@@ -121,53 +127,35 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         return map;
     }
 
+    @Override
+    @Transactional
+    public Boolean updateBlogWithTag(Blog blog) {
+        this.updateById(blog);
+        blogMapper.deleteBlogTagBatch(blog.getBlId());
+        if (Objects.nonNull(blog.getTagIds()) && blog.getTagIds().length > 0) {
+            List<Long> tagIds = Arrays.asList(blog.getTagIds());
+            blogMapper.addBlogTagBatch(blog.getBlId(), tagIds);
+        }
+        return true;
+    }
 
-//
-//    @Override
-//    public boolean addORedit(Blog blog) {
-//        TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
-//        try {
-//            Integer bl_id = blog.getBl_id();
-//            blog.setFinaldate(new Date());
-//            if (bl_id != null) {//更新
-//                blogDao.updateBlog(blog);
-//                blogDao.deleteBlog_tags(bl_id);
-//                if (blog.getTags() != null) {
-//                    blogDao.addBlog_tags(blog);
-//                }
-//            } else {//添加
-//                blog.setViews(0);
-//                blog.setCreatdate(new Date());
-//                blogDao.addBlog(blog);
-//                if (blog.getTags() != null) {
-//                    blogDao.addBlog_tags(blog);
-//                }
-//            }
-//            dataSourceTransactionManager.commit(transactionStatus);//提交
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            dataSourceTransactionManager.rollback(transactionStatus);//回滚,防止程序异常而事务一直卡在哪里未提交
-//            return false;
-//        }
-//
-//    }
-//
-//    @Override
-//    public boolean deleteByid(Integer bl_id) {
-//        TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
-//        try {
-//            blogDao.deleteBlog_tags(bl_id);//先删除带外键的
-//            blogDao.deleteBlog_comments(bl_id);
-//            blogDao.deleteBlogById(bl_id);
-//            dataSourceTransactionManager.commit(transactionStatus);//提交
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            dataSourceTransactionManager.rollback(transactionStatus);//回滚,防止程序异常而事务一直卡在哪里未提交
-//            return false;
-//        }
-//    }
+    @Override
+    @Transactional
+    public Boolean addBlogWithTag(Blog blog) {
+        this.save(blog);
+        if (Objects.nonNull(blog.getTagIds()) && blog.getTagIds().length > 0) {
+            List<Long> tagIds = Arrays.asList(blog.getTagIds());
+            blogMapper.addBlogTagBatch(blog.getBlId(), tagIds);
+        }
+        return true;
+    }
 
+    @Override
+    @Transactional
+    public Boolean deleteBlogWithTag(Long blId) {
+        this.removeById(blId);
+        blogMapper.deleteBlogTagBatch(blId);
+        return true;
+    }
 
 }

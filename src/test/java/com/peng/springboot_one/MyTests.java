@@ -78,7 +78,8 @@ public class MyTests {
 
     @Test
     public void test02() {
-
+        Blog blog= blogMapper.findBlogWithTagIdsById(75l);
+        System.out.println(blog);
 
     }
 

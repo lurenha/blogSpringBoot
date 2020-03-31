@@ -65,6 +65,17 @@ public interface BlogMapper extends BaseMapper<Blog> {
     Blog findFullBlogById(Long blId);
 
     /***
+     *  //查询Blog信息(关联标签ID)
+     */
+    @Results(value = {
+            @Result(id = true, property = "blId", column = "bl_id"),
+            @Result(property = "tagIds", column = "bl_id", one = @One(select = "com.peng.mapper.BlogMapper.findTagIdsById",
+                    fetchType = FetchType.DEFAULT))
+    })
+    @Select("select * from t_blog where bl_id=#{blId} ")
+    Blog findBlogWithTagIdsById(Long blId);
+
+    /***
      *  //时间线搜索
      */
     @Results(value = {
@@ -72,6 +83,23 @@ public interface BlogMapper extends BaseMapper<Blog> {
     })
     @Select("SELECT  DATE_FORMAT(create_time,'%c-%d') AS 'date',DATE_FORMAT(create_time,'%Y-%m') AS 'month',bl_id,title FROM t_blog WHERE published=TRUE GROUP BY bl_id,DATE_FORMAT(create_time,'%Y-%m') ORDER BY create_time desc")
     List<TimeLineBlog> findTimeLine();
+
+    /***
+     *  //删除blog_tag关联信息
+     */
+    @Delete("delete from t_blog_tag where bl_id = #{blId}")
+    int deleteBlogTagBatch(@Param("blId") Long blId);
+
+    /***
+     *  //添加blog_tag关联信息
+     */
+    @Insert("<script>" +
+            "INSERT INTO t_blog_tag(bl_id,ta_id) VALUES " +
+            "<foreach collection='list' item='taId' separator=','>" +
+            " (#{blId},#{taId})" +
+            "</foreach>" +
+            "</script>")
+    int addBlogTagBatch(@Param("blId") Long blId, @Param("list") List<Long> list);
     //---------------------------------------------------查询需要用到的子查询-------------------------------------------------------------
     /***
      *  //根据博客查询对应的tags（内联查询）
@@ -85,6 +113,12 @@ public interface BlogMapper extends BaseMapper<Blog> {
      */
     @Select("select * from t_type where ty_id= #{tyId}")
     Type findTypeByBlog(Long tyId);
+
+    /***
+     *  //查询Blog关联TagId
+     */
+    @Select("select ta_id from t_blog_tag where bl_id=#{blId}")
+    Long[] findTagIdsById(Long blId);
     //----------------------------------------------------------------------------------------------------------------------
     /***
      *  //根据博客查询对应的comments
@@ -112,4 +146,5 @@ public interface BlogMapper extends BaseMapper<Blog> {
     @Select("select * from t_comment where co_id=#{parentId}")
     Comment findParentByComment(Long parentId);
     //----------------------------------------------------------------------------------------------------------------------
+
 }

@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.List;
 public class Type implements Serializable {
     @TableId(value = "ty_id",type = IdType.AUTO)
     private Long tyId;
+    @NotBlank(message = "Name不能为空")
     private String name;
     private Date createTime;
     private Date updateTime;

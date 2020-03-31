@@ -57,6 +57,6 @@ public class Blog implements Serializable {
     private Type type;
 
     @TableField(exist=false)
-    private List<Integer> tag_ids;
+    private Long[] tagIds;
 
 }

@@ -9,12 +9,15 @@ import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
 import com.peng.service.IBlogService;
+import com.peng.util.FileUploadUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Objects;
 
 
@@ -23,11 +26,13 @@ import java.util.Objects;
 public class BlogController {
     @Autowired
     private IBlogService blogService;
+    @Autowired
+    private FileUploadUtils fileUploadUtils;
 
     //    @RequiresPermissions("blog:addORedit")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody Blog blog) {
-        boolean bool = blogService.save(blog);
+        boolean bool = blogService.addBlogWithTag(blog);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
@@ -39,7 +44,10 @@ public class BlogController {
     //    @RequiresPermissions("blog:addORedit")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody Blog blog) {
-        boolean bool = blogService.updateById(blog);
+        if (Objects.isNull(blog.getBlId())) {
+            return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
+        }
+        boolean bool = blogService.updateBlogWithTag(blog);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
@@ -52,7 +60,7 @@ public class BlogController {
     //    @RequiresPermissions("blog:delete")
     @GetMapping("/delete/{idNum}")
     public JsonResult removeById(@PathVariable("idNum") Long blId) {
-        boolean bool = blogService.removeById(blId);
+        boolean bool = blogService.deleteBlogWithTag(blId);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
@@ -63,7 +71,7 @@ public class BlogController {
     //    @RequiresPermissions("blog:find")
     @GetMapping("/find/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long blId) {
-        Blog blog = blogService.getById(blId);
+        Blog blog = blogService.findBlogWithTagIdsById(blId);
         return ResultUtil.success(blog, ResultCode.SUCCESS);
     }
 
@@ -91,6 +99,16 @@ public class BlogController {
         } else {
             return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
         }
+    }
+
+    //    @RequiresPermissions("blog:addORedit")
+    @PostMapping("/upload")
+    public JsonResult uploadImg(@RequestParam("file") MultipartFile file) throws IOException {
+        if (!file.isEmpty()) {
+            String url = fileUploadUtils.upload(file);
+            return ResultUtil.success(url, ResultCode.SUCCESS);
+        }
+        return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
     }
 
 }

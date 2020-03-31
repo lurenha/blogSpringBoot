@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.List;
 public class Tag implements Serializable {
     @TableId(value = "ta_id",type = IdType.AUTO)
     private Long taId;
+    @NotBlank(message = "Name不能为空")
     private String name;
     private Date createTime;
     private Date updateTime;
