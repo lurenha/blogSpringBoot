@@ -1,7 +1,7 @@
 package com.peng.controller.Admin;
 
 
-import com.peng.entity.Blog;
+
 import com.peng.entity.Comment;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;

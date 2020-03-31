@@ -34,7 +34,7 @@ public class Comment implements Serializable {
     private Boolean isDelete;
     private Long blId;
     private Long parentId;
-    private Long ipId;
+    private String ipAddress;
     private Date createTime;
     private Date updateTime;
 
