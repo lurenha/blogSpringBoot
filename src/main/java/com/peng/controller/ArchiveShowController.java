@@ -23,7 +23,7 @@ public class ArchiveShowController {
     public String archivesByYearAndMonth(Model model){
         model.addAttribute("timeLineMap",iCacheService.findTimeLine());
         model.addAttribute("user",iCacheService.getAdminInfo());
-        return "/archives";
+        return "archives";
     }
 
 

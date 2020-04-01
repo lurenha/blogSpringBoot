@@ -34,7 +34,7 @@ public class TypeShowController {
         model.addAttribute("activeTypeId",tyId);
         model.addAttribute("user",iCacheService.getAdminInfo());
 
-        return "/types";
+        return "types";
 
     }
 

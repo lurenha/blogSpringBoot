@@ -33,7 +33,7 @@ public class TagShowController {
         model.addAttribute("page",iCacheService.getPageByTag(pageNum,taId));
         model.addAttribute("activeTagId",taId);
         model.addAttribute("user",iCacheService.getAdminInfo());
-        return "/tags";
+        return "tags";
     }
 
 

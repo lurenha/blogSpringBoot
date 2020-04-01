@@ -34,13 +34,13 @@ public class IndexController {
         model.addAttribute("tagsCount", iCacheService.getTagNum());
         model.addAttribute("commentsCount", iCacheService.getCommentNum());
         model.addAttribute("user", iCacheService.getAdminInfo());
-        return "/index";
+        return "index";
     }
 
 
     @GetMapping("/blog")
     public String blog() {
-        return "/blog";
+        return "blog";
     }
 
     @MyLog
@@ -53,7 +53,7 @@ public class IndexController {
         }
         model.addAttribute("blog", blog);
         model.addAttribute("user", iCacheService.getAdminInfo());
-        return "/blog";
+        return "blog";
     }
 
 
