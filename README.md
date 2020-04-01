@@ -6,12 +6,18 @@
 #### 项目后台地址：http://lurenpeng.cn:8088/
 
 ------------
+0.2 对项目进行了重构
+-使用MybatisPlus简化数据库操作
+-对用户端大部分目录做了缓存
+-支持管理员在线分配角色权限
+
+------------
 
 ## 技术栈
 #### 后端技术栈
 - Spring Boot
 - Shiro+Jwt
-- MyBatis
+- MyBatisPlus
 - MySQL
 - Redis
 
@@ -35,7 +41,7 @@
 1. 至此，服务端就启动成功了，此时我们直接在地址栏输入 http://localhost:8080/peng 即可访问我们的项目
 ------------
 ### Vue后台管理服务启动
-##### 请参考 [https://github.com/lurenha/blogAdminVue](https://github.com/lurenha/blogAdminVue "https://github.com/lurenha/blogAdminVue")
+##### 请参考 [https://github.com/lurenha/MyBlogVue](https://github.com/lurenha/MyBlogVue "https://github.com/lurenha/MyBlogVue")
 
 ------------
 
