@@ -28,7 +28,7 @@ public interface IBlogService extends IService<Blog> {
 
     Blog findBlogWithTagIdsById(Long blId);
 
-    void addViews(Blog blog);
+    boolean addViews(Long blId);
 
     Map findTimeLine();
 

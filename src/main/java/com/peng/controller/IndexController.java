@@ -47,7 +47,7 @@ public class IndexController {
     @GetMapping("/blog/{blId}")
     public String blog(@PathVariable Long blId, Model model) {
         Blog blog = iBlogService.findFullById(blId);
-        iBlogService.addViews(blog);
+        iBlogService.addViews(blId);
         if (!blog.getPublished()) {
             throw new RuntimeException("无效资源！");
         }

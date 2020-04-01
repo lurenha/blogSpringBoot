@@ -100,6 +100,12 @@ public interface BlogMapper extends BaseMapper<Blog> {
             "</foreach>" +
             "</script>")
     int addBlogTagBatch(@Param("blId") Long blId, @Param("list") List<Long> list);
+
+    /***
+     *  //访问量+1
+     */
+    @Update("update t_blog set views=views+1,update_time=update_time where bl_id = #{blId}")
+    int addViewsById(@Param("blId") Long blId);
     //---------------------------------------------------查询需要用到的子查询-------------------------------------------------------------
     /***
      *  //根据博客查询对应的tags（内联查询）

@@ -95,8 +95,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     }
 
     @Override
-    public void addViews(Blog blog) {
-        this.update(new LambdaUpdateWrapper<Blog>().set(Blog::getViews, blog.getViews() + 1));
+    public boolean addViews(Long blId) {
+        blogMapper.addViewsById(blId);
+        return true;
     }
 
     @Override
