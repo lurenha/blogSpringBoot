@@ -1,14 +1,9 @@
 package com.peng.springboot_one;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.peng.entity.Blog;
 import com.peng.entity.Comment;
-import com.peng.entity.User;
-import com.peng.entity.sys.SysRole;
 import com.peng.mapper.*;
 import com.peng.mapper.sys.SysRoleMapper;
 import com.peng.service.IBlogService;
@@ -20,11 +15,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,7 +31,7 @@ public class MyTests {
     @Autowired
     private FriendMapper friendMapper;
     @Autowired
-    private IPAddressMapper ipAddressMapper;
+    private RequestLogMapper requestLogMapper;
     @Autowired
     private TagMapper tagMapper;
     @Autowired

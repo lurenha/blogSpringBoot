@@ -21,9 +21,9 @@ spring:
     password:
   # 数据源配置
   datasource:
-    url: jdbc:mysql://123.57.140.84:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    url: jdbc:mysql://123.57.000.00:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: root
-    password: 123456
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 #  jackson:
 #    serialization:
@@ -34,9 +34,9 @@ spring:
 
 
 mybatis-plus:
-  configuration:
-    map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     refresh-mapper: true
     #驼峰下划线转换
@@ -54,3 +54,23 @@ logging:
   file: ./logs/core.log
 #  level:
 #    com.peng.dao: DEBUG
+
+
+myapplication:
+  # 对象存储配置
+  storage:
+    # 当前工作的对象存储模式，分别是local,qiniu
+    active: qiniu
+    # 本地对象存储配置信息
+    local:
+      storagePath: storage
+      address: http://localhost:8088/storage/
+
+    # 七牛云对象存储配置信息
+    qiniu:
+      endpoint: endpoint
+      accessKey: accessKey
+      secretKey: secretKey
+      bucketName: bucketName
+      baseUrl:  baseUrl
+      templateid: templateid
