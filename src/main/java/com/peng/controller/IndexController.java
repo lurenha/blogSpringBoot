@@ -2,6 +2,7 @@ package com.peng.controller;
 
 
 
+import com.peng.aspect.MyLog;
 import com.peng.entity.Blog;
 import com.peng.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class IndexController {
     @Autowired
     private ICacheService iCacheService;
 
-
+    @MyLog
     @GetMapping("/")
     public String index(@RequestParam(value = "page", defaultValue = "1") Integer pageNum, @RequestParam(required = false, value = "title") String title, Model model) {
         model.addAttribute("page", iCacheService.getIndexPage(title, pageNum));
@@ -42,6 +43,7 @@ public class IndexController {
         return "/blog";
     }
 
+    @MyLog
     @GetMapping("/blog/{blId}")
     public String blog(@PathVariable Long blId, Model model) {
         Blog blog = iBlogService.findFullById(blId);

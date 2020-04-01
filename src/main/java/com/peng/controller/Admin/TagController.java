@@ -1,6 +1,7 @@
 package com.peng.controller.Admin;
 
 
+import com.peng.aspect.MyLog;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
@@ -16,11 +17,13 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/admin/tag")
+@RequiresPermissions("content:tag:list")
 public class TagController {
     @Autowired
     private ITagService tagService;
 
-    //    @RequiresPermissions("tag:addORedit")
+    @MyLog
+    @RequiresPermissions("content:tag:add")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody Tag tag) {
         boolean bool = tagService.save(tag);
@@ -31,7 +34,8 @@ public class TagController {
         }
     }
 
-    //    @RequiresPermissions("tag:addORedit")
+    @MyLog
+    @RequiresPermissions("content:tag:edit")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody Tag tag) {
         if (Objects.isNull(tag.getTaId())) {
@@ -45,8 +49,8 @@ public class TagController {
         }
     }
 
-
-    //    @RequiresPermissions("tag:delete")
+    @MyLog
+    @RequiresPermissions("content:tag:remove")
     @GetMapping("/delete/{idNum}")
     public JsonResult removeById(@PathVariable("idNum") Long taId) {
         boolean bool = tagService.removeById(taId);
@@ -58,15 +62,14 @@ public class TagController {
     }
 
 
-    //    @RequiresPermissions("tag:find")
+    @RequiresPermissions("content:tag:query")
     @GetMapping("/find/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long taId) {
         Tag tag = tagService.getById(taId);
         return ResultUtil.success(tag, ResultCode.SUCCESS);
     }
 
-
-    //    @RequiresPermissions("tag:list")
+    @RequiresPermissions("content:tag:query")
     @GetMapping("/list")
     public JsonResult list() {
         List<Tag> tagList = tagService.list();

@@ -2,6 +2,7 @@ package com.peng.controller;
 
 
 
+import com.peng.aspect.MyLog;
 import com.peng.entity.Tag;
 import com.peng.service.ICacheService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class TagShowController {
     @Autowired
     private ICacheService iCacheService;
 
+    @MyLog
     @GetMapping("/tags/{taId}")
     public String tags(@PathVariable Long taId, @RequestParam(value = "page", defaultValue = "1") Integer pageNum, Model model){
 

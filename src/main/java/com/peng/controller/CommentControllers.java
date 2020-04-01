@@ -2,6 +2,7 @@ package com.peng.controller;
 
 
 
+import com.peng.aspect.MyLog;
 import com.peng.entity.Blog;
 import com.peng.entity.Comment;
 import com.peng.service.IBlogService;
@@ -26,7 +27,7 @@ public class CommentControllers {
     @Autowired
     private IBlogService iBlogService;
 
-
+    @MyLog
     @GetMapping("/comments/{blId}")
     public String comments(@PathVariable Long blId, Model model) {
         Blog blog = iBlogService.findFullById(blId);
@@ -37,6 +38,7 @@ public class CommentControllers {
         return "blog :: commentList";
     }
 
+    @MyLog
     @PostMapping("/comments")
     public String postComments(Comment comment, HttpServletRequest request) {
         //保存评论

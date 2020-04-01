@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.pagehelper.PageInfo;
+import com.peng.aspect.MyLog;
 import com.peng.entity.Blog;
 import com.peng.entity.Comment;
 import com.peng.entity.Result.JsonResult;
@@ -13,6 +14,7 @@ import com.peng.entity.Result.ResultUtil;
 import com.peng.service.IBlogService;
 import com.peng.service.ICommentService;
 import com.peng.util.FileUploadUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/blog")
+@RequiresPermissions("content:blog:list")
 public class BlogController {
     @Autowired
     private IBlogService blogService;
@@ -36,7 +39,8 @@ public class BlogController {
     @Autowired
     private FileUploadUtils fileUploadUtils;
 
-    //    @RequiresPermissions("blog:addORedit")
+    @MyLog
+    @RequiresPermissions("content:blog:add")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody Blog blog) {
         boolean bool = blogService.addBlogWithTag(blog);
@@ -48,7 +52,8 @@ public class BlogController {
 
     }
 
-    //    @RequiresPermissions("blog:addORedit")
+    @MyLog
+    @RequiresPermissions("content:blog:edit")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody Blog blog) {
         if (Objects.isNull(blog.getBlId())) {
@@ -63,8 +68,8 @@ public class BlogController {
 
     }
 
-
-    //    @RequiresPermissions("blog:delete")
+    @MyLog
+    @RequiresPermissions("content:blog:remove")
     @GetMapping("/delete/{idNum}")
     public JsonResult removeById(@PathVariable("idNum") Long blId) {
         boolean bool = blogService.deleteBlogWithTag(blId);
@@ -75,26 +80,26 @@ public class BlogController {
         }
     }
 
-    //    @RequiresPermissions("blog:find")
+    @RequiresPermissions("content:blog:query")
     @GetMapping("/find/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long blId) {
         Blog blog = blogService.findBlogWithTagIdsById(blId);
         return ResultUtil.success(blog, ResultCode.SUCCESS);
     }
 
-    //    @RequiresPermissions(logical = Logical.AND, value = {"blog:list"})
+    @RequiresPermissions("content:blog:query")
     @GetMapping("/list")
     public JsonResult list(@RequestParam(value = "page", defaultValue = "1") Integer pageNum,
                            @RequestParam(value = "limit", defaultValue = "10") Integer pageSize,
                            @RequestParam(value = "title", required = false) String title,
                            @RequestParam(value = "type", required = false) Long tyId
     ) {
-        PageInfo<Blog> listByPage = blogService.getListByPage(pageNum, pageSize, new LambdaQueryWrapper<Blog>().eq(Objects.nonNull(tyId), Blog::getTyId, tyId).like(Objects.nonNull(title), Blog::getTitle, title).select(Blog::getTitle, Blog::getTyId, Blog::getPublished, Blog::getViews, Blog::getBlId, Blog::getBackgroundImage, Blog::getCreateTime, Blog::getOutline, Blog::getUpdateTime));
+        PageInfo<Blog> listByPage = blogService.getListByPage(pageNum, pageSize, new LambdaQueryWrapper<Blog>().eq(Objects.nonNull(tyId), Blog::getTyId, tyId).like(Strings.isNotBlank(title), Blog::getTitle, title).select(Blog::getTitle, Blog::getTyId, Blog::getPublished, Blog::getViews, Blog::getBlId, Blog::getBackgroundImage, Blog::getCreateTime, Blog::getOutline, Blog::getUpdateTime).orderByDesc(Blog::getCreateTime));
         return ResultUtil.success(listByPage, ResultCode.SUCCESS);
     }
 
-
-    //    @RequiresPermissions("blog:addORedit")
+    @MyLog
+    @RequiresPermissions("content:blog:setPub")
     @PostMapping("/setPublished")
     public JsonResult setPublished(@RequestBody Blog blog) {
         if (Objects.isNull(blog.getBlId()) || Objects.isNull(blog.getPublished())) {
@@ -108,7 +113,6 @@ public class BlogController {
         }
     }
 
-    //    @RequiresPermissions("blog:addORedit")
     @PostMapping("/upload")
     public JsonResult uploadImg(@RequestParam("file") MultipartFile file) throws IOException {
         if (!file.isEmpty()) {
@@ -119,7 +123,7 @@ public class BlogController {
     }
 
     @GetMapping("/hasCommentDic")
-    public JsonResult getBlogHasCommentDictionaries(){
+    public JsonResult getBlogHasCommentDictionaries() {
         List<Object> blIds = iCommentService.listObjs(new LambdaQueryWrapper<Comment>().select(Comment::getBlId)).stream().distinct().collect(Collectors.toList());
         List<Blog> blogListDic = blogService.list(new LambdaQueryWrapper<Blog>().in(Blog::getBlId, blIds).select(Blog::getBlId, Blog::getTitle));
         return ResultUtil.success(blogListDic, ResultCode.SUCCESS);

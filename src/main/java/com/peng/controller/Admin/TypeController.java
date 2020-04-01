@@ -1,6 +1,7 @@
 package com.peng.controller.Admin;
 
 
+import com.peng.aspect.MyLog;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
@@ -16,11 +17,13 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/admin/type")
+@RequiresPermissions("content:type:list")
 public class TypeController {
     @Autowired
     private ITypeService typeService;
 
-    //    @RequiresPermissions("type:addORedit")
+    @MyLog
+    @RequiresPermissions("content:type:add")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody Type type) {
         boolean bool = typeService.save(type);
@@ -32,6 +35,8 @@ public class TypeController {
 
     }
 
+    @MyLog
+    @RequiresPermissions("content:type:edit")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody Type type) {
         if (Objects.isNull(type.getTyId())) {
@@ -46,8 +51,8 @@ public class TypeController {
 
     }
 
-
-    //    @RequiresPermissions("type:delete")
+    @MyLog
+    @RequiresPermissions("content:type:remove")
     @GetMapping("/delete/{idNum}")
     public JsonResult removeById(@PathVariable("idNum") Long tyId) {
         boolean bool = typeService.removeById(tyId);
@@ -59,7 +64,7 @@ public class TypeController {
     }
 
 
-    //    @RequiresPermissions("type:find")
+    @RequiresPermissions("content:type:query")
     @GetMapping("/find/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long tyId) {
         Type type = typeService.getById(tyId);
@@ -67,7 +72,7 @@ public class TypeController {
     }
 
 
-    //    @RequiresPermissions("type:list")
+    @RequiresPermissions("content:type:query")
     @GetMapping("/list")
     public JsonResult list() {
         List<Type> typeList = typeService.list();

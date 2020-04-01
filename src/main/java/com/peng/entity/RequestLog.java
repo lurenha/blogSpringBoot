@@ -18,12 +18,13 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_ip")
-public class IPAddress implements Serializable {
-    @TableId(value = "ip_id",type = IdType.AUTO)
-    private Long ipId;
-    private String ipCode;
-    private String address;
+@TableName("t_request_log")
+public class RequestLog implements Serializable {
+    @TableId(value = "log_id",type = IdType.AUTO)
+    private Long logId;
+    private String url;
+    private String ipAddress;
+    private String classMethod;
+    private String args;
     private Date createTime;
-    private Date updateTime;
 }

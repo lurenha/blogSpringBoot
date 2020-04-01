@@ -1,6 +1,7 @@
 package com.peng.controller;
 
 
+import com.peng.aspect.MyLog;
 import com.peng.entity.Type;
 import com.peng.service.ICacheService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class TypeShowController {
     @Autowired
     private ICacheService iCacheService;
 
+    @MyLog
     @GetMapping("/types/{tyId}")
     public String types(@PathVariable Long tyId, @RequestParam(value = "page", defaultValue = "1") Integer pageNum, Model model){
 

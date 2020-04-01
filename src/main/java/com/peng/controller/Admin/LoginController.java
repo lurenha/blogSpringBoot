@@ -1,5 +1,6 @@
 package com.peng.controller.Admin;
 
+import com.peng.aspect.MyLog;
 import com.peng.config.exception.CaptchaExpireException;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
@@ -31,6 +32,7 @@ public class LoginController {
     private RedisUtil redisUtil;
     @Autowired
     private ISysMenuService iSysMenuService;
+
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public JsonResult login(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("code") String code, @RequestParam("uuid") String uuid) {

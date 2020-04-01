@@ -19,6 +19,7 @@ import com.peng.util.Constants;
 import com.peng.util.FileUploadUtils;
 import com.peng.util.RedisUtil;
 import com.peng.util.TokenUtil;
+import org.apache.logging.log4j.util.Strings;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +33,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/system/user")
+@RequiresPermissions("system:user:list")
 public class UserController {
     @Autowired
     private IUserService iUserService;
@@ -44,7 +46,7 @@ public class UserController {
     /**
      * 修改用户
      */
-    //    @RequiresPermissions("user:addORedit")
+    @RequiresPermissions("system:user:edit")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody User user) {
         if (Objects.isNull(user.getUsId())) {
@@ -64,7 +66,7 @@ public class UserController {
     /**
      * 新增用户
      */
-    //    @RequiresPermissions("user:addORedit")
+    @RequiresPermissions("system:user:add")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody User user) {
         if (iUserService.count(new LambdaQueryWrapper<User>().eq(User::getUsername, user.getUsername())) > 0) {
@@ -82,7 +84,7 @@ public class UserController {
     /**
      * 根据用户编号获取详细信息
      */
-    //    @RequiresPermissions("user:find")
+    @RequiresPermissions("system:user:query")
     @GetMapping("/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long usId) {
         Map<String, Object> map = new HashMap<>();
@@ -96,19 +98,19 @@ public class UserController {
     /**
      * 获取用户列表
      */
-    //    @RequiresPermissions("user:find")
+    @RequiresPermissions("system:user:query")
     @GetMapping("/list")
     public JsonResult list(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                            @RequestParam(value = "userName", required = false) String userName) {
-        PageInfo<User> userPage = iUserService.getListByPage(pageNum, pageSize, new LambdaQueryWrapper<User>().like(Objects.nonNull(userName), User::getUsername, userName));
+        PageInfo<User> userPage = iUserService.getListByPage(pageNum, pageSize, new LambdaQueryWrapper<User>().like(Strings.isNotBlank(userName), User::getUsername, userName));
         return ResultUtil.success(userPage, ResultCode.SUCCESS);
     }
 
     /**
      * 删除用户
      */
-    //    @RequiresPermissions("user:find")
+    @RequiresPermissions("system:user:remove")
     @GetMapping("/delete/{userIds}")
     public JsonResult remove(@PathVariable Long[] userIds) {
         for (Long id : userIds) {
@@ -127,6 +129,7 @@ public class UserController {
     /**
      * 重置密码
      */
+    @RequiresPermissions("system:user:resetPwd")
     @PostMapping("/resetPwd")
     public JsonResult resetPwd(@RequestBody User user) {
         if (StringUtils.isBlank(user.getPassword()) || Objects.isNull(user.getUsId())) {
@@ -162,7 +165,7 @@ public class UserController {
      * 个人信息页修改
      */
     @PostMapping("/profile/update")
-    public JsonResult profileUpdate(@Validated @RequestBody User user,ServletRequest request) {
+    public JsonResult profileUpdate(@Validated @RequestBody User user, ServletRequest request) {
         HttpServletRequest req = (HttpServletRequest) request;
         String token = req.getHeader("Peng-Token");
         Long userId = TokenUtil.getUserId(token);
@@ -204,7 +207,7 @@ public class UserController {
      * 头像上传
      */
     @PostMapping("/profile/avatar")
-    public JsonResult create(@RequestParam("avatarfile") MultipartFile file,ServletRequest request) throws IOException {
+    public JsonResult create(@RequestParam("avatarfile") MultipartFile file, ServletRequest request) throws IOException {
         HttpServletRequest req = (HttpServletRequest) request;
         String token = req.getHeader("Peng-Token");
         Long userId = TokenUtil.getUserId(token);

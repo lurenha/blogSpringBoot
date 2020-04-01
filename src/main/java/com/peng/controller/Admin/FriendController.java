@@ -1,6 +1,7 @@
 package com.peng.controller.Admin;
 
 
+import com.peng.aspect.MyLog;
 import com.peng.entity.Friend;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
@@ -15,11 +16,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/friend")
+@RequiresPermissions("content:friend:list")
 public class FriendController {
     @Autowired
     private IFriendService iFriendService;
 
-    //    @RequiresPermissions("friend:addORedit")
+    @MyLog
+    @RequiresPermissions("content:friend:add")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody Friend friend) {
         boolean bool = iFriendService.save(friend);
@@ -31,7 +34,8 @@ public class FriendController {
 
     }
 
-    //    @RequiresPermissions("friend:addORedit")
+    @MyLog
+    @RequiresPermissions("content:friend:edit")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody Friend friend) {
         boolean bool = iFriendService.updateById(friend);
@@ -43,8 +47,8 @@ public class FriendController {
 
     }
 
-
-    //    @RequiresPermissions("friend:delete")
+    @MyLog
+    @RequiresPermissions("content:friend:remove")
     @GetMapping("/delete/{idNum}")
     public JsonResult removeById(@PathVariable("idNum") Long frId) {
         boolean bool = iFriendService.removeById(frId);
@@ -55,14 +59,14 @@ public class FriendController {
         }
     }
 
-    //    @RequiresPermissions("friend:find")
+    @RequiresPermissions("content:friend:query")
     @GetMapping("/find/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long frId) {
         Friend friend = iFriendService.getById(frId);
         return ResultUtil.success(friend, ResultCode.SUCCESS);
     }
 
-    //    @RequiresPermissions("friend:list")
+    @RequiresPermissions("content:friend:query")
     @GetMapping("/list")
     public JsonResult list() {
         List<Friend> friendList = iFriendService.list();
