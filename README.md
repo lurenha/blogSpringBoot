@@ -32,6 +32,7 @@
 - vue-cli4
 ------------
 
+![](http://sjpeng.top/blog01.png)
 
 ## 上手指南
 ### 服务端启动
