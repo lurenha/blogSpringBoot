@@ -31,8 +31,6 @@
 - WebSocket
 - vue-cli4
 ------------
-![](https://img-bbs.csdn.net/upload/202003/12/1583983249_40812.png)
-![](http://sjpeng.top/blog01.png)
 
 ## 上手指南
 ### 服务端启动
@@ -54,3 +52,5 @@
 ------------
 ## License
 欢迎小伙伴们star、fork。
+
+![](http://sjpeng.top/blog01.png)
