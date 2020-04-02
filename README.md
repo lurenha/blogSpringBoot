@@ -46,6 +46,7 @@
 ------------
 
 ### 鸣谢
+#### 该项目参考了若依后台管理 https://gitee.com/y_project/RuoYi-Vue
 #### 该项目参考了曾中杰的 https://github.com/Mretron/MyBlogWebSite
 #### SpringBoot整合Shiro参考 https://github.com/Heeexy/SpringBoot-Shiro-Vue
 
@@ -54,6 +55,14 @@
 欢迎小伙伴们star、fork。
 
 ![1](http://sjpeng.top/indexlist.png)
+
+![2](http://sjpeng.top/blog01.png)
+
+![3](http://sjpeng.top/role.png)
+
+![4](http://sjpeng.top/blogcontent.png)
+
+![5](http://sjpeng.top/bloglist.png)
 
 
 
