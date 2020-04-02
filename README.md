@@ -46,13 +46,18 @@
 ------------
 
 ### 鸣谢
-#### 该项目参考了若依后台管理 https://gitee.com/y_project/RuoYi-Vue
+
 #### 该项目参考了曾中杰的 https://github.com/Mretron/MyBlogWebSite
 #### SpringBoot整合Shiro参考 https://github.com/Heeexy/SpringBoot-Shiro-Vue
+#### 该项目参考了vue-element-admin https://github.com/PanJiaChen/vue-element-admin
+#### 该项目参考了若依后台管理 https://gitee.com/y_project/RuoYi-Vue
+
 
 ------------
 ## License
 欢迎小伙伴们star、fork。
+
+## 项目截图
 
 ![1](http://sjpeng.top/indexlist.png)
 
