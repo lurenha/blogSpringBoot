@@ -107,6 +107,7 @@ public interface BlogMapper extends BaseMapper<Blog> {
     @Update("update t_blog set views=views+1,update_time=update_time where bl_id = #{blId}")
     int addViewsById(@Param("blId") Long blId);
     //---------------------------------------------------查询需要用到的子查询-------------------------------------------------------------
+
     /***
      *  //根据博客查询对应的tags（内联查询）
      */
@@ -126,31 +127,30 @@ public interface BlogMapper extends BaseMapper<Blog> {
     @Select("select ta_id from t_blog_tag where bl_id=#{blId}")
     Long[] findTagIdsById(Long blId);
     //----------------------------------------------------------------------------------------------------------------------
+
     /***
      *  //根据博客查询对应的comments
      */
     @Results(id = "commentMap", value = {
             @Result(id = true, property = "coId", column = "co_id"),
-            @Result(property = "childList", column = "co_id", many = @Many(select = "com.peng.mapper.BlogMapper.findChildListByComment",
-                    fetchType = FetchType.DEFAULT)),
-            @Result(property = "parent", column = "parent_id", one = @One(select = "com.peng.mapper.BlogMapper.findParentByComment",
-                    fetchType = FetchType.DEFAULT)),
+            @Result(property = "parentId", column = "parent_id"),
     })
-    @Select("select * from t_comment where bl_id=#{blId} and parent_id is null order by create_time desc")
+    @Select("select * from t_comment where bl_id=#{blId}")
     List<Comment> findCommentByBlog(Long blId);
 
-    /***
-     *  //查询评论的子评论
-     */
-    @ResultMap("commentMap")
-    @Select("select * from t_comment where parent_id=#{coId} order by create_time desc")
-    Comment findChildListByComment(Long coId);
 
-    /***
-     *  //查询评论的父评论
-     */
-    @Select("select * from t_comment where co_id=#{parentId}")
-    Comment findParentByComment(Long parentId);
-    //----------------------------------------------------------------------------------------------------------------------
+//    /***
+//     *  //查询评论的子评论
+//     */
+//    @ResultMap("commentMap")
+//    @Select("select * from t_comment where parent_id=#{coId} order by create_time desc")
+//    Comment findChildListByComment(Long coId);
+
+//    /***
+//     *  //查询评论的父评论
+//     */
+//    @Select("select * from t_comment where co_id=#{parentId}")
+//    Comment findParentByComment(Long parentId);
+//    //----------------------------------------------------------------------------------------------------------------------
 
 }

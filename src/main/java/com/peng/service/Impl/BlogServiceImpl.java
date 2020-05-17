@@ -2,24 +2,21 @@ package com.peng.service.Impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.peng.aspect.MyCache;
 import com.peng.entity.Blog;
 import com.peng.entity.Comment;
 import com.peng.entity.other.TimeLineBlog;
 import com.peng.mapper.BlogMapper;
 import com.peng.service.IBlogService;
-import com.peng.service.ICommentService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -76,16 +73,21 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     @Override
     public Blog findFullById(Long blId) {
         Blog blog = blogMapper.findFullBlogById(blId);
-        //递归遍历子节点 将节点深度>1的 所有子节点添加至父节点
-        List<Comment> comments = blog.getComments();
-        for (Comment comment : comments) {
-            ArrayList<Comment> tem = new ArrayList<>();
-            backStack(tem, comment.getChildList());
-            tem.sort(((o1, o2) -> {
-                return o2.getCreateTime().compareTo(o1.getCreateTime());
-            }));
-            comment.setChildList(tem);
-        }
+        List<Comment> commentList = blog.getComments();
+        List<Comment> resComments = commentList.stream().filter(comment -> Objects.isNull(comment.getParentId()))
+                .map(comment -> {//将comment下所有子孙评论放入comment的ChildList
+                    List<Comment> childList = new ArrayList<>();
+                    getChildes(childList, comment, commentList);
+                    comment.setChildList(childList);
+                    Collections.sort(comment.getChildList(), (co1, co2) -> {
+                        return co2.getCreateTime().compareTo(co1.getCreateTime());
+                    });
+                    return comment;
+                }).sorted((co1, co2) -> {
+                    return co2.getCreateTime().compareTo(co1.getCreateTime());
+                }).collect(Collectors.toList());
+        blog.setComments(resComments);
+
         return blog;
     }
 
@@ -103,31 +105,35 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     @Override
     public List<Comment> getCommentWithChildById(Long blId) {
         List<Comment> commentList = blogMapper.findCommentByBlog(blId);
-        for (Comment comment : commentList) {
-            ArrayList<Comment> tem = new ArrayList<>();
-            backStack(tem, comment.getChildList());
-            tem.sort(((o1, o2) -> {
-                return o2.getCreateTime().compareTo(o1.getCreateTime());
-            }));
-            comment.setChildList(tem);
-        }
-        return commentList;
+        List<Comment> resComments = commentList.stream().filter(comment -> Objects.isNull(comment.getParentId()))
+                .map(comment -> {//将comment下所有子孙评论放入comment的ChildList
+                    List<Comment> childList = new ArrayList<>();
+                    getChildes(childList, comment, commentList);
+                    comment.setChildList(childList);
+                    Collections.sort(comment.getChildList(), (co1, co2) -> {
+                        return co2.getCreateTime().compareTo(co1.getCreateTime());
+                    });
+                    return comment;
+                }).sorted((co1, co2) -> {
+                    return co2.getCreateTime().compareTo(co1.getCreateTime());
+                }).collect(Collectors.toList());
+        return resComments;
 
     }
 
-    private void backStack(List<Comment> parentlist, List<Comment> childlist) {
-        if (childlist == null) {
-            return;
-        }
-        for (Comment child : childlist) {
-            backStack(parentlist, child.getChildList());
-            Comment com = new Comment();
-            BeanUtils.copyProperties(child, com);
-            com.setChildList(null);
-            parentlist.add(com);
-        }
-
+    //递归 插入评论的父节点，子节点
+    private void getChildes(List<Comment> resList, Comment comment, List<Comment> commentList) {
+        commentList.stream().filter(tem -> {
+            return comment.getCoId().equals(tem.getParentId());
+        }).forEach(tem -> {
+            if (Objects.nonNull(tem)) {
+                tem.setParent(comment);
+                resList.add(tem);
+                getChildes(resList, tem, commentList);
+            }
+        });
     }
+
 
     @Override
     public Map findTimeLine() {

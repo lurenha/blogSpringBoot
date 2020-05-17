@@ -80,6 +80,13 @@
                 <artifactId>mysql-connector-java</artifactId>
             </dependency>
 
+            <!-- druid -->
+           <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.1.13</version>
+            </dependency>
+
             <!-- 单元测试 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

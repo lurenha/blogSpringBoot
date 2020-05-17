@@ -1,6 +1,6 @@
 # 服务器配置
 server:
-  port: 8080
+  port: 8088
   servlet:
     context-path: /peng
 
@@ -16,27 +16,62 @@ spring:
   # Redis数据库索引（默认为0）
   redis:
     database: 0
-    host: 127.0.0.1
+    host: 192.168.21.3
     port: 6379
     password:
   # 数据源配置
   datasource:
-    url: jdbc:mysql://123.57.000.00:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
-    username: root
-    password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-#  jackson:
-#    serialization:
-#      write-dates-as-timestamps: true
-#    time-zone: GMT+8
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.21.3:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+      username: root
+      password: 123456
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      #Oracle需要打开注释
+      #validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        #login-username: admin
+        #login-password: admin
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+
+  jackson:
+    time-zone: GMT%2B8
+  serialization:
+    #格式化输出
+    indent_output: true
+    #忽略无法转换的对象
+    fail_on_empty_beans: false
+    #设置空如何序列化
+    defaultPropertyInclusion: NON_EMPTY
+
 #    ## 默认日期格式化
 #    date-format: yyyy-MM-dd HH:mm:ss
 
 
 mybatis-plus:
-#  configuration:
-#    map-underscore-to-camel-case: true
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    configuration:
+#      map-underscore-to-camel-case: true
+#      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     refresh-mapper: true
     #驼峰下划线转换
@@ -51,9 +86,9 @@ pagehelper:
 
 #控制台打印SQL
 logging:
-  file: ./logs/core.log
-#  level:
-#    com.peng.dao: DEBUG
+#  file: ./logs/core.log
+  level:
+    com.peng.mapper: DEBUG
 
 
 myapplication:
@@ -68,9 +103,9 @@ myapplication:
 
     # 七牛云对象存储配置信息
     qiniu:
-      endpoint: endpoint
-      accessKey: accessKey
-      secretKey: secretKey
-      bucketName: bucketName
-      baseUrl:  baseUrl
-      templateid: templateid
+      endpoint: http://s3-cn-north-1.qiniucs.com
+      accessKey: b9E8KElL6je8XJKEjK_GEj8BY-fAogcB0-uN2C8r
+      secretKey: 6oF4MJmWx4NgoSJ36KK6jpey347MMrmmR_OCpnv4
+      bucketName: pengcloud01
+      baseUrl:  http://sjpeng.top/
+      templateid: 1232312365865766912
