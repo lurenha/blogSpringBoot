@@ -1,0 +1,67 @@
+# 数据源配置
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        druid:
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            url: jdbc:mysql://192.168.21.3:3306/My_Blog_db?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+            username: root
+            password: 123456
+            initial-size: 10
+            max-active: 100
+            min-idle: 10
+            max-wait: 60000
+            pool-prepared-statements: true
+            max-pool-prepared-statement-per-connection-size: 20
+            time-between-eviction-runs-millis: 60000
+            min-evictable-idle-time-millis: 300000
+            #Oracle需要打开注释
+            #validation-query: SELECT 1 FROM DUAL
+            test-while-idle: true
+            test-on-borrow: false
+            test-on-return: false
+            stat-view-servlet:
+                enabled: true
+                url-pattern: /druid/*
+                #login-username: admin
+                #login-password: admin
+            filter:
+                stat:
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: false
+                wall:
+                    config:
+                        multi-statement-allow: true
+
+    # Redis数据库索引（默认为0）
+    redis:
+        database: 0
+        host: 192.168.21.3
+        port: 6379
+        password:
+
+myapplication:
+    # 对象存储配置
+    storage:
+        # 当前工作的对象存储模式，分别是local,qiniu
+        active: qiniu
+        # 本地对象存储配置信息
+        local:
+            storagePath: storage
+            address: http://localhost:8088/storage/
+
+        # 七牛云对象存储配置信息
+        qiniu:
+            endpoint: http://s3-cn-north-1.qiniucs.com
+            accessKey: xxx
+            secretKey: xxx
+            bucketName: pengcloud01
+            baseUrl:  http://sjpeng.top/
+            templateid: 1232312365865766912
+
+#控制台打印SQL
+logging:
+  file: ./logs/core.log
+  level:
+    com.peng.mapper: DEBUG

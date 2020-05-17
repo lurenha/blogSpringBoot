@@ -127,7 +127,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
             return comment.getCoId().equals(tem.getParentId());
         }).forEach(tem -> {
             if (Objects.nonNull(tem)) {
-                tem.setParent(comment);
+                Comment parent = new Comment();
+                parent.setCoId(comment.getCoId());
+                parent.setName(comment.getName());
+                tem.setParent(parent);
                 resList.add(tem);
                 getChildes(resList, tem, commentList);
             }
