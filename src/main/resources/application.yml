@@ -1,6 +1,6 @@
 # 服务器配置
 server:
-  port: 8088
+  port: 8080
   servlet:
     context-path: /peng
 
@@ -104,8 +104,8 @@ myapplication:
     # 七牛云对象存储配置信息
     qiniu:
       endpoint: http://s3-cn-north-1.qiniucs.com
-      accessKey: b9E8KElL6je8XJKEjK_GEj8BY-fAogcB0-uN2C8r
-      secretKey: 6oF4MJmWx4NgoSJ36KK6jpey347MMrmmR_OCpnv4
+      accessKey: xxx
+      secretKey: xxx
       bucketName: pengcloud01
       baseUrl:  http://sjpeng.top/
       templateid: 1232312365865766912
