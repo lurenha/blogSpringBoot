@@ -14,7 +14,7 @@ server:
 spring:
   # 环境 dev|test|prod
   profiles:
-    active: prod
+    active: dev
   #thymeleaf页面模板配置
   thymeleaf:
     prefix: classpath:/templates/
