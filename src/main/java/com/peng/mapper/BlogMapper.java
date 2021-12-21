@@ -57,8 +57,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
             @Result(property = "tags", column = "bl_id", many = @Many(select = "com.peng.mapper.BlogMapper.findTagsByBlog",
                     fetchType = FetchType.DEFAULT)),
             @Result(property = "type", column = "ty_id", one = @One(select = "com.peng.mapper.BlogMapper.findTypeByBlog",
-                    fetchType = FetchType.DEFAULT)),
-            @Result(property = "comments", column = "bl_id", many = @Many(select = "com.peng.mapper.BlogMapper.findCommentByBlog",
                     fetchType = FetchType.DEFAULT))
     })
     @Select("select * from t_blog where bl_id=#{blId} ")
