@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -96,12 +95,11 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         List<Comment> commentList = blogMapper.findCommentByBlog(blId);
         Map<Long, List<Comment>> commentMap = commentList.stream().filter(comment -> Objects.nonNull(comment.getParentId())).collect(Collectors.groupingBy(Comment::getParentId));
         List<Comment> resComments = commentList.stream().filter(comment -> Objects.isNull(comment.getParentId()))
-                .map(curComment -> {//将comment下所有子孙评论放入comment的ChildList
+                .peek(curComment -> {//将comment下所有子孙评论放入comment的ChildList
                     List<Comment> childList = new ArrayList<>();
                     getChildesByCur(childList, curComment, commentMap);
                     childList.sort(Comparator.comparing(Comment::getCreateTime).reversed());
                     curComment.setChildList(childList);
-                    return curComment;
                 }).sorted(Comparator.comparing(Comment::getCreateTime).reversed()).collect(Collectors.toList());
         return resComments;
 
@@ -121,6 +119,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         Long key = curComment.getCoId();
         if (commentMap.containsKey(key)) {
             for (Comment nextComment : commentMap.get(key)) {
+                //构造父节点，用于前端显示@Parent
+                nextComment.setParent(Comment.builder().coId(curComment.getCoId()).name(curComment.getName()).build());
                 resList.add(nextComment);
                 getChildesByCur(resList, nextComment, commentMap);
             }
