@@ -4,6 +4,7 @@ package com.peng.config.exception;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * 全局异常处理
  */
 @ControllerAdvice
+@Slf4j
 public class PageExceptionHandler {
 
     /***
@@ -59,11 +61,7 @@ public class PageExceptionHandler {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
-        // 记录错误信息
-        String msg = e.getMessage();
-        if (Strings.isBlank(msg)) {
-            msg = "服务器出错";
-        }
-        return new JsonResult(50000, msg, null);
+        e.printStackTrace();
+        return new JsonResult(50000, "服务器开小差了", null);
     }
 }
