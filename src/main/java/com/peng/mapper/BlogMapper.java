@@ -25,7 +25,7 @@ public interface BlogMapper extends BaseMapper<Blog> {
     @Select("<script>" +
             "select bl_id,title,outline,background_image,recommend,commentabled,published,views,ty_id,create_time,update_time from t_blog where published=true" +
             "<if test='title!=null and title!=\"\"'>" +
-            "AND title like \"%${title}%\"" +
+            "AND title like concat('%',#{title},'%')" +
             "</if>" +
             "order by create_time desc" +
             "</script>"
