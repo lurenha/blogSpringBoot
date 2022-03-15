@@ -25,7 +25,7 @@ public interface BlogMapper extends BaseMapper<Blog> {
     @Select("<script>" +
             "select bl_id,title,outline,background_image,recommend,commentabled,published,views,ty_id,create_time,update_time from t_blog where published=true" +
             "<if test='title!=null and title!=\"\"'>" +
-            "AND title like \"%${title}%\"" +
+            "AND title like concat('%',#{title},'%')" +
             "</if>" +
             "order by create_time desc" +
             "</script>"
@@ -57,8 +57,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
             @Result(property = "tags", column = "bl_id", many = @Many(select = "com.peng.mapper.BlogMapper.findTagsByBlog",
                     fetchType = FetchType.DEFAULT)),
             @Result(property = "type", column = "ty_id", one = @One(select = "com.peng.mapper.BlogMapper.findTypeByBlog",
-                    fetchType = FetchType.DEFAULT)),
-            @Result(property = "comments", column = "bl_id", many = @Many(select = "com.peng.mapper.BlogMapper.findCommentByBlog",
                     fetchType = FetchType.DEFAULT))
     })
     @Select("select * from t_blog where bl_id=#{blId} ")

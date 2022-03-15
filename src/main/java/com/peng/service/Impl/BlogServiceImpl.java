@@ -73,21 +73,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     @Override
     public Blog findFullById(Long blId) {
         Blog blog = blogMapper.findFullBlogById(blId);
-        List<Comment> commentList = blog.getComments();
-        List<Comment> resComments = commentList.stream().filter(comment -> Objects.isNull(comment.getParentId()))
-                .map(comment -> {//将comment下所有子孙评论放入comment的ChildList
-                    List<Comment> childList = new ArrayList<>();
-                    getChildes(childList, comment, commentList);
-                    comment.setChildList(childList);
-                    Collections.sort(comment.getChildList(), (co1, co2) -> {
-                        return co2.getCreateTime().compareTo(co1.getCreateTime());
-                    });
-                    return comment;
-                }).sorted((co1, co2) -> {
-                    return co2.getCreateTime().compareTo(co1.getCreateTime());
-                }).collect(Collectors.toList());
-        blog.setComments(resComments);
-
+        if (blog != null) {
+            blog.setComments(getCommentWithChildById(blId));
+        }
         return blog;
     }
 
@@ -105,36 +93,38 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     @Override
     public List<Comment> getCommentWithChildById(Long blId) {
         List<Comment> commentList = blogMapper.findCommentByBlog(blId);
+        Map<Long, List<Comment>> commentMap = commentList.stream().filter(comment -> Objects.nonNull(comment.getParentId())).collect(Collectors.groupingBy(Comment::getParentId));
         List<Comment> resComments = commentList.stream().filter(comment -> Objects.isNull(comment.getParentId()))
-                .map(comment -> {//将comment下所有子孙评论放入comment的ChildList
+                .peek(curComment -> {//将comment下所有子孙评论放入comment的ChildList
                     List<Comment> childList = new ArrayList<>();
-                    getChildes(childList, comment, commentList);
-                    comment.setChildList(childList);
-                    Collections.sort(comment.getChildList(), (co1, co2) -> {
-                        return co2.getCreateTime().compareTo(co1.getCreateTime());
-                    });
-                    return comment;
-                }).sorted((co1, co2) -> {
-                    return co2.getCreateTime().compareTo(co1.getCreateTime());
-                }).collect(Collectors.toList());
+                    getChildesByCur(childList, curComment, commentMap);
+                    childList.sort(Comparator.comparing(Comment::getCreateTime).reversed());
+                    curComment.setChildList(childList);
+                }).sorted(Comparator.comparing(Comment::getCreateTime).reversed()).collect(Collectors.toList());
         return resComments;
 
     }
 
-    //递归 插入评论的父节点，子节点
-    private void getChildes(List<Comment> resList, Comment comment, List<Comment> commentList) {
-        commentList.stream().filter(tem -> {
-            return comment.getCoId().equals(tem.getParentId());
-        }).forEach(tem -> {
-            if (Objects.nonNull(tem)) {
-                Comment parent = new Comment();
-                parent.setCoId(comment.getCoId());
-                parent.setName(comment.getName());
-                tem.setParent(parent);
-                resList.add(tem);
-                getChildes(resList, tem, commentList);
+    /**
+     * 递归 插入评论的父节点，子节点
+     *
+     * @param resList
+     * @param curComment
+     * @param commentMap
+     */
+    private void getChildesByCur(List<Comment> resList, Comment curComment, Map<Long, List<Comment>> commentMap) {
+        if (curComment == null || curComment.getCoId() == null) {
+            return;
+        }
+        Long key = curComment.getCoId();
+        if (commentMap.containsKey(key)) {
+            for (Comment nextComment : commentMap.get(key)) {
+                //构造父节点，用于前端显示@Parent
+                nextComment.setParent(Comment.builder().coId(curComment.getCoId()).name(curComment.getName()).build());
+                resList.add(nextComment);
+                getChildesByCur(resList, nextComment, commentMap);
             }
-        });
+        }
     }
 
 
