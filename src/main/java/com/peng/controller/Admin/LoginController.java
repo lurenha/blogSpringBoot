@@ -1,6 +1,7 @@
 package com.peng.controller.Admin;
 
 import com.peng.config.exception.CaptchaExpireException;
+import com.peng.entity.MyUser;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
@@ -57,18 +58,12 @@ public class LoginController {
     }
 
     @RequestMapping(value = {"/getInfo"}, method = RequestMethod.GET)
-    public JsonResult getInfo(ServletRequest request) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader("Peng-Token");
-
-        Long usId = null;
-        User user = null;
-        if ((usId = TokenUtil.getUserId(token)) != null) {
-            user = userService.getById(usId);
-            user.setPassword(null);
-            user.setUsId(null);
+    public JsonResult getInfo(MyUser myUser) {
+        if (myUser != null) {
+            myUser.setPassword(null);
+            myUser.setUsId(null);
             Map<String, Object> map = new HashMap<>();
-            map.put("user", user);
+            map.put("user", myUser);
             map.put("roles", new String[]{"admin"});
             map.put("permissions", new String[]{"*:*:*"});
             return ResultUtil.success(map, ResultCode.SUCCESS);
@@ -77,14 +72,11 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/getRouters", method = RequestMethod.GET)
-    public JsonResult getRouters(ServletRequest request) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader("Peng-Token");
-        Long usId = TokenUtil.getUserId(token);
-        if (usId == null) {
+    public JsonResult getRouters(MyUser myUser) {
+        if (myUser == null) {
             return ResultUtil.faile(ResultCode.Token_AUTH_ERROR);
         }
-        List<SysMenu> menus = iSysMenuService.selectMenuTreeByUserId(usId);
+        List<SysMenu> menus = iSysMenuService.selectMenuTreeByUserId(myUser.getUsId());
         return ResultUtil.success(iSysMenuService.buildMenus(menus), ResultCode.SUCCESS);
     }
 

@@ -6,28 +6,24 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.peng.config.exception.CaptchaExpireException;
 import com.peng.entity.MyUser;
 import com.peng.entity.User;
 import com.peng.mapper.UserMapper;
+import com.peng.service.ISysRoleService;
 import com.peng.service.IUserService;
-import com.peng.util.Constants;
-import com.peng.util.RedisUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private RedisUtil redisUtil;
+    private ISysRoleService sysRoleService;
+
 
     @Override
     public User getAdminInfo() {
@@ -65,6 +61,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         List<User> list = this.list(queryWrapper);
         PageInfo<User> result = new PageInfo<>(list);
         return result;
+    }
+
+    @Override
+    public MyUser getMyUserById(Long usId) {
+        MyUser res = new MyUser();
+        final User user = userMapper.selectById(usId);
+        BeanUtils.copyProperties(user, res);
+        if (user == null) {
+            return null;
+        }
+        res.setRole(sysRoleService.getById(user.getRoleId()));
+        res.setPermissionList(this.getPermissionList(usId));
+        return res;
     }
 
 }

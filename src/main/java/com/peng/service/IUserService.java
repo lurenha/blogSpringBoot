@@ -15,4 +15,5 @@ public interface IUserService extends IService<User> {
     List<String> getPermissionList(Long usId);
     boolean isAdmin(Long usId);
     PageInfo<User> getListByPage(Integer pageNum, Integer pageSize, Wrapper<User> queryWrapper);
+    MyUser getMyUserById(Long usId);
 }

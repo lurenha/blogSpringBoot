@@ -40,10 +40,10 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     //获取用户信息
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        String username = TokenUtil.getUserName(token);
+        final Long userId = TokenUtil.getUserId(token);
         String permissionList = TokenUtil.getPermissionList(token);
-        if (username != null) {
-            return new UsernamePasswordAuthenticationToken(username, null, AuthorityUtils.commaSeparatedStringToAuthorityList(permissionList));
+        if (userId != null) {
+            return new UsernamePasswordAuthenticationToken(userId, null, AuthorityUtils.commaSeparatedStringToAuthorityList(permissionList));
         }
         return null;
     }

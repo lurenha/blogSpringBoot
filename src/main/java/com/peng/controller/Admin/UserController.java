@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.pagehelper.PageInfo;
+import com.peng.entity.MyUser;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
@@ -12,7 +13,6 @@ import com.peng.entity.sys.SysRole;
 import com.peng.service.ISysRoleService;
 import com.peng.service.IUserService;
 import com.peng.util.FileUploadUtils;
-import com.peng.util.TokenUtil;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,8 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 
@@ -140,17 +138,11 @@ public class UserController {
      * 个人信息页
      */
     @GetMapping("/profile")
-    public JsonResult profile(ServletRequest request) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader("Peng-Token");
-        Long userId = TokenUtil.getUserId(token);
-        User user = iUserService.getById(userId);
-        user.setUsId(null);
-        user.setPassword(null);
-        SysRole sysRole = iSysRoleService.getById(user.getRoleId());
+    public JsonResult profile(MyUser myUser) {
+        myUser.setPassword(null);
         Map<String, Object> map = new HashMap<>();
-        map.put("user", user);
-        map.put("roleName", sysRole.getRoleName());
+        map.put("user", myUser);
+        map.put("roleName", myUser.getRole().getRoleName());
         return ResultUtil.success(map, ResultCode.SUCCESS);
     }
 
@@ -158,14 +150,14 @@ public class UserController {
      * 个人信息页修改
      */
     @PostMapping("/profile/update")
-    public JsonResult profileUpdate(@Validated @RequestBody User user, ServletRequest request) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader("Peng-Token");
-        Long userId = TokenUtil.getUserId(token);
-        if (iUserService.count(new LambdaQueryWrapper<User>().ne(User::getUsId, userId).eq(User::getUsername, user.getUsername())) > 0) {
+    public JsonResult profileUpdate(@Validated @RequestBody User user, MyUser myUser) {
+        if (myUser == null) {
+            return ResultUtil.faile(ResultCode.Token_AUTH_ERROR);
+        }
+        if (iUserService.count(new LambdaQueryWrapper<User>().ne(User::getUsId, myUser.getUsId()).eq(User::getUsername, user.getUsername())) > 0) {
             return ResultUtil.faile(ResultCode.DATA_ALREADY_EXISTED_ROLE);
         }
-        user.setUsId(userId);
+        user.setUsId(myUser.getUsId());
         user.setPassword(null);
         user.setAvatar(null);
         Boolean bool = iUserService.updateById(user);
@@ -180,15 +172,14 @@ public class UserController {
      * 个人信息修改密码
      */
     @PostMapping("/profile/updatePwd")
-    public JsonResult profile(ServletRequest request, @RequestParam(value = "oldPassword") String oldPassword, @RequestParam(value = "newPassword") String newPassword) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader("Peng-Token");
-        Long userId = TokenUtil.getUserId(token);
-        User user = iUserService.getById(userId);
-        if (!user.getPassword().equals(oldPassword)) {
+    public JsonResult profile(MyUser myUser, @RequestParam(value = "oldPassword") String oldPassword, @RequestParam(value = "newPassword") String newPassword) {
+        if (myUser == null) {
+            return ResultUtil.faile(ResultCode.Token_AUTH_ERROR);
+        }
+        if (!myUser.getPassword().equals(oldPassword)) {
             return ResultUtil.faile(ResultCode.PWD_AUTH_ERROR);
         }
-        boolean bool = iUserService.update(new LambdaUpdateWrapper<User>().set(User::getPassword, newPassword).eq(User::getUsId, userId));
+        boolean bool = iUserService.update(new LambdaUpdateWrapper<User>().set(User::getPassword, newPassword).eq(User::getUsId, myUser.getUsId()));
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
         } else {
@@ -200,13 +191,13 @@ public class UserController {
      * 头像上传
      */
     @PostMapping("/profile/avatar")
-    public JsonResult create(@RequestParam("avatarfile") MultipartFile file, ServletRequest request) throws IOException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader("Peng-Token");
-        Long userId = TokenUtil.getUserId(token);
+    public JsonResult create(@RequestParam("avatarfile") MultipartFile file, MyUser myUser) throws IOException {
+        if (myUser == null) {
+            return ResultUtil.faile(ResultCode.Token_AUTH_ERROR);
+        }
         if (!file.isEmpty()) {
             String url = fileUploadUtils.upload(file);
-            iUserService.update(new LambdaUpdateWrapper<User>().set(User::getAvatar, url).eq(User::getUsId, userId));
+            iUserService.update(new LambdaUpdateWrapper<User>().set(User::getAvatar, url).eq(User::getUsId, myUser.getUsId()));
             return ResultUtil.success(url, ResultCode.SUCCESS);
         }
         return ResultUtil.faile(ResultCode.DATA_IS_WRONG);
