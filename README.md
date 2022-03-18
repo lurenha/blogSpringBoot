@@ -17,7 +17,7 @@
 ## 技术栈
 #### 后端技术栈
 - Spring Boot
-- Shiro+Jwt
+- SpringSecurity+Jwt
 - MyBatisPlus
 - MySQL
 - Redis
