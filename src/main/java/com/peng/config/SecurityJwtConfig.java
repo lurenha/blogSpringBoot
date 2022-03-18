@@ -34,25 +34,19 @@ public class SecurityJwtConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 //不拦截
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/static/**").permitAll()
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/images/**").permitAll()
-                .antMatchers("/js/**").permitAll()
-                .antMatchers("/lib/**").permitAll()
-                .antMatchers("/captchaImage").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/", "/static/**", "/css/**", "/images/**", "/js/**", "/lib/**").permitAll()
+                .antMatchers("/captchaImage","/login").permitAll()
+                .antMatchers("/archives", "/archives/**").permitAll()
+                .antMatchers("/comments", "/comments/**").permitAll()
+                .antMatchers("/friends", "/friends/**").permitAll()
+                .antMatchers("/blog", "/blog/**").permitAll()
+                .antMatchers("/tags", "/tags/**").permitAll()
+                .antMatchers("/types", "/types/**").permitAll()
                 .anyRequest().authenticated()
                 //授权
                 .and()
@@ -66,15 +60,6 @@ public class SecurityJwtConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 //用户访问没有授权资源
                 .accessDeniedHandler(jwtAccessDeniedHandler);
-    }
-
-
-    //允许匹配双斜杠
-    @Bean
-    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
-        StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowUrlEncodedSlash(true);
-        return firewall;
     }
 
 
