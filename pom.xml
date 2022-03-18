@@ -11,7 +11,7 @@
     </parent>
     <groupId>com.peng</groupId>
     <artifactId>MyBlogApplication</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.3.3-SNAPSHOT</version>
     <name>MyBlogPro</name>
     <description>MyBlog project for Spring Boot</description>
         <properties>
@@ -60,12 +60,6 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>3.3.1.tmp</version>
             </dependency>
-<!--            &lt;!&ndash;mybatis起步依赖&ndash;&gt;-->
-<!--            <dependency>-->
-<!--                <groupId>org.mybatis.spring.boot</groupId>-->
-<!--                <artifactId>mybatis-spring-boot-starter</artifactId>-->
-<!--                <version>1.1.1</version>-->
-<!--            </dependency>-->
 
             <!-- 分页插件 -->
             <dependency>
