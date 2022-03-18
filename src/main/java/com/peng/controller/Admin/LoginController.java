@@ -1,6 +1,5 @@
 package com.peng.controller.Admin;
 
-import com.peng.aspect.MyLog;
 import com.peng.config.exception.CaptchaExpireException;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;

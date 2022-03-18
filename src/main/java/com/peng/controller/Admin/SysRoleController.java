@@ -10,8 +10,8 @@ import com.peng.entity.Result.ResultUtil;
 import com.peng.entity.sys.SysRole;
 import com.peng.service.ISysRoleService;
 import org.apache.logging.log4j.util.Strings;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +24,6 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("/system/role")
-@RequiresPermissions("system:role:list")
 public class SysRoleController {
     @Autowired
     private ISysRoleService iSysRoleService;
@@ -32,7 +31,7 @@ public class SysRoleController {
     /**
      * 获取角色列表
      */
-    @RequiresPermissions("system:role:query")
+    @PreAuthorize("hasAuthority('system:role:query')")
     @GetMapping("/list")
     public JsonResult list(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -44,7 +43,7 @@ public class SysRoleController {
     /**
      * 根据角色编号获取详细信息
      */
-    @RequiresPermissions("system:role:query")
+    @PreAuthorize("hasAuthority('system:role:query')")
     @GetMapping("/{roleId}")
     public JsonResult getById(@PathVariable Long roleId) {
         SysRole sysRole = iSysRoleService.getById(roleId);
@@ -56,7 +55,7 @@ public class SysRoleController {
      * 新增角色
      */
     @MyLog
-    @RequiresPermissions("system:role:add")
+    @PreAuthorize("hasAuthority('system:role:add')")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody SysRole role) {
         if (iSysRoleService.count(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleName, role.getRoleName()).or().eq(SysRole::getRoleKey, role.getRoleKey())) > 0) {
@@ -75,7 +74,7 @@ public class SysRoleController {
      * 修改保存角色
      */
     @MyLog
-    @RequiresPermissions("system:role:edit")
+    @PreAuthorize("hasAuthority('system:role:edit')")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody SysRole role) {
         if (Objects.isNull(role.getRoleId())) {
@@ -98,7 +97,7 @@ public class SysRoleController {
      * 删除角色
      */
     @MyLog
-    @RequiresPermissions("system:role:remove")
+    @PreAuthorize("hasAuthority('system:role:remove')")
     @GetMapping("/delete/{roleIds}")
     public JsonResult remove(@PathVariable Long[] roleIds) {
         boolean bool = iSysRoleService.deleteByIdsWithMenuBatch(Arrays.asList(roleIds));

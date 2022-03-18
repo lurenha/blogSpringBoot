@@ -7,8 +7,8 @@ import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
 import com.peng.entity.Tag;
 import com.peng.service.ITagService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +17,12 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/admin/tag")
-@RequiresPermissions("content:tag:list")
 public class TagController {
     @Autowired
     private ITagService tagService;
 
     @MyLog
-    @RequiresPermissions("content:tag:add")
+    @PreAuthorize("hasAuthority('content:tag:add')")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody Tag tag) {
         boolean bool = tagService.save(tag);
@@ -35,7 +34,7 @@ public class TagController {
     }
 
     @MyLog
-    @RequiresPermissions("content:tag:edit")
+    @PreAuthorize("hasAuthority('content:tag:edit')")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody Tag tag) {
         if (Objects.isNull(tag.getTaId())) {
@@ -50,7 +49,7 @@ public class TagController {
     }
 
     @MyLog
-    @RequiresPermissions("content:tag:remove")
+    @PreAuthorize("hasAuthority('content:tag:remove')")
     @GetMapping("/delete/{idNum}")
     public JsonResult removeById(@PathVariable("idNum") Long taId) {
         boolean bool = tagService.removeById(taId);
@@ -62,14 +61,14 @@ public class TagController {
     }
 
 
-    @RequiresPermissions("content:tag:query")
+    @PreAuthorize("hasAuthority('content:tag:query')")
     @GetMapping("/find/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long taId) {
         Tag tag = tagService.getById(taId);
         return ResultUtil.success(tag, ResultCode.SUCCESS);
     }
 
-    @RequiresPermissions("content:tag:query")
+    @PreAuthorize("hasAuthority('content:tag:query')")
     @GetMapping("/list")
     public JsonResult list() {
         List<Tag> tagList = tagService.list();

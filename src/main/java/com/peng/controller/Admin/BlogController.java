@@ -2,8 +2,6 @@ package com.peng.controller.Admin;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.pagehelper.PageInfo;
 import com.peng.aspect.MyLog;
 import com.peng.entity.Blog;
@@ -15,9 +13,8 @@ import com.peng.service.IBlogService;
 import com.peng.service.ICommentService;
 import com.peng.util.FileUploadUtils;
 import org.apache.logging.log4j.util.Strings;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +27,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/blog")
-@RequiresPermissions("content:blog:list")
 public class BlogController {
     @Autowired
     private IBlogService blogService;
@@ -40,7 +36,7 @@ public class BlogController {
     private FileUploadUtils fileUploadUtils;
 
     @MyLog
-    @RequiresPermissions("content:blog:add")
+    @PreAuthorize("hasAuthority('content:blog:add')")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody Blog blog) {
         boolean bool = blogService.addBlogWithTag(blog);
@@ -53,7 +49,7 @@ public class BlogController {
     }
 
     @MyLog
-    @RequiresPermissions("content:blog:edit")
+    @PreAuthorize("hasAuthority('content:blog:edit')")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody Blog blog) {
         if (Objects.isNull(blog.getBlId())) {
@@ -69,9 +65,10 @@ public class BlogController {
     }
 
     @MyLog
-    @RequiresPermissions("content:blog:remove")
+    @PreAuthorize("hasAuthority('content:blog:remove')")
     @GetMapping("/delete/{idNum}")
     public JsonResult removeById(@PathVariable("idNum") Long blId) {
+
         boolean bool = blogService.deleteBlogWithTag(blId);
         if (bool) {
             return ResultUtil.successNoData(ResultCode.SUCCESS);
@@ -80,14 +77,14 @@ public class BlogController {
         }
     }
 
-    @RequiresPermissions("content:blog:query")
+    @PreAuthorize("hasAuthority('content:blog:query')")
     @GetMapping("/find/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long blId) {
         Blog blog = blogService.findBlogWithTagIdsById(blId);
         return ResultUtil.success(blog, ResultCode.SUCCESS);
     }
 
-    @RequiresPermissions("content:blog:query")
+    @PreAuthorize("hasAuthority('content:blog:query')")
     @GetMapping("/list")
     public JsonResult list(@RequestParam(value = "page", defaultValue = "1") Integer pageNum,
                            @RequestParam(value = "limit", defaultValue = "10") Integer pageSize,
@@ -99,7 +96,7 @@ public class BlogController {
     }
 
     @MyLog
-    @RequiresPermissions("content:blog:setPub")
+    @PreAuthorize("hasAuthority('content:blog:setPub')")
     @PostMapping("/setPublished")
     public JsonResult setPublished(@RequestBody Blog blog) {
         if (Objects.isNull(blog.getBlId()) || Objects.isNull(blog.getPublished())) {

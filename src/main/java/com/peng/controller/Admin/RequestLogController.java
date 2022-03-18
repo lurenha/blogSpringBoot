@@ -9,8 +9,8 @@ import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
 import com.peng.service.IRequestLogService;
 import org.apache.logging.log4j.util.Strings;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -18,7 +18,6 @@ import java.util.Arrays;
 
 @RestController
 @RequestMapping("/admin/log")
-@RequiresPermissions("content:requestlog:list")
 public class RequestLogController {
     @Autowired
     private IRequestLogService iRequestLogService;
@@ -27,7 +26,7 @@ public class RequestLogController {
      * 查询日志列表
      */
 
-    @RequiresPermissions("content:requestlog:query")
+    @PreAuthorize("hasAuthority('content:requestlog:query')")
     @GetMapping("/list")
     public JsonResult list(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -42,7 +41,7 @@ public class RequestLogController {
      * 删除日志
      */
     @MyLog
-    @RequiresPermissions("content:requestlog:remove")
+    @PreAuthorize("hasAuthority('content:requestlog:remove')")
     @GetMapping("/delete/{logIds}")
     public JsonResult remove(@PathVariable Long[] logIds) {
 

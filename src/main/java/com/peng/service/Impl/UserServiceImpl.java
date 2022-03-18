@@ -6,18 +6,28 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.peng.config.exception.CaptchaExpireException;
+import com.peng.entity.MyUser;
 import com.peng.entity.User;
 import com.peng.mapper.UserMapper;
 import com.peng.service.IUserService;
+import com.peng.util.Constants;
+import com.peng.util.RedisUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public User getAdminInfo() {
@@ -27,7 +37,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User verifyLogin(String username, String password) {
-        return this.getOne(new LambdaQueryWrapper<User>().eq(User::getUsername,username).eq(User::getPassword,password));
+        final User res = this.getOne(new LambdaQueryWrapper<User>().eq(User::getUsername, username).eq(User::getPassword, password));
+        if (res != null) {
+            res.setPermissionList(this.getPermissionList(res.getUsId()));
+        }
+        return res;
     }
 
     @Override

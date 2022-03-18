@@ -7,8 +7,8 @@ import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
 import com.peng.entity.Type;
 import com.peng.service.ITypeService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +17,12 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/admin/type")
-@RequiresPermissions("content:type:list")
 public class TypeController {
     @Autowired
     private ITypeService typeService;
 
     @MyLog
-    @RequiresPermissions("content:type:add")
+    @PreAuthorize("hasAuthority('content:type:add')")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody Type type) {
         boolean bool = typeService.save(type);
@@ -36,7 +35,7 @@ public class TypeController {
     }
 
     @MyLog
-    @RequiresPermissions("content:type:edit")
+    @PreAuthorize("hasAuthority('content:type:edit')")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody Type type) {
         if (Objects.isNull(type.getTyId())) {
@@ -52,7 +51,7 @@ public class TypeController {
     }
 
     @MyLog
-    @RequiresPermissions("content:type:remove")
+    @PreAuthorize("hasAuthority('content:type:remove')")
     @GetMapping("/delete/{idNum}")
     public JsonResult removeById(@PathVariable("idNum") Long tyId) {
         boolean bool = typeService.removeById(tyId);
@@ -64,7 +63,7 @@ public class TypeController {
     }
 
 
-    @RequiresPermissions("content:type:query")
+    @PreAuthorize("hasAuthority('content:type:query')")
     @GetMapping("/find/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long tyId) {
         Type type = typeService.getById(tyId);
@@ -72,7 +71,7 @@ public class TypeController {
     }
 
 
-    @RequiresPermissions("content:type:query")
+    @PreAuthorize("hasAuthority('content:type:query')")
     @GetMapping("/list")
     public JsonResult list() {
         List<Type> typeList = typeService.list();

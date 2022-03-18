@@ -4,6 +4,7 @@ package com.peng.service;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
+import com.peng.entity.MyUser;
 import com.peng.entity.User;
 
 import java.util.List;

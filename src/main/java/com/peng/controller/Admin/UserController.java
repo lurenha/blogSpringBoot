@@ -3,10 +3,7 @@ package com.peng.controller.Admin;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.github.pagehelper.PageInfo;
-import com.peng.aspect.MyCache;
-import com.peng.config.exception.CaptchaExpireException;
 import com.peng.entity.Result.JsonResult;
 import com.peng.entity.Result.ResultCode;
 import com.peng.entity.Result.ResultUtil;
@@ -14,14 +11,11 @@ import com.peng.entity.User;
 import com.peng.entity.sys.SysRole;
 import com.peng.service.ISysRoleService;
 import com.peng.service.IUserService;
-import com.peng.storage.StorageService;
-import com.peng.util.Constants;
 import com.peng.util.FileUploadUtils;
-import com.peng.util.RedisUtil;
 import com.peng.util.TokenUtil;
 import org.apache.logging.log4j.util.Strings;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +27,6 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/system/user")
-@RequiresPermissions("system:user:list")
 public class UserController {
     @Autowired
     private IUserService iUserService;
@@ -46,7 +39,7 @@ public class UserController {
     /**
      * 修改用户
      */
-    @RequiresPermissions("system:user:edit")
+    @PreAuthorize("hasAuthority('system:user:edit')")
     @PostMapping("/update")
     public JsonResult update(@Validated @RequestBody User user) {
         if (Objects.isNull(user.getUsId())) {
@@ -66,7 +59,7 @@ public class UserController {
     /**
      * 新增用户
      */
-    @RequiresPermissions("system:user:add")
+    @PreAuthorize("hasAuthority('system:user:add')")
     @PostMapping("/add")
     public JsonResult add(@Validated @RequestBody User user) {
         if (iUserService.count(new LambdaQueryWrapper<User>().eq(User::getUsername, user.getUsername())) > 0) {
@@ -84,7 +77,7 @@ public class UserController {
     /**
      * 根据用户编号获取详细信息
      */
-    @RequiresPermissions("system:user:query")
+    @PreAuthorize("hasAuthority('system:user:query')")
     @GetMapping("/{idNum}")
     public JsonResult getById(@PathVariable("idNum") Long usId) {
         Map<String, Object> map = new HashMap<>();
@@ -98,7 +91,7 @@ public class UserController {
     /**
      * 获取用户列表
      */
-    @RequiresPermissions("system:user:query")
+    @PreAuthorize("hasAuthority('system:user:query')")
     @GetMapping("/list")
     public JsonResult list(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -110,7 +103,7 @@ public class UserController {
     /**
      * 删除用户
      */
-    @RequiresPermissions("system:user:remove")
+    @PreAuthorize("hasAuthority('system:user:remove')")
     @GetMapping("/delete/{userIds}")
     public JsonResult remove(@PathVariable Long[] userIds) {
         for (Long id : userIds) {
@@ -129,7 +122,7 @@ public class UserController {
     /**
      * 重置密码
      */
-    @RequiresPermissions("system:user:resetPwd")
+    @PreAuthorize("hasAuthority('system:user:resetPwd')")
     @PostMapping("/resetPwd")
     public JsonResult resetPwd(@RequestBody User user) {
         if (StringUtils.isBlank(user.getPassword()) || Objects.isNull(user.getUsId())) {

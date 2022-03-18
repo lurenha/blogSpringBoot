@@ -259,7 +259,7 @@
     left: 8%!important;
 }
 body{
-    background: url("/images/leaves.png");
+    background: url("../static/images/leaves.png");
 }
 
 
