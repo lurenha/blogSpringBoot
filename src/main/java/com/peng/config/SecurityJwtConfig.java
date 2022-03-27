@@ -40,7 +40,7 @@ public class SecurityJwtConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
                 .antMatchers("/", "/static/**", "/css/**", "/images/**", "/js/**", "/lib/**").permitAll()
-                .antMatchers("/captchaImage","/login").permitAll()
+                .antMatchers("/captchaImage", "/login", "/oauth/login").permitAll()
                 .antMatchers("/archives", "/archives/**").permitAll()
                 .antMatchers("/comments", "/comments/**").permitAll()
                 .antMatchers("/friends", "/friends/**").permitAll()

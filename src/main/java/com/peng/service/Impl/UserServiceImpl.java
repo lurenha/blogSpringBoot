@@ -76,4 +76,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return res;
     }
 
+    @Override
+    public User generateUserByGithubUsId(Long githubUsId, User saveUser) {
+        final User one = this.getOne(new LambdaQueryWrapper<User>().eq(User::getGithubUsId, githubUsId));
+        if (one != null) {
+            one.setRole(sysRoleService.getById(one.getRoleId()));
+            one.setPermissionList(this.getPermissionList(one.getUsId()));
+            return one;
+        } else {
+            this.saveOrUpdate(saveUser);
+            saveUser.setRole(sysRoleService.getById(saveUser.getRoleId()));
+            saveUser.setPermissionList(this.getPermissionList(saveUser.getUsId()));
+            return saveUser;
+        }
+    }
+
 }

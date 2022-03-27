@@ -59,7 +59,11 @@ myapplication:
             bucketName: pengcloud01
             baseUrl:  http://sjpeng.top/
             templateid: 1232312365865766912
-
+oauth2:
+    vueHost: http://lurenpeng.cn:8088/#/login?redirect=%2Findex
+    github:
+        clientId: xxx
+        clientSecret: xxx
 #控制台打印SQL
 logging:
   file: ./logs/core.log

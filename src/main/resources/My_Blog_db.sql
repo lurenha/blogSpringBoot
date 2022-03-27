@@ -238,6 +238,8 @@ CREATE TABLE `sys_user`  (
   `role_id` int(11) NOT NULL COMMENT '权限号',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  `github_us_id` int(11) DEFAULT NULL COMMENT 'OAuth2用户ID',
+  `access_token` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'OAuth2用户token',
   PRIMARY KEY (`us_id`) USING BTREE,
   INDEX `role_id`(`role_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -245,10 +247,9 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, '低调做个路人', 'weipeng', '775736156', '1143038749@qq.com', '他的希望和信心从不消失，如今正像微风渐起那么重新旺盛起来。—《老人与海》', '北京朝阳区', '18531159505', '1143038749', 'http://sjpeng.top/140b9dad72e74e8692dd94df5dd5a561.jpeg', 1, '2019-12-06 14:33:53', '2020-03-31 15:45:58');
-INSERT INTO `sys_user` VALUES (2, '游客01', 'youke', '789456123', '123456@163.com', NULL, '北京', '17633206320', '666666', '999', 2, '2020-01-06 14:33:53', '2020-03-29 13:16:33');
-INSERT INTO `sys_user` VALUES (6, 'test01', 'test01', 't1t1t1t1t1', 't11@qq.co', '11', '11', 't11', 't11', 't11', 2, '2020-03-29 13:30:47', '2020-03-29 13:47:24');
-INSERT INTO `sys_user` VALUES (8, 'test02', 'test02', '111222', 'youke@qq.co', NULL, NULL, NULL, NULL, 'http://sjpeng.top/586273feb2d44a6ba981164a1bca3502.jpeg', 102, '2020-03-29 22:20:16', '2020-03-30 19:23:15');
+INSERT INTO `sys_user` VALUES (1, '低调做个路人', 'weipeng', '775736156', '1143038749@qq.com', '他的希望和信心从不消失，如今正像微风渐起那么重新旺盛起来。—《老人与海》', '北京朝阳区', '18531159505', '1143038749', 'http://sjpeng.top/140b9dad72e74e8692dd94df5dd5a561.jpeg', 1, '2019-12-06 14:33:53', '2020-03-31 15:45:58',NULL ,NULL );
+INSERT INTO `sys_user` VALUES (2, '游客01', 'youke', '789456123', '123456@163.com', NULL, '北京', '17633206320', '666666', '999', 2, '2020-01-06 14:33:53', '2020-03-29 13:16:33',NULL,NULL);
+
 
 -- ----------------------------
 -- Table structure for t_blog

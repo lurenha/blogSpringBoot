@@ -47,6 +47,8 @@ public class User implements Serializable {
     private Long roleId;
     private Date createTime;
     private Date updateTime;
+    private Long githubUsId;
+    private String accessToken;
     //------------------------------------------------------------------------------------------------------------------
     @TableField(exist=false)
     private List<String> permissionList;
