@@ -6,6 +6,9 @@
 #### 项目后台地址：http://lurenpeng.cn:8088/
 
 ------------
+#### 0.3 对项目进行了优化
+- 使用SpringSecurity替代Shiro认证授权
+- 增加OAUTH2:Github授权方案
 #### 0.2 对项目进行了重构
 - 使用MybatisPlus简化数据库操作
 - 对用户端大部分目录做了缓存
