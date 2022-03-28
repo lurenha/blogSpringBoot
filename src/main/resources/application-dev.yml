@@ -64,6 +64,11 @@ oauth2:
     github:
         clientId: xxx
         clientSecret: xxx
+    gitee:
+        clientId: xxx
+        clientSecret: xxx
+        grantType: authorization_code
+        redirectUri: xxx
 #控制台打印SQL
 logging:
   file: ./logs/core.log
