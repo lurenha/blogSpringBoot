@@ -11,7 +11,7 @@
     </parent>
     <groupId>com.peng</groupId>
     <artifactId>MyBlogApplication</artifactId>
-    <version>0.4.2-SNAPSHOT</version>
+    <version>2.2.2-SNAPSHOT</version>
     <name>MyBlogPro</name>
     <description>MyBlog project for Spring Boot</description>
         <properties>
@@ -23,7 +23,15 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
             </dependency>
-
+            <!--rabbitmq-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+            </dependency>
             <!--io常用工具类 -->
             <dependency>
                 <groupId>commons-io</groupId>
