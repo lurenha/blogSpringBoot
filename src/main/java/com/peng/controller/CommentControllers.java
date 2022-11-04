@@ -58,8 +58,14 @@ public class CommentControllers {
 
     private String formatWxMsg(Comment comment) {
         StringBuilder sb = new StringBuilder();
-        sb.append("发送人:").append(comment.getName()).append(",");
-        sb.append("内容:").append(comment.getContent());
+        sb.append("发送人:").append(comment.getName()).append(";");
+        if (comment.getParentId() != null) {
+            Comment parent = iCommentService.getById(comment.getName());
+            if (parent != null) {
+                sb.append("接收人:").append(parent.getName()).append(";");
+            }
+        }
+        sb.append("内容:").append(comment.getContent()).append(";");
         return sb.toString();
     }
 
