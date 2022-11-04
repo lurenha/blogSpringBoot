@@ -1,7 +1,6 @@
 package com.peng.controller;
 
 
-
 import com.alibaba.fastjson.JSON;
 import com.peng.aspect.MyLog;
 import com.peng.entity.Blog;
@@ -53,8 +52,15 @@ public class CommentControllers {
         String ipAddress = IpUtil.getIpAddress(request);
         comment.setIpAddress(ipAddress);
         iCommentService.saveOrUpdate(comment);
-        rabbitTemplate.convertAndSend("msg-event-exchange", "msg.wx-pn", JSON.toJSONString(comment));
+        rabbitTemplate.convertAndSend("msg-event-exchange", "msg.wx-pn", formatWxMsg(comment));
         return "redirect:/comments/" + comment.getBlId();
+    }
+
+    private String formatWxMsg(Comment comment) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("发送人:").append(comment.getName()).append(",");
+        sb.append("内容:").append(comment.getContent());
+        return sb.toString();
     }
 
 }
