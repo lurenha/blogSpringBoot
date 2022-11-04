@@ -11,7 +11,7 @@
     </parent>
     <groupId>com.peng</groupId>
     <artifactId>MyBlogApplication</artifactId>
-    <version>0.4.2-SNAPSHOT</version>
+    <version>0.4.3-SNAPSHOT</version>
     <name>MyBlogPro</name>
     <description>MyBlog project for Spring Boot</description>
         <properties>
