@@ -36,13 +36,13 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.7</version>
+                <version>2.1.5.RELEASE</version>
             </dependency>
             <!--七牛云-->
             <dependency>
                 <groupId>com.qiniu</groupId>
                 <artifactId>qiniu-java-sdk</artifactId>
-                <version>[7.2.0, 7.2.99]</version>
+                <version>7.12.0</version>
             </dependency>
             <!--lombok配置-->
             <dependency>
@@ -66,14 +66,14 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>3.3.1.tmp</version>
+                <version>2.1.5.RELEASE</version>
             </dependency>
 
             <!-- 分页插件 -->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>1.2.12</version>
+                <version>1.4.7</version>
             </dependency>
 
             <!-- MySQL连接驱动 -->
@@ -86,7 +86,7 @@
            <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>1.1.13</version>
+                <version>1.2.21</version>
             </dependency>
 
             <!-- 单元测试 -->
@@ -112,7 +112,7 @@
             <dependency>
                 <groupId>net.sf.json-lib</groupId>
                 <artifactId>json-lib</artifactId>
-                <version>2.4</version>
+                <version>2.1.5.RELEASE</version>
                 <classifier>jdk15</classifier><!--如果出现导不了包，加上这句-->
             </dependency>
 
@@ -139,7 +139,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.2.73</version>
+                <version>2.1.5.RELEASE</version>
             </dependency>
 
             <!--HttpUtil所需依赖-->
